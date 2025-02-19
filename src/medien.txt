@@ -1,0 +1,18 @@
+Thriller;M. Jackson;1-a;DATENTRÄEGER
+Back in Black;AC/DC;1-b;DATENTRÄEGER
+Bat Out of Hell;Meat Loaf;1-c;DATENTRÄEGER
+Mensch;H. Grönemeyer;1-d;DATENTRÄEGER
+But Seriously;P. Collins;1-e;DATENTRÄEGER
+Große Freiheit;Unheilig;1-f;DATENTRÄEGER
+Der Alchimist;P. Coelho;2-a;BUCH
+Sakrileg;D. Brown;2-b;BUCH
+Der König von Narnia;C.S. Lewis;2-c;BUCH
+Und dann gabs keines mehr;A. Christies;2-d;BUCH
+Der kleine Prinz;A. de Saint-Exupery;2-e;BUCH
+Der Herr der Ringe;J.R.R. Tolkien;2-f;BUCH
+Twilight;S. Meyer;2-g;BUCH
+Harry Potter und der Stein der Weisen;J.K. Rowling;2-h;BUCH
+Titanic;Paramount Pictures;3-a;DIVERSE
+E.T.;Universal Pictures;3-b;DIVERSE
+Jurassic Park;Universal Pictures;3-c;DIVERSE
+Independence Day;20th Century Fox;3-d;DIVERSE
