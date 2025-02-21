@@ -10,10 +10,19 @@ public class Medium {
     public LocalDate ausleihe_datum;
     public LocalDate rueckgabe_datum;
 
-    public Medium(String titel, String autor, String standplatz, Medientyp medientyp) {
+    public Medium(String titel, String autor, String standplatz, Medientyp medientyp,
+                  LocalDate ausleihe_datum, LocalDate rueckgabe_datum) {
         this.titel = titel;
         this.autor = autor;
         this.standplatz = standplatz;
         this.medientyp = medientyp;
+        this.ausleihe_datum = ausleihe_datum;
+        this.rueckgabe_datum = ausleihe_datum.plusDays(30);
     }
+
+    @Override
+    public String toString() {
+        return titel + ";" + autor + ";" + standplatz + ";" + medientyp + ";" + ausleihe_datum;
+    }
+
 }
