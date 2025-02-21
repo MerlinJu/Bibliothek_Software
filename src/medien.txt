@@ -15,4 +15,4 @@ Jurassic Park;Universal Pictures;3-c;DIVERSE;2025-02-15
 Independence Day;20th Century Fox;3-d;DIVERSE;2025-02-15
 Thriller;M. Jackson;1-a;DATENTRÄGER;2025-05-16
 Sakrileg;D. Brown;2-b;BUCH;2025-05-16
-Mensch;H. Grönemeyer;n.a;DATENTRÄGER;2025-04-13
+Mensch;H. Grönemeyer;*Standplatz*;DATENTRÄGER;1970-01-01

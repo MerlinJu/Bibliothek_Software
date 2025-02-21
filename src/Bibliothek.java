@@ -1,6 +1,6 @@
-import java.awt.datatransfer.SystemFlavorMap;
 import java.io.*;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +13,7 @@ import java.util.List;
  * </p>
  */
 public class Bibliothek {
-    private final static String dateipfad = "src/medien.txt"; // Pfad zu der medien datein, welche den kompletten medienbestand beinhaltet
+    private final static String dateipfad = "src/medien.txt"; // Pfad zu der medien Datei, welche den kompletten Medienbestand beinhaltet.
     static List<Medium> medienListe = new ArrayList<>();
 
 
@@ -38,10 +38,9 @@ public class Bibliothek {
                     String standplatz = teile[2];
                     Medientyp typ = Medientyp.valueOf(teile[3]);
                     LocalDate ausleihe_datum = LocalDate.parse(teile[4]);
-                    LocalDate rueckgabe_datum = LocalDate.parse(teile[4]).plusDays(30);
 
                     Medium medium = new Medium(titel, autor, standplatz, typ,
-                            ausleihe_datum, rueckgabe_datum);
+                            ausleihe_datum);
                     medienListe.add(medium);
                 }
             }
@@ -63,20 +62,19 @@ public class Bibliothek {
         }
     }
 
-    public static void mediumAusleihen() {
-        // Diese Werte sind erstmal zum Testen, sollen aber später input sein
-        String titel_zum_ausleihen = "Mensch";
-        LocalDate neues_ausleihe_datum = LocalDate.parse("2025-04-13");
+    // Medium ausleihen: Hier kann im frontend eine Auswahl der vorhandenen Medien angezeigt werden, um Tippfehler zu vermeiden.
+
+    public static void mediumAusleihen(String mediumTitel, LocalDate neuesAusleihDatum) {
 
         boolean mediumFound = false;
 
         // Wo liegt gesuchtes Buch in Tabelle
         for(Medium medium : ladeMedienAusDatei()) {
-            if(medium.titel.equals(titel_zum_ausleihen)) {
+            if(medium.titel.equals(mediumTitel)) {
                 medienListe.remove(medium); // Löscht "alte" Information
-                medium.ausleihe_datum = neues_ausleihe_datum;
+                medium.ausleihe_datum = neuesAusleihDatum;
                 medium.standplatz = "n.a";
-                System.out.println("Rückgabedatum: " + neues_ausleihe_datum.plusDays(30));
+                System.out.println("Rückgabedatum: " + neuesAusleihDatum.plusDays(30));
                 medienListe.add(medium); // Fügt "neue" Information ein
                 mediumFound = true;
                 break;
@@ -91,5 +89,32 @@ public class Bibliothek {
         speichereMedienInDatei();
     }
 
+    public static void mediumZurückgeben(String mediumZurück){
+
+        boolean mediumFound = false;
+
+        // Wo liegt gesuchtes Buch in Tabelle
+        for(Medium medium : ladeMedienAusDatei()){
+            if(medium.titel.equals(mediumZurück)){
+                medienListe.remove(medium); // Löscht "alte" Information
+                if (medium.ausleihe_datum.plusDays(30).isBefore(LocalDate.now())){
+                    System.out.println("Das Medium ist " + medium.ausleihe_datum.plusDays(30).until(LocalDate.now(), ChronoUnit.DAYS) + " Tag(e) überfällig.");
+                }
+                medium.ausleihe_datum = LocalDate.parse("1970-01-01"); // Hier muss noch ein Weg gefunden werden, das Ausleihdatum wegzubekommen.
+                medium.standplatz = "*Standplatz*";
+                medienListe.add(medium); // Fügt "neue" Information ein
+                mediumFound = true;
+                break;
+            }
+        }
+
+        // Fehlermeldung, falls gesuchtes Medium nicht gefunden wird
+        if(!mediumFound) {
+            System.out.println("Medium nicht gefunden");
+        }
+
+        speichereMedienInDatei();
+
+    }
 
 }

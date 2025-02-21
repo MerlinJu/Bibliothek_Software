@@ -11,7 +11,10 @@ public class Main extends Bibliothek {
 
         //System.out.println("Buch: " + buch.titel + " (" + buch.medientyp + ")");
 
-        mediumAusleihen();
+        //mediumAusleihen("Mensch", LocalDate.parse("2025-01-07"));
+
+        mediumZurückgeben("Mensch");
+
         System.out.println(ladeMedienAusDatei());
     }
 }
