@@ -1,7 +1,11 @@
 package frontend;
 
+import frontend.popups.AusleihenPopup;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class MainFrame extends JFrame {
 
@@ -74,6 +78,13 @@ public class MainFrame extends JFrame {
         // Buttons für die verschiedenen Funktionen
         JButton addMediumButton = createStyledButton("Neues Medium hinzufügen");
         JButton lendMediumButton = createStyledButton("Medium ausleihen");
+        lendMediumButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AusleihenPopup popup = new AusleihenPopup(MainFrame.this);
+                popup.setVisible(true);
+            }
+        });
         JButton returnMediumButton = createStyledButton("Medium zurückgeben");
         JButton listAvailableMediaButton = createStyledButton("Verfügbare Medien anzeigen");
         JButton listLentMediaButton = createStyledButton("Ausgeliehene Medien anzeigen");
@@ -100,7 +111,7 @@ public class MainFrame extends JFrame {
         button.setFocusPainted(false); // Entfernt den Fokus-Rahmen
 
         button.setForeground(Color.BLACK); // Textfarbe
-        button.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // Innenabstand
+        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         return button;
     }
 

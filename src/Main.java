@@ -1,6 +1,7 @@
 
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class Main extends Bibliothek {
 
@@ -17,9 +18,7 @@ public class Main extends Bibliothek {
         mediumAusleihen();
         System.out.println(ladeMedienAusDatei());
 
-        Bibliothek bibliothek = new Bibliothek();
-
-        List<Medium> medien = bibliothek.ladeMedienAusDatei();
+        List<Medium> medien = ladeMedienAusDatei();
         for (Medium medium : medien) {
             System.out.println(medium);
         }
