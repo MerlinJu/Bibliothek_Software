@@ -6,7 +6,8 @@ import java.util.List;
 
 // Bibliothek Klasse, um den Medien Bestand zu verwalten und einzulesen aus der medien.txt file
 public class Bibliothek {
-    private final String dateipfad = "src/medien.txt" // Pfad zu der medien datein, welche den kompletten medienbestand beinhaltet
+    private final String dateipfad = "src/medien.txt"; // Pfad zu der medien datein, welche den kompletten medienbestand beinhaltet
+
 
     // Medien aus Datei laden
     public List<Medium> ladeMedienAusDatei() {
@@ -23,7 +24,7 @@ public class Bibliothek {
                     Medientyp typ = Medientyp.valueOf(teile[3]);
 
                     Medium medium = new Medium(titel, autor, standplatz, typ);
-                    medienListe.add(Medium);
+                    medienListe.add(medium);
                 }
             }
         } catch (IOException e) {
@@ -31,6 +32,12 @@ public class Bibliothek {
         }
         return medienListe;
     }
+
+
+
+
+
+
 
 
 }
