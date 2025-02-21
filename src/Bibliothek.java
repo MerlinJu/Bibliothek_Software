@@ -51,6 +51,7 @@ public class Bibliothek {
         return medienListe;
     }
 
+  
     public static void speichereMedienInDatei() {
 
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(dateipfad))){
@@ -62,6 +63,7 @@ public class Bibliothek {
             System.out.println("Fehler beim Speichern der Datei: " + e.getMessage());
         }
     }
+  
 
     public static void mediumAusleihen() {
         // Diese Werte sind erstmal zum Testen, sollen aber später input sein

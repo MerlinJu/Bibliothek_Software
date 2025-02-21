@@ -20,6 +20,7 @@ public class Medium {
         this.rueckgabe_datum = ausleihe_datum.plusDays(30);
     }
 
+
     @Override
     public String toString() {
         return titel + ";" + autor + ";" + standplatz + ";" + medientyp + ";" + ausleihe_datum;
