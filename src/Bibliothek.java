@@ -49,10 +49,4 @@ public class Bibliothek {
     }
 
 
-
-
-
-
-
-
 }

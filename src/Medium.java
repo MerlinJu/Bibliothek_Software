@@ -16,4 +16,16 @@ public class Medium {
         this.standplatz = standplatz;
         this.medientyp = medientyp;
     }
+
+//    @Override
+//    public String toString() {
+//        return "Medium{" +
+//                "Titel='" + titel + '\'' +
+//                ", Autor='" + autor + '\'' +
+//                ", Standplatz='" + standplatz + '\'' +
+//                ", Medientyp=" + medientyp +
+//                ", Ausleihe=" + (ausleihe_datum != null ? ausleihe_datum : "nicht ausgeliehen") +
+//                ", Rückgabe=" + (rueckgabe_datum != null ? rueckgabe_datum : "nicht zurückgegeben") +
+//                '}';
+//    }
 }

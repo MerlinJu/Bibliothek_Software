@@ -1,9 +1,9 @@
-Thriller;M. Jackson;1-a;DATENTRÄEGER
-Back in Black;AC/DC;1-b;DATENTRÄEGER
-Bat Out of Hell;Meat Loaf;1-c;DATENTRÄEGER
-Mensch;H. Grönemeyer;1-d;DATENTRÄEGER
-But Seriously;P. Collins;1-e;DATENTRÄEGER
-Große Freiheit;Unheilig;1-f;DATENTRÄEGER
+Thriller;M. Jackson;1-a;DATENTRÄGER
+Back in Black;AC/DC;1-b;DATENTRÄGER
+Bat Out of Hell;Meat Loaf;1-c;DATENTRÄGER
+Mensch;H. Grönemeyer;1-d;DATENTRÄGER
+But Seriously;P. Collins;1-e;DATENTRÄGER
+Große Freiheit;Unheilig;1-f;DATENTRÄGER
 Der Alchimist;P. Coelho;2-a;BUCH
 Sakrileg;D. Brown;2-b;BUCH
 Der König von Narnia;C.S. Lewis;2-c;BUCH
