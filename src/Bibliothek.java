@@ -4,12 +4,27 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-// Bibliothek Klasse, um den Medien Bestand zu verwalten und einzulesen aus der medien.txt file
+/**
+ * Die Klasse {@code Bibliothek} verwaltet den Medienbestand und ermöglicht das Laden von Medien
+ * aus einer Datei. Sie liest eine Datei, die Medieninformationen im CSV-Format enthält, und erstellt
+ * eine Liste von {@link Medium}-Objekten.
+ * <p>
+ * Die Medieninformationen beinhalten den Titel, Autor, Standplatz und den Medientyp.
+ * </p>
+ */
 public class Bibliothek {
     private final String dateipfad = "src/medien.txt"; // Pfad zu der medien datein, welche den kompletten medienbestand beinhaltet
 
 
-    // Medien aus Datei laden
+    /**
+     * Lädt die Medien aus der Datei {@code medien.txt} und erstellt eine Liste von {@link Medium}-Objekten.
+     * <p>
+     * Jede Zeile der Datei sollte die folgenden Informationen im CSV-Format enthalten:
+     * Titel, Autor, Standplatz, Medientyp.
+     * </p>
+     *
+     * @return Eine Liste von {@link Medium}-Objekten, die die geladenen Medien repräsentieren
+     */
     public List<Medium> ladeMedienAusDatei() {
         List<Medium> medienListe = new ArrayList<>();
 
