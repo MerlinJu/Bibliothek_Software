@@ -1,7 +1,11 @@
 package frontend;
 
+import frontend.popups.AusleihenPopup;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class MainFrame extends JFrame {
 
@@ -14,13 +18,14 @@ public class MainFrame extends JFrame {
     private void initilaizeUI() {
         // FENSTEREINSTELLUNGEN
         setTitle("Bibliothek");
-        setSize(400, 300);
+        setSize(500, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
 
         //hauptpanel mit Borderlayout
-        JPanel mainPanel = new JPanel(new BorderLayout());
+        JPanel mainPanel = new JPanel(new BorderLayout(10, 10)); // Abstände zwischen Komponenten
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Rand um das Hauptpanel
 
         // Menüleiste erstellen
         JMenuBar menuBar = createMenuBar();
@@ -32,7 +37,9 @@ public class MainFrame extends JFrame {
 
         JTextArea outputArea = new JTextArea();
         outputArea.setEditable(false); // User kann Text nicht bearbeiten
+        outputArea.setFont(new Font("Monospaced", Font.PLAIN, 12)); // Schriftart anpassen
         JScrollPane scrollPane = new JScrollPane(outputArea);
+        scrollPane.setBorder(BorderFactory.createTitledBorder("Ausgabe")); // Rahmen mit Titel
         mainPanel.add(scrollPane, BorderLayout.SOUTH);
 
         /** JavaDoc Kommentare */
@@ -45,13 +52,17 @@ public class MainFrame extends JFrame {
 
         // Datei Menü
         JMenu fileMenu = new JMenu("Datei");
+        fileMenu.setFont(new Font("SansSerif", Font.PLAIN, 14)); // Schriftart anpassen
         JMenuItem exitMenuItem = new JMenuItem("Beenden");
+        exitMenuItem.setFont(new Font("SansSerif", Font.PLAIN, 14)); // Schriftart anpassen
         exitMenuItem.addActionListener(e -> System.exit(0)); // Beendet das Programm
         fileMenu.add(exitMenuItem);
 
         // Hilfe-Menü
         JMenu helpMenu = new JMenu("Hilfe");
+        helpMenu.setFont(new Font("SansSerif", Font.PLAIN, 14)); // Schriftart anpassen
         JMenuItem aboutMenuItem = new JMenuItem("Über");
+        aboutMenuItem.setFont(new Font("SansSerif", Font.PLAIN, 14)); // Schriftart anpassen
         aboutMenuItem.addActionListener(e -> JOptionPane.showMessageDialog(this, "Bibliotheksverwaltung v1.0"));
         helpMenu.add(aboutMenuItem);
 
@@ -65,14 +76,21 @@ public class MainFrame extends JFrame {
         JPanel panel = new JPanel(new GridLayout(0, 1, 10, 10)); // Grid Layout
 
         // Buttons für die verschiedenen Funktionen
-        JButton addMediumButton = new JButton("Neues Medium hinzufügen");
-        JButton lendMediumButton = new JButton("Medium ausleihen");
-        JButton returnMediumButton = new JButton("Medium zurückgeben");
-        JButton listAvailableMediaButton = new JButton("Verfügbare Medien anzeigen");
-        JButton listLentMediaButton = new JButton("Ausgeliehene Medien anzeigen");
-        JButton listOverdueMediaButton = new JButton("Überfällige Medien anzeigen");
-        JButton changeLocationButton = new JButton("Standplatz ändern");
-        JButton removeMediumButton = new JButton("Medium ausmustern");
+        JButton addMediumButton = createStyledButton("Neues Medium hinzufügen");
+        JButton lendMediumButton = createStyledButton("Medium ausleihen");
+        lendMediumButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AusleihenPopup popup = new AusleihenPopup(MainFrame.this);
+                popup.setVisible(true);
+            }
+        });
+        JButton returnMediumButton = createStyledButton("Medium zurückgeben");
+        JButton listAvailableMediaButton = createStyledButton("Verfügbare Medien anzeigen");
+        JButton listLentMediaButton = createStyledButton("Ausgeliehene Medien anzeigen");
+        JButton listOverdueMediaButton = createStyledButton("Überfällige Medien anzeigen");
+        JButton changeLocationButton = createStyledButton("Standplatz ändern");
+        JButton removeMediumButton = createStyledButton("Medium ausmustern");
 
         // Buttons zum Panel hinzufügen
         panel.add(addMediumButton);
@@ -85,6 +103,16 @@ public class MainFrame extends JFrame {
         panel.add(removeMediumButton);
 
         return panel;
+    }
+
+    private JButton createStyledButton(String text) {
+        JButton button = new JButton(text);
+        button.setFont(new Font("SansSerif", Font.BOLD, 14)); // Schriftart anpassen
+        button.setFocusPainted(false); // Entfernt den Fokus-Rahmen
+
+        button.setForeground(Color.BLACK); // Textfarbe
+        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        return button;
     }
 
 

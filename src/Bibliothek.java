@@ -50,8 +50,14 @@ public class Bibliothek {
         return medienListe;
     }
 
-    public static void speichereMedienInDatei() {
 
+    /**
+     * Aktualisiert die Datei {@code medien.txt} mit dem aktuellen Stand der {@code medienListe}.
+     * Die Datei wird komplett überschrieben, um die aktuellen Medieninformationen zu speichern.
+     */
+    public static void updateMedienInDatei() {
+
+        // updated alle medien in der medienListe in die medien.txt datei bei Aufruf der Methode
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(dateipfad))){
             for(Medium medium : medienListe) {
                 bw.write(medium.toString());
@@ -61,6 +67,7 @@ public class Bibliothek {
             System.out.println("Fehler beim Speichern der Datei: " + e.getMessage());
         }
     }
+  
 
     // Medium ausleihen: Hier kann im frontend eine Auswahl der vorhandenen Medien angezeigt werden, um Tippfehler zu vermeiden.
 
@@ -72,7 +79,9 @@ public class Bibliothek {
         for(Medium medium : ladeMedienAusDatei()) {
             if(medium.titel.equals(mediumTitel)) {
                 medienListe.remove(medium); // Löscht "alte" Information
-                medium.ausleihe_datum = neuesAusleihDatum;
+                medium.ausleihe_datum = neues_ausleihe_datum;
+                medium.rueckgabe_datum = neues_ausleihe_datum.plusDays(30); // Hier wird drauf gerechnet anstatt im Medium Konstruktor
+
                 medium.standplatz = "n.a";
                 System.out.println("Rückgabedatum: " + neuesAusleihDatum.plusDays(30));
                 medienListe.add(medium); // Fügt "neue" Information ein
@@ -86,7 +95,20 @@ public class Bibliothek {
             System.out.println("Medium nicht gefunden");
         }
 
-        speichereMedienInDatei();
+        updateMedienInDatei();
+    }
+
+
+    public static void neuesMediumHinzufuegen(String titel, String autor, String standplatz, Medientyp typ) {
+        // erstellt ein neues Medium mit den angegebenen Parametern
+        Medium neuesMedium = new Medium(titel, autor, standplatz, typ, null, null);
+
+        // fügt das neue Medium der Liste hinzu
+        medienListe.add(neuesMedium);
+
+        // aktualisiert die Datei mit der aktualisierten Liste
+        updateMedienInDatei();
+
     }
 
     public static void mediumZurückgeben(String mediumZurück){
