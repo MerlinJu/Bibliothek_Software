@@ -7,7 +7,7 @@ public class Main extends Bibliothek {
 
 
     public static void main(String[] args) {
-        //System.out.println("Programm gestartet!");
+        System.out.println("Programm gestartet!");
 
         //Buch buch = new Buch("Harry Potter", "J.K. Rowling", "2-h", LocalDate.parse("2025-12-02"),
         //LocalDate.parse("2025-12-02").plusDays(30));
@@ -18,11 +18,13 @@ public class Main extends Bibliothek {
         mediumAusleihen();
         System.out.println(ladeMedienAusDatei());
 
-        List<Medium> medien = ladeMedienAusDatei();
-        for (Medium medium : medien) {
+
+        System.out.println("neues Medium Hinzufügen...");
+        neuesMediumHinzufuegen("testTITEL", "testAUTOR", "1-f", Medientyp.BUCH);
+
+        for (Medium medium : ladeMedienAusDatei()) {
             System.out.println(medium);
         }
-
 
     }
 }

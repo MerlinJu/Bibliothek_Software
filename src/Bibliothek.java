@@ -51,9 +51,14 @@ public class Bibliothek {
         return medienListe;
     }
 
-  
-    public static void speichereMedienInDatei() {
 
+    /**
+     * Aktualisiert die Datei {@code medien.txt} mit dem aktuellen Stand der {@code medienListe}.
+     * Die Datei wird komplett überschrieben, um die aktuellen Medieninformationen zu speichern.
+     */
+    public static void updateMedienInDatei() {
+
+        // updated alle medien in der medienListe in die medien.txt datei bei Aufruf der Methode
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(dateipfad))){
             for(Medium medium : medienListe) {
                 bw.write(medium.toString());
@@ -77,6 +82,7 @@ public class Bibliothek {
             if(medium.titel.equals(titel_zum_ausleihen)) {
                 medienListe.remove(medium); // Löscht "alte" Information
                 medium.ausleihe_datum = neues_ausleihe_datum;
+                medium.rueckgabe_datum = neues_ausleihe_datum.plusDays(30);
                 medium.standplatz = "n.a";
                 System.out.println("Rückgabedatum: " + neues_ausleihe_datum.plusDays(30));
                 medienListe.add(medium); // Fügt "neue" Information ein
@@ -90,7 +96,20 @@ public class Bibliothek {
             System.out.println("Medium nicht gefunden");
         }
 
-        speichereMedienInDatei();
+        updateMedienInDatei();
+    }
+
+
+    public static void neuesMediumHinzufuegen(String titel, String autor, String standplatz, Medientyp typ) {
+        // erstellt ein neues Medium mit den angegebenen Parametern
+        Medium neuesMedium = new Medium(titel, autor, standplatz, typ, null, null);
+
+        // fügt das neue Medium der Liste hinzu
+        medienListe.add(neuesMedium);
+
+        // aktualisiert die Datei mit der aktualisierten Liste
+        updateMedienInDatei();
+
     }
 
 

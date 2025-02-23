@@ -17,13 +17,15 @@ public class Medium {
         this.standplatz = standplatz;
         this.medientyp = medientyp;
         this.ausleihe_datum = ausleihe_datum;
-        this.rueckgabe_datum = ausleihe_datum.plusDays(30);
+        this.rueckgabe_datum = rueckgabe_datum;
     }
 
 
     @Override
     public String toString() {
-        return titel + ";" + autor + ";" + standplatz + ";" + medientyp + ";" + ausleihe_datum;
+        return titel + ";" + autor + ";" + standplatz + ";" + medientyp + ";" +
+                (ausleihe_datum != null ? ausleihe_datum : "null") + ";" +
+                (rueckgabe_datum != null ? rueckgabe_datum : "null");
     }
 
 }
