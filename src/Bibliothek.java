@@ -90,6 +90,7 @@ public class Bibliothek {
 
         // Wo liegt gesuchtes Buch in Tabelle
         for(Medium medium : ladeMedienAusDatei()) {
+            System.out.println(medium.titel);
             if(medium.titel.equals(titel_zum_ausleihen)) {
                 medienListe.remove(medium); // Löscht "alte" Information
                 medium.ausleihe_datum = neues_ausleihe_datum;
@@ -122,6 +123,7 @@ public class Bibliothek {
         updateMedienInDatei();
 
     }
+
 
     public static void vorhandenesMediumAusmustern() {
         // test werte, welche später dann input sein werden
