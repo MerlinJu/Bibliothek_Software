@@ -1,6 +1,7 @@
 import java.awt.datatransfer.SystemFlavorMap;
 import java.io.*;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -164,6 +165,37 @@ public class Bibliothek {
         }
       
         updateMedien();
+    }
+
+    public static void mediumZurückgeben(String mediumZurück, String neuerStandplatz){
+
+        boolean mediumFound = false;
+
+        // Wo liegt gesuchtes Buch in Tabelle
+        for(Medium medium : ladeMedien()){
+            if(medium.titel.equals(mediumZurück)){
+                medienListe.remove(medium); // Löscht "alte" Information
+                if (medium.rueckgabe_datum.isBefore(LocalDate.now())){
+                    System.out.println("Das Medium ist " +
+                            medium.rueckgabe_datum.until(LocalDate.now(), ChronoUnit.DAYS) +
+                            " Tag(e) überfällig.");
+                }
+                medium.ausleihe_datum = null;
+                medium.rueckgabe_datum = null;
+                medium.standplatz = neuerStandplatz;
+                medienListe.add(medium); // Fügt "neue" Information ein
+                mediumFound = true;
+                break;
+            }
+        }
+
+        // Fehlermeldung, falls gesuchtes Medium nicht gefunden wird
+        if(!mediumFound) {
+            System.out.println("Medium nicht gefunden");
+        }
+
+        updateMedien();
+
     }
 
 
