@@ -1,21 +1,19 @@
-
-Back in Black;AC/DC;1-b;DATENTRÄGER;2025-02-15;2025-03-17
-Bat Out of Hell;Meat Loaf;1-c;DATENTRÄGER;2025-02-15;2025-03-17
-But Seriously;P. Collins;1-e;DATENTRÄGER;2025-02-15;2025-03-17
-Große Freiheit;Unheilig;1-f;DATENTRÄGER;2025-02-15;2025-03-17
-Der Alchimist;P. Coelho;2-a;BUCH;2025-02-15;2025-03-17
-Der König von Narnia;C.S. Lewis;2-c;BUCH;2025-02-15;2025-03-17
-Und dann gabs keines mehr;A. Christies;2-d;BUCH;2025-02-15;2025-03-17
-Der kleine Prinz;A. de Saint-Exupery;2-e;BUCH;2025-02-15;2025-03-17
-Der Herr der Ringe;J.R.R. Tolkien;2-f;BUCH;2025-02-15;2025-03-17
-Twilight;S. Meyer;2-g;BUCH;2025-02-15;2025-03-17
-Harry Potter und der Stein der Weisen;J.K. Rowling;2-h;BUCH;2025-02-15;2025-03-17
-Titanic;Paramount Pictures;3-a;DIVERSE;2025-02-15;2025-03-17
-E.T.;Universal Pictures;3-b;DIVERSE;2025-02-15;2025-03-17
-Jurassic Park;Universal Pictures;3-c;DIVERSE;2025-02-15;2025-03-17
-Independence Day;20th Century Fox;3-d;DIVERSE;2025-02-15;2025-03-17
-Thriller;M. Jackson;1-a;DATENTRÄGER;2025-05-16;2025-06-15
-Sakrileg;D. Brown;2-b;BUCH;2025-05-16;2025-06-15
-Mensch;H. Grönemeyer;n.a;DATENTRÄGER;2025-04-13;2025-05-13
-testTITEL;testAUTOR;1-f;BUCH;null;null
-
+Back in Black;AC/DC;1-b;DATENTRÄGER
+Bat Out of Hell;Meat Loaf;1-c;DATENTRÄGER
+But Seriously;P. Collins;1-e;DATENTRÄGER
+Große Freiheit;Unheilig;1-f;DATENTRÄGER
+Der Alchimist;P. Coelho;2-a;BUCH
+Der König von Narnia;C.S. Lewis;2-c;BUCH
+Und dann gabs keines mehr;A. Christies;2-d;BUCH
+Der kleine Prinz;A. de Saint-Exupery;2-e;BUCH
+Der Herr der Ringe;J.R.R. Tolkien;2-f;BUCH
+Twilight;S. Meyer;2-g;BUCH
+Harry Potter und der Stein der Weisen;J.K. Rowling;2-h;BUCH
+Titanic;Paramount Pictures;3-a;DIVERSE
+E.T.;Universal Pictures;3-b;DIVERSE
+Jurassic Park;Universal Pictures;3-c;DIVERSE
+Independence Day;20th Century Fox;3-d;DIVERSE
+Thriller;M. Jackson;1-a;DATENTRÄGER
+Sakrileg;D. Brown;2-b;BUCH
+testTITEL;testAUTOR;1-f;BUCH
+Mensch;H. Grönemeyer;1-d;DATENTRÄGER

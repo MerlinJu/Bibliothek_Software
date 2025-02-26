@@ -32,15 +32,27 @@ public class Bibliothek {
             String zeile;
             while ((zeile = br.readLine()) != null) {
                 String[] teile = zeile.split(";");
-                if (teile.length == 5) {
+
+                // Nicht ausgeliehen
+                if (teile.length == 4) {
                     String titel = teile[0];
                     String autor = teile[1];
                     String standplatz = teile[2];
                     Medientyp typ = Medientyp.valueOf(teile[3]);
-                    LocalDate ausleihe_datum = LocalDate.parse(teile[4]);
 
-                    Medium medium = new Medium(titel, autor, standplatz, typ,
-                            ausleihe_datum);
+                    Medium medium = new Medium(titel, autor, standplatz, typ);
+                    medienListe.add(medium);
+                }
+
+                // Ausgeliehen
+                else if (teile.length == 5) {
+                    String titel = teile[0];
+                    String autor = teile[1];
+                    Medientyp typ = Medientyp.valueOf(teile[2]);
+                    LocalDate ausleihe_datum = LocalDate.parse(teile[3]);
+                    LocalDate rueckgabe_datum = LocalDate.parse(teile[4]);
+
+                    Medium medium = new Medium(titel, autor, typ, ausleihe_datum, rueckgabe_datum);
                     medienListe.add(medium);
                 }
             }
@@ -79,11 +91,10 @@ public class Bibliothek {
         for(Medium medium : ladeMedienAusDatei()) {
             if(medium.titel.equals(mediumTitel)) {
                 medienListe.remove(medium); // Löscht "alte" Information
-                medium.ausleihe_datum = neues_ausleihe_datum;
-                medium.rueckgabe_datum = neues_ausleihe_datum.plusDays(30); // Hier wird drauf gerechnet anstatt im Medium Konstruktor
-
-                medium.standplatz = "n.a";
-                System.out.println("Rückgabedatum: " + neuesAusleihDatum.plusDays(30));
+                medium.ausleihe_datum = neuesAusleihDatum;
+                medium.rueckgabe_datum = neuesAusleihDatum.plusDays(30); // Hier wird drauf gerechnet anstatt im Medium Konstruktor
+                medium.standplatz = null;
+                System.out.println("Rückgabedatum: " + medium.rueckgabe_datum);
                 medienListe.add(medium); // Fügt "neue" Information ein
                 mediumFound = true;
                 break;
@@ -101,7 +112,7 @@ public class Bibliothek {
 
     public static void neuesMediumHinzufuegen(String titel, String autor, String standplatz, Medientyp typ) {
         // erstellt ein neues Medium mit den angegebenen Parametern
-        Medium neuesMedium = new Medium(titel, autor, standplatz, typ, null, null);
+        Medium neuesMedium = new Medium(titel, autor, standplatz, typ);
 
         // fügt das neue Medium der Liste hinzu
         medienListe.add(neuesMedium);
@@ -111,7 +122,7 @@ public class Bibliothek {
 
     }
 
-    public static void mediumZurückgeben(String mediumZurück){
+    public static void mediumZurückgeben(String mediumZurück, String neuerStandplatz){
 
         boolean mediumFound = false;
 
@@ -119,11 +130,14 @@ public class Bibliothek {
         for(Medium medium : ladeMedienAusDatei()){
             if(medium.titel.equals(mediumZurück)){
                 medienListe.remove(medium); // Löscht "alte" Information
-                if (medium.ausleihe_datum.plusDays(30).isBefore(LocalDate.now())){
-                    System.out.println("Das Medium ist " + medium.ausleihe_datum.plusDays(30).until(LocalDate.now(), ChronoUnit.DAYS) + " Tag(e) überfällig.");
+                if (medium.rueckgabe_datum.isBefore(LocalDate.now())){
+                    System.out.println("Das Medium ist " +
+                                        medium.rueckgabe_datum.until(LocalDate.now(), ChronoUnit.DAYS) +
+                                        " Tag(e) überfällig.");
                 }
-                medium.ausleihe_datum = LocalDate.parse("1970-01-01"); // Hier muss noch ein Weg gefunden werden, das Ausleihdatum wegzubekommen.
-                medium.standplatz = "*Standplatz*";
+                medium.ausleihe_datum = null;
+                medium.rueckgabe_datum = null;
+                medium.standplatz = neuerStandplatz;
                 medienListe.add(medium); // Fügt "neue" Information ein
                 mediumFound = true;
                 break;
@@ -135,7 +149,7 @@ public class Bibliothek {
             System.out.println("Medium nicht gefunden");
         }
 
-        speichereMedienInDatei();
+        updateMedienInDatei();
 
     }
 
