@@ -10,16 +10,19 @@ public class Main extends Bibliothek {
         System.out.println("Programm gestartet!");
 
 
-        mediumAusleihen();
-        System.out.println(ladeMedienAusDatei());
+        //mediumAusleihen("Mensch", LocalDate.parse("2025-01-07"));
+
+        mediumZurückgeben("Mensch", "1-d");
+
+        //System.out.println(ladeMedienAusDatei());
 
 
-        System.out.println("neues Medium Hinzufügen...");
-        neuesMediumHinzufuegen("testTITEL", "testAUTOR", "1-f", Medientyp.BUCH);
-
-        for (Medium medium : ladeMedienAusDatei()) {
-            System.out.println(medium);
-        }
+//        System.out.println("neues Medium Hinzufügen...");
+//        neuesMediumHinzufuegen("testTITEL", "testAUTOR", "1-f", Medientyp.BUCH);
+//
+//        for (Medium medium : ladeMedienAusDatei()) {
+//            System.out.println(medium);
+//        }
 
     }
 }
