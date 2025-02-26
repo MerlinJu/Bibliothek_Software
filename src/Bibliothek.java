@@ -123,5 +123,30 @@ public class Bibliothek {
 
     }
 
+    public static void vorhandenesMediumAusmustern() {
+        // test werte, welche später dann input sein werden
+        String titel_zum_ausmustern = "testTITEL";
+
+        for(Medium medium : ladeMedienAusDatei()) {
+            if (medium.titel.equals(titel_zum_ausmustern)) {
+                if (medium.ausleihe_datum != null) {
+                    // Sofern ein medium ausgeliehen ist ( ausliehedatum ist nur wenn ausgeliehen ein LocalDate Objekt, ansonsten ein String "null" )
+                    System.out.println("Medium ist immomemt ausgeliehen, es wir ausgemustert sobald es zurückgegeben wurde.");
+
+                    // Logik für ausmustrern sobald zurückgegeben...
+                    break;
+
+                } else {
+                    // Sofern ein medium nicht ausgeliehen ist, kann es sofort ausgemustert werden
+                    medienListe.remove(medium);
+                    System.out.println("Das Medium mit dem Titel: " + medium.titel + " wurde erfolgreich ausgemustert.");
+                    break;
+                }
+            } else {
+                System.out.println("Medium wurde nicht gefunden!");
+            }
+        }
+    }
+
 
 }
