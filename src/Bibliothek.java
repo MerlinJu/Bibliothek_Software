@@ -1,6 +1,6 @@
+import java.awt.datatransfer.SystemFlavorMap;
 import java.io.*;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +13,7 @@ import java.util.List;
  * </p>
  */
 public class Bibliothek {
-    private final static String dateipfad = "src/medien.txt"; // Pfad zu der medien Datei, welche den kompletten Medienbestand beinhaltet.
+    private final static String dateipfad = "src/medien.txt"; // Pfad zu der medien datein, welche den kompletten medienbestand beinhaltet
     static List<Medium> medienListe = new ArrayList<>();
 
 
@@ -82,6 +82,7 @@ public class Bibliothek {
     }
   
 
+
     // Medium ausleihen: Hier kann im frontend eine Auswahl der vorhandenen Medien angezeigt werden, um Tippfehler zu vermeiden.
 
     /**
@@ -89,17 +90,17 @@ public class Bibliothek {
      * Speichert die Änderungen am Ende in der {@code medien.txt} Datei.
      */
     public static void mediumAusleihen(String mediumTitel, LocalDate neuesAusleihDatum) {
-
+  
         boolean mediumFound = false;
 
         // Wo liegt gesuchtes Buch in Tabelle
         for(Medium medium : ladeMedien()) {
             if(medium.titel.equals(mediumTitel)) {
                 medienListe.remove(medium); // Löscht "alte" Information
-                medium.ausleihe_datum = neuesAusleihDatum;
-                medium.rueckgabe_datum = neuesAusleihDatum.plusDays(30); // Hier wird drauf gerechnet anstatt im Medium Konstruktor
-                medium.standplatz = null;
-                System.out.println("Rückgabedatum: " + medium.rueckgabe_datum);
+                medium.ausleihe_datum = neues_ausleihe_datum;
+                medium.rueckgabe_datum = neues_ausleihe_datum.plusDays(30);
+                medium.standplatz = "n.a";
+                System.out.println("Rückgabedatum: " + neues_ausleihe_datum.plusDays(30));
                 medienListe.add(medium); // Fügt "neue" Information ein
                 mediumFound = true;
                 break;
@@ -129,35 +130,41 @@ public class Bibliothek {
 
     }
 
-    public static void mediumZurückgeben(String mediumZurück, String neuerStandplatz){
 
-        boolean mediumFound = false;
+    public static void vorhandenesMediumAusmustern() {
+        // test werte, welche später dann input sein werden
+        String titel_zum_ausmustern = "testTITEL";
 
         // Wo liegt gesuchtes Buch in Tabelle
         for(Medium medium : ladeMedien()){
-            if(medium.titel.equals(mediumZurück)){
-                medienListe.remove(medium); // Löscht "alte" Information
-                if (medium.rueckgabe_datum.isBefore(LocalDate.now())){
+            if(medium.titel.equals(mediumZurück)) {
+              
+                if (medium.rueckgabe_datum.isBefore(LocalDate.now() )) {
                     System.out.println("Das Medium ist " +
                                         medium.rueckgabe_datum.until(LocalDate.now(), ChronoUnit.DAYS) +
                                         " Tag(e) überfällig.");
+                } 
+                  
+               if (medium.ausleihe_datum != null) {
+                    // Sofern ein medium ausgeliehen ist ( ausliehedatum ist nur wenn ausgeliehen ein LocalDate Objekt, ansonsten ein String "null" )
+                    System.out.println("Medium ist immomemt ausgeliehen, es wir ausgemustert sobald es zurückgegeben wurde.");
+
+                    // Logik für ausmustrern sobald zurückgegeben...
+                    break;
+
+                } else {
+                    // Sofern ein medium nicht ausgeliehen ist, kann es sofort ausgemustert werden
+                    medienListe.remove(medium);
+                    System.out.println("Das Medium mit dem Titel: " + medium.titel + " wurde erfolgreich ausgemustert.");
+                    break;
                 }
-                medium.ausleihe_datum = null;
-                medium.rueckgabe_datum = null;
-                medium.standplatz = neuerStandplatz;
-                medienListe.add(medium); // Fügt "neue" Information ein
-                mediumFound = true;
-                break;
+            } else {
+                System.out.println("Medium wurde nicht gefunden!");
             }
         }
-
-        // Fehlermeldung, falls gesuchtes Medium nicht gefunden wird
-        if(!mediumFound) {
-            System.out.println("Medium nicht gefunden");
-        }
-
+      
         updateMedien();
-
     }
+
 
 }

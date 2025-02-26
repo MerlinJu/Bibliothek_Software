@@ -1,3 +1,4 @@
+
 Back in Black;AC/DC;1-b;DATENTRÄGER
 Bat Out of Hell;Meat Loaf;1-c;DATENTRÄGER
 But Seriously;P. Collins;1-e;DATENTRÄGER
@@ -17,3 +18,4 @@ Thriller;M. Jackson;1-a;DATENTRÄGER
 Sakrileg;D. Brown;2-b;BUCH
 testTITEL;testAUTOR;1-f;BUCH
 Mensch;H. Grönemeyer;1-d;DATENTRÄGER
+

@@ -32,7 +32,7 @@ public class Medium {
 
     @Override
     public String toString() {
-      
+
         return  titel +
                 ";" + autor +
                 (standplatz != null ? ";" + standplatz: "") +
