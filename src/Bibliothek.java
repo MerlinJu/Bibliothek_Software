@@ -29,6 +29,8 @@ public class Bibliothek {
      * @return Eine Liste von {@link Medium}-Objekten, die die geladenen Medien repräsentieren
      */
     public static List<Medium> ladeMedien() {
+        // Diese Methode darf nicht einfach so gecalled werden! , sonst verhängt sich das Programm in einer doppel update schleife, was zu riesigen Daten in der medien.txt datei führt
+        // Deswegen nur in for schleife um durch die medien.txt datei zu loopen :D
 
         try (BufferedReader br = new BufferedReader(new FileReader(dateipfad) )) {
             String zeile;
@@ -57,10 +59,14 @@ public class Bibliothek {
                     Medium medium = new Medium(titel, autor, typ, ausleihe_datum, rueckgabe_datum);
                     medienListe.add(medium);
                 }
+
             }
         } catch (IOException e) {
             System.out.println("Fehler beim Laden der Datei: " + e.getMessage());
         }
+
+        // Medienliste aus datei gelesen
+        System.out.println(medienListe);
         return medienListe;
     }
 
@@ -94,14 +100,19 @@ public class Bibliothek {
   
         boolean mediumFound = false;
 
+
+
+        // HINWEIS! Hier ist noch ein Bug: da der constructor medien mit standort und ohne ausleihe datum init zulässt müssen wir hier
+        // sichergehen, dass wir das erst tryen, sonst läuft man in ein error...
+
         // Wo liegt gesuchtes Buch in Tabelle
         for(Medium medium : ladeMedien()) {
             if(medium.titel.equals(mediumTitel)) {
                 medienListe.remove(medium); // Löscht "alte" Information
-                medium.ausleihe_datum = neues_ausleihe_datum;
-                medium.rueckgabe_datum = neues_ausleihe_datum.plusDays(30);
+                medium.ausleihe_datum = neuesAusleihDatum;
+                medium.rueckgabe_datum = neuesAusleihDatum.plusDays(30);
                 medium.standplatz = "n.a";
-                System.out.println("Rückgabedatum: " + neues_ausleihe_datum.plusDays(30));
+                System.out.println("Rückgabedatum: " + neuesAusleihDatum.plusDays(30));
                 medienListe.add(medium); // Fügt "neue" Information ein
                 mediumFound = true;
                 break;
@@ -118,27 +129,31 @@ public class Bibliothek {
 
 
     public static void neuesMediumHinzufuegen(String titel, String autor, String standplatz, Medientyp typ) {
-        // Lädt den aktuellen Stand der medien.txt Datei
-        ladeMedien();
-
         // erstellt ein neues Medium mit den angegebenen Parametern
         Medium neuesMedium = new Medium(titel, autor, standplatz, typ);
 
+        for (Medium medium : medienListe) {
+            if (medium.titel.equals(neuesMedium.titel)) {
+                System.out.println("Medium existiert schon im Bestand!");
+                return; // bricht ab wenn Medium schon existiert
+            }
+
+        }
+
         // fügt das neue Medium der Liste hinzu
         medienListe.add(neuesMedium);
+
         // aktualisiert die Datei mit der aktualisierten Liste
         updateMedien();
-
+        System.out.println("Neues Medium hinzugefügt!");
     }
 
 
-    public static void vorhandenesMediumAusmustern() {
-        // test werte, welche später dann input sein werden
-        String titel_zum_ausmustern = "testTITEL";
+    public static void vorhandenesMediumAusmustern(String titel_zum_ausmustern) {
 
         // Wo liegt gesuchtes Buch in Tabelle
         for(Medium medium : ladeMedien()){
-            if(medium.titel.equals(mediumZurück)) {
+            if(medium.titel.equals(titel_zum_ausmustern)) {
               
                 if (medium.rueckgabe_datum.isBefore(LocalDate.now() )) {
                     System.out.println("Das Medium ist " +
@@ -151,14 +166,13 @@ public class Bibliothek {
                     System.out.println("Medium ist immomemt ausgeliehen, es wir ausgemustert sobald es zurückgegeben wurde.");
 
                     // Logik für ausmustrern sobald zurückgegeben...
-                    break;
 
-                } else {
+               } else {
                     // Sofern ein medium nicht ausgeliehen ist, kann es sofort ausgemustert werden
                     medienListe.remove(medium);
                     System.out.println("Das Medium mit dem Titel: " + medium.titel + " wurde erfolgreich ausgemustert.");
-                    break;
-                }
+               }
+                break;
             } else {
                 System.out.println("Medium wurde nicht gefunden!");
             }
