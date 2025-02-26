@@ -32,13 +32,28 @@ public class Bibliothek {
             String zeile;
             while ((zeile = br.readLine()) != null) {
                 String[] teile = zeile.split(";");
-                if (teile.length == 5) {
+                if (teile.length == 6) {
                     String titel = teile[0];
                     String autor = teile[1];
                     String standplatz = teile[2];
                     Medientyp typ = Medientyp.valueOf(teile[3]);
-                    LocalDate ausleihe_datum = LocalDate.parse(teile[4]);
-                    LocalDate rueckgabe_datum = LocalDate.parse(teile[4]).plusDays(30);
+
+                    // das funktioniert nicht ganz, da null als string im constructor gespeichert wird
+                    LocalDate ausleihe_datum;
+                    LocalDate rueckgabe_datum;
+
+                    if (teile[4] != null  && !teile[4].isEmpty()) {
+                        ausleihe_datum = LocalDate.parse(teile[4]);
+                    } else {
+                        ausleihe_datum = null; // Falls kein Datum vorhanden ist, wird null zugewiesen
+                    }
+                    if (teile[5] != null  && !teile[5].isEmpty()) {
+                        rueckgabe_datum = LocalDate.parse(teile[5]);
+                    } else {
+                        rueckgabe_datum = null; // Falls kein Datum vorhanden ist, wird null zugewiesen
+                    }
+
+
 
                     Medium medium = new Medium(titel, autor, standplatz, typ,
                             ausleihe_datum, rueckgabe_datum);
@@ -79,6 +94,7 @@ public class Bibliothek {
 
         // Wo liegt gesuchtes Buch in Tabelle
         for(Medium medium : ladeMedienAusDatei()) {
+            System.out.println(medium.titel);
             if(medium.titel.equals(titel_zum_ausleihen)) {
                 medienListe.remove(medium); // Löscht "alte" Information
                 medium.ausleihe_datum = neues_ausleihe_datum;
@@ -110,6 +126,31 @@ public class Bibliothek {
         // aktualisiert die Datei mit der aktualisierten Liste
         updateMedienInDatei();
 
+    }
+
+    public static void vorhandenesMediumAusmustern() {
+        // test werte, welche später dann input sein werden
+        String titel_zum_ausmustern = "testTITEL";
+
+        for(Medium medium : ladeMedienAusDatei()) {
+            if (medium.titel.equals(titel_zum_ausmustern)) {
+                if (medium.ausleihe_datum != null) {
+                    // Sofern ein medium ausgeliehen ist ( ausliehedatum ist nur wenn ausgeliehen ein LocalDate Objekt, ansonsten ein String "null" )
+                    System.out.println("Medium ist immomemt ausgeliehen, es wir ausgemustert sobald es zurückgegeben wurde.");
+
+                    // Logik für ausmustrern sobald zurückgegeben...
+                    break;
+
+                } else {
+                    // Sofern ein medium nicht ausgeliehen ist, kann es sofort ausgemustert werden
+                    medienListe.remove(medium);
+                    System.out.println("Das Medium mit dem Titel: " + medium.titel + " wurde erfolgreich ausgemustert.");
+                    break;
+                }
+            } else {
+                System.out.println("Medium wurde nicht gefunden!");
+            }
+        }
     }
 
 

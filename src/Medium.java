@@ -24,8 +24,8 @@ public class Medium {
     @Override
     public String toString() {
         return titel + ";" + autor + ";" + standplatz + ";" + medientyp + ";" +
-                (ausleihe_datum != null ? ausleihe_datum : "null") + ";" +
-                (rueckgabe_datum != null ? rueckgabe_datum : "null");
+                (ausleihe_datum != null ? ausleihe_datum : null) + ";" +
+                (rueckgabe_datum != null ? rueckgabe_datum : null);
     }
 
 }
