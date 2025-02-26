@@ -12,13 +12,13 @@ public class Main extends Bibliothek {
 
         //mediumAusleihen("Mensch", LocalDate.parse("2025-01-07"));
 
-        mediumZurückgeben("Mensch", "1-d");
+        //mediumZurückgeben("Mensch", "1-d");
 
         //System.out.println(ladeMedienAusDatei());
 
 
-//        System.out.println("neues Medium Hinzufügen...");
-//        neuesMediumHinzufuegen("testTITEL", "testAUTOR", "1-f", Medientyp.BUCH);
+        System.out.println("neues Medium Hinzufügen...");
+        neuesMediumHinzufuegen("testTITEL", "testAUTOR", "1-g", Medientyp.BUCH);
 //
 //        for (Medium medium : ladeMedienAusDatei()) {
 //            System.out.println(medium);
