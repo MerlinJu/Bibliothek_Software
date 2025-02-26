@@ -21,12 +21,13 @@ public class Bibliothek {
      * Lädt die Medien aus der Datei {@code medien.txt} und erstellt eine Liste von {@link Medium}-Objekten.
      * <p>
      * Jede Zeile der Datei sollte die folgenden Informationen im CSV-Format enthalten:
-     * Titel, Autor, Standplatz, Medientyp.
+     * Titel, Autor, Medientyp.
+     * Zusätzlich enthalten die Zeilen entweder einen Standplatz oder ein Ausleih- sowie Rückgabedatum.
      * </p>
      *
      * @return Eine Liste von {@link Medium}-Objekten, die die geladenen Medien repräsentieren
      */
-    public static List<Medium> ladeMedienAusDatei() {
+    public static List<Medium> ladeMedien() {
 
         try (BufferedReader br = new BufferedReader(new FileReader(dateipfad) )) {
             String zeile;
@@ -67,7 +68,7 @@ public class Bibliothek {
      * Aktualisiert die Datei {@code medien.txt} mit dem aktuellen Stand der {@code medienListe}.
      * Die Datei wird komplett überschrieben, um die aktuellen Medieninformationen zu speichern.
      */
-    public static void updateMedienInDatei() {
+    public static void updateMedien() {
 
         // updated alle medien in der medienListe in die medien.txt datei bei Aufruf der Methode
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(dateipfad))){
@@ -83,12 +84,16 @@ public class Bibliothek {
 
     // Medium ausleihen: Hier kann im frontend eine Auswahl der vorhandenen Medien angezeigt werden, um Tippfehler zu vermeiden.
 
+    /**
+     * Weist einem Medium ein Ausleih- sowie Rückgabedatum zu und entfernt den Standplatz.
+     * Speichert die Änderungen am Ende in der {@code medien.txt} Datei.
+     */
     public static void mediumAusleihen(String mediumTitel, LocalDate neuesAusleihDatum) {
 
         boolean mediumFound = false;
 
         // Wo liegt gesuchtes Buch in Tabelle
-        for(Medium medium : ladeMedienAusDatei()) {
+        for(Medium medium : ladeMedien()) {
             if(medium.titel.equals(mediumTitel)) {
                 medienListe.remove(medium); // Löscht "alte" Information
                 medium.ausleihe_datum = neuesAusleihDatum;
@@ -106,19 +111,21 @@ public class Bibliothek {
             System.out.println("Medium nicht gefunden");
         }
 
-        updateMedienInDatei();
+        updateMedien();
     }
 
 
     public static void neuesMediumHinzufuegen(String titel, String autor, String standplatz, Medientyp typ) {
+        // Lädt den aktuellen Stand der medien.txt Datei
+        ladeMedien();
+
         // erstellt ein neues Medium mit den angegebenen Parametern
         Medium neuesMedium = new Medium(titel, autor, standplatz, typ);
 
         // fügt das neue Medium der Liste hinzu
         medienListe.add(neuesMedium);
-
         // aktualisiert die Datei mit der aktualisierten Liste
-        updateMedienInDatei();
+        updateMedien();
 
     }
 
@@ -127,7 +134,7 @@ public class Bibliothek {
         boolean mediumFound = false;
 
         // Wo liegt gesuchtes Buch in Tabelle
-        for(Medium medium : ladeMedienAusDatei()){
+        for(Medium medium : ladeMedien()){
             if(medium.titel.equals(mediumZurück)){
                 medienListe.remove(medium); // Löscht "alte" Information
                 if (medium.rueckgabe_datum.isBefore(LocalDate.now())){
@@ -149,7 +156,7 @@ public class Bibliothek {
             System.out.println("Medium nicht gefunden");
         }
 
-        updateMedienInDatei();
+        updateMedien();
 
     }
 
