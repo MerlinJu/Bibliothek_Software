@@ -18,5 +18,7 @@ public class Main extends Bibliothek {
 //        System.out.println("Ein Medium ausleihen...");
 //        mediumAusleihen("Back in Black", DatumHeute);
 
+        standplatzÄndern("Back in Black", "1-k&");
+        standplatzÄndern("Thriller", "1-n");
     }
 }

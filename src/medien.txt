@@ -1,18 +1,18 @@
-Back in Black;AC/DC;1-b;DATENTRÄGER
+Back in Black;AC/DC;1-k;DATENTRÄGER
 Bat Out of Hell;Meat Loaf;1-c;DATENTRÄGER
 But Seriously;P. Collins;1-e;DATENTRÄGER
-Große Freiheit;Unheilig;DATENTRÄGER;2025-02-15;2025-01-17
 Der Alchimist;P. Coelho;BUCH;2025-02-15;2025-03-17
-Der König von Narnia;C.S. Lewis;2-c;BUCH
-Und dann gabs keines mehr;A. Christies;2-d
-Der kleine Prinz;A. de Saint-Exupery;2-e;BUCH
 Der Herr der Ringe;J.R.R. Tolkien;2-f;BUCH
-Twilight;S. Meyer;2-g;BUCH
-Harry Potter und der Stein der Weisen;J.K. Rowling;2-h;BUCH
-Titanic;Paramount Pictures;DIVERSE;2025-02-15;2025-03-17
+Der König von Narnia;C.S. Lewis;2-c;BUCH
+Der kleine Prinz;A. de Saint-Exupery;2-e;BUCH
 E.T.;Universal Pictures;3-b;DIVERSE
-Jurassic Park;Universal Pictures;DIVERSE;2025-02-15;2025-01-17
+Große Freiheit;Unheilig;DATENTRÄGER;2025-02-15;2025-01-17
+Harry Potter und der Stein der Weisen;J.K. Rowling;2-h;BUCH
 Independence Day;20th Century Fox;DIVERSE;2025-02-15;2025-03-17
-Thriller;M. Jackson;1-a;DATENTRÄGER
-Sakrileg;D. Brown;2-b;BUCH
+Jurassic Park;Universal Pictures;DIVERSE;2025-02-15;2025-01-17
 Mensch;H. Grönemeyer;DATENTRÄGER;2025-04-13;2025-05-13
+Sakrileg;D. Brown;2-b;BUCH
+Thriller;M. Jackson;1-n;DATENTRÄGER
+Titanic;Paramount Pictures;DIVERSE;2025-02-15;2025-03-17
+Twilight;S. Meyer;2-g;BUCH
+Und dann gabs keines mehr;A. Christies;2-d;BUCH

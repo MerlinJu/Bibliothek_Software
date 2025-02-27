@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class Bibliothek {
     private final static String dateipfad = "src/medien.txt"; // Pfad zu der medien datein, welche den kompletten medienbestand beinhaltet
-    static List<Medium> medienListe = new ArrayList<>();
+    public static List<Medium> medienListe = new ArrayList<>();
 
 
     /**
@@ -33,6 +33,8 @@ public class Bibliothek {
     public static List<Medium> ladeMedien() {
         // Diese Methode darf nicht einfach so gecalled werden! , sonst verhängt sich das Programm in einer doppel update schleife, was zu riesigen Daten in der medien.txt datei führt
         // Deswegen nur in for schleife um durch die medien.txt datei zu loopen :D
+
+        // Ich würde die Methode beim Start aufrufen, den Rückgabewert komplett entfernen und nochmal am Ende von updateMedien aufrufen
 
         medienListe.clear(); // Die Liste wird komplett gelöscht, da sie ab hier komplett neu angelegt wird
         try (BufferedReader br = new BufferedReader(new FileReader(dateipfad) )) {
@@ -333,6 +335,34 @@ public class Bibliothek {
         sb.append("</body></html>");
 
         return sb.toString();
+    }
+
+    public static void standplatzÄndern(String zuÄnderndesMedium, String neuerStandplatz){
+
+        ladeMedien();
+
+        // Zulässiger Standplatz: min. 1 Kleinbuchstabe oder Zahl + Bindestrich + min. 1 Kleinbuchstabe oder Zahl
+        if(!neuerStandplatz.matches("^[a-z0-9]+-[a-z0-9]+$")){
+            System.out.println("Der Name des Standplatzes ist nicht zulässig!");
+            return;
+        }
+
+        for(Medium medium : medienListe){
+            if(medium.standplatz.equals(neuerStandplatz)){
+                System.out.println("Der gewählte Standplatz ist schon belegt!");
+                return;
+            }
+        }
+
+        for (Medium medium : medienListe){
+            if(medium.titel.equals(zuÄnderndesMedium)){
+                medium.standplatz = neuerStandplatz;
+                break;
+            }
+        }
+
+        updateMedien();
+
     }
 
 }
