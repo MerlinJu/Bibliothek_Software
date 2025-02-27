@@ -17,5 +17,8 @@ public class Main extends Bibliothek {
         System.out.println("neues Medium Hinzufügen...");
         neuesMediumHinzufuegen("testTITEL", "testAUTOR", "1-g", Medientyp.BUCH);
 
+        LocalDate DatumHeute = LocalDate.now();
+        System.out.println("Ein Medium ausleihen...");
+        mediumAusleihen("Back in Black", DatumHeute);
     }
 }

@@ -35,7 +35,7 @@ public class Medium {
 
         return  titel +
                 ";" + autor +
-                (standplatz != null ? ";" + standplatz: "") +
+                (standplatz != null ? standplatz : "") +
                 ";" + medientyp +
                 (ausleihe_datum != null ? ";" + ausleihe_datum: "") +
                 (rueckgabe_datum != null ? ";" + rueckgabe_datum : "");

@@ -1,18 +1,2 @@
-Back in Black;AC/DC;1-b;DATENTRÄGER
-Bat Out of Hell;Meat Loaf;1-c;DATENTRÄGER
-But Seriously;P. Collins;1-e;DATENTRÄGER
-Große Freiheit;Unheilig;DATENTRÄGER;2025-02-15;2025-03-17
-Der Alchimist;P. Coelho;BUCH;2025-02-15;2025-03-17
-Der König von Narnia;C.S. Lewis;2-c;BUCH
-Der kleine Prinz;A. de Saint-Exupery;2-e;BUCH
-Der Herr der Ringe;J.R.R. Tolkien;2-f;BUCH
-Twilight;S. Meyer;2-g;BUCH
-Harry Potter und der Stein der Weisen;J.K. Rowling;2-h;BUCH
-Titanic;Paramount Pictures;DIVERSE;2025-02-15;2025-03-17
-E.T.;Universal Pictures;3-b;DIVERSE
-Jurassic Park;Universal Pictures;DIVERSE;2025-02-15;2025-03-17
-Independence Day;20th Century Fox;DIVERSE;2025-02-15;2025-03-17
-Thriller;M. Jackson;1-a;DATENTRÄGER
-Sakrileg;D. Brown;2-b;BUCH
-Mensch;H. Grönemeyer;DATENTRÄGER;2025-04-13;2025-05-13
-testTITEL;testAUTOR;1-g;BUCH
+testTITEL;testAUTOR1-g;BUCH
+Back in Black;AC/DC;DATENTRÄGER;2025-02-27;2025-03-29

@@ -66,7 +66,6 @@ public class Bibliothek {
         }
 
         // Medienliste aus datei gelesen
-        System.out.println(medienListe);
         return medienListe;
     }
 
@@ -108,10 +107,13 @@ public class Bibliothek {
         // Wo liegt gesuchtes Buch in Tabelle
         for(Medium medium : ladeMedien()) {
             if(medium.titel.equals(mediumTitel)) {
+                if (medium.standplatz == null) {
+                    System.out.println("Medium ist immoment schon ausgeliehen!");
+                }
                 medienListe.remove(medium); // Löscht "alte" Information
                 medium.ausleihe_datum = neuesAusleihDatum;
                 medium.rueckgabe_datum = neuesAusleihDatum.plusDays(30);
-                medium.standplatz = "n.a";
+                medium.standplatz = "";
                 System.out.println("Rückgabedatum: " + neuesAusleihDatum.plusDays(30));
                 medienListe.add(medium); // Fügt "neue" Information ein
                 mediumFound = true;
