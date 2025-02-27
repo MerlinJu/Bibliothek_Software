@@ -1,8 +1,10 @@
-import java.awt.datatransfer.SystemFlavorMap;
+package backend;
+
 import java.io.*;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -32,6 +34,7 @@ public class Bibliothek {
         // Diese Methode darf nicht einfach so gecalled werden! , sonst verhängt sich das Programm in einer doppel update schleife, was zu riesigen Daten in der medien.txt datei führt
         // Deswegen nur in for schleife um durch die medien.txt datei zu loopen :D
 
+        medienListe.clear(); // Die Liste wird komplett gelöscht, da sie ab hier komplett neu angelegt wird
         try (BufferedReader br = new BufferedReader(new FileReader(dateipfad) )) {
             String zeile;
             while ((zeile = br.readLine()) != null) {
@@ -75,6 +78,9 @@ public class Bibliothek {
      * Die Datei wird komplett überschrieben, um die aktuellen Medieninformationen zu speichern.
      */
     public static void updateMedien() {
+
+        // Sortiert die Liste alphabetisch nach Titeln
+        medienListe.sort(Comparator.comparing(medium -> medium.titel));
 
         // updated alle medien in der medienListe in die medien.txt datei bei Aufruf der Methode
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(dateipfad))){
@@ -214,5 +220,119 @@ public class Bibliothek {
 
     }
 
+    /**
+     * Methode zum Filtern der verfügbaren Medien
+     *
+     * @param typ Medientyp nach welchem gefiltert werden soll
+     * @return Alle Medien, die im Bestand sind, alphabetisch sortiert als String im html Format
+     */
+    public static String verfügbareMedien(Medientyp typ){
+
+        List<Medium> sortedList = new ArrayList<>(); // temporäre Liste für alle Medien, die zum Filter passen
+        StringBuilder sb = new StringBuilder();
+
+        for (Medium medium : ladeMedien()){
+
+            // Medien, bei denen der Standplatz nicht null ist, sind im Bestand
+            if(medium.standplatz != null){
+                // Je nach Parameter werden entweder alle oder nur ein bestimmter Medientyp übernommen
+                if(typ == null || typ == medium.medientyp) {
+                    sortedList.add(medium);
+                }
+            }
+
+        }
+
+        // Nach Alphabet sortieren
+        sortedList.sort(Comparator.comparing(medium -> medium.titel));
+
+        // String aus allen gefilterten Medien wird im html Format gebaut, damit Line Breaks im JLabel möglich sind
+        sb.append("<html><body>");
+        for (Medium medium : sortedList){
+            sb.append("<p>Titel: ")
+                    .append(medium.titel)
+                    .append(", Standplatz: ")
+                    .append(medium.standplatz)
+                    .append("</p><br>");
+        }
+        sb.append("</body></html>");
+
+        return sb.toString();
+    }
+
+    /**
+     * Methode zum Filtern der ausgeliehenen Medien
+     *
+     * @param typ Medientyp nach welchem gefiltert werden soll
+     * @return Alle ausgeliehenen Medien alphabetisch sortiert als String im html Format
+     */
+    public static String ausgelieheneMedien(Medientyp typ){
+
+        List<Medium> sortedList = new ArrayList<>(); // temporäre Liste für alle Medien, die zum Filter passen
+        StringBuilder sb = new StringBuilder();
+
+        for (Medium medium : ladeMedien()){
+
+            // Medien, bei denen der Standplatz null ist, sind ausgeliehen
+            if(medium.standplatz == null){
+                // Je nach Parameter werden entweder alle oder nur ein bestimmter Medientyp übernommen
+                if(typ == null || typ == medium.medientyp) {
+                    sortedList.add(medium);
+                }
+            }
+
+        }
+
+        // Nach Alphabet sortieren
+        sortedList.sort(Comparator.comparing(medium -> medium.titel));
+
+        // String aus allen gefilterten Medien wird im html Format gebaut, damit Line Breaks im JLabel möglich sind
+        sb.append("<html><body>");
+        for (Medium medium : sortedList){
+            sb.append("<p>Titel: ")
+                    .append(medium.titel)
+                    .append(", Rückgabedatum: ")
+                    .append(medium.rueckgabe_datum)
+                    .append("</p><br>");
+        }
+        sb.append("</body></html>");
+
+        return sb.toString();
+    }
+
+    public static String überfälligeMedien(){
+
+        List<Medium> sortedList = new ArrayList<>(); // temporäre Liste für alle Medien, die zum Filter passen
+        StringBuilder sb = new StringBuilder();
+
+        for (Medium medium : ladeMedien()){
+
+            // Medien, deren Rückgabedatum vor dem heutigen sind
+            if(medium.rueckgabe_datum != null){
+                if(medium.rueckgabe_datum.isBefore(LocalDate.now())){
+                    sortedList.add(medium);
+                }
+            }
+
+        }
+
+        // Nach Alphabet sortieren
+        sortedList.sort(Comparator.comparing(medium -> medium.rueckgabe_datum));
+
+        // String aus allen gefilterten Medien wird im html Format gebaut, damit Line Breaks im JLabel möglich sind
+        sb.append("<html><body>");
+        for (Medium medium : sortedList){
+            sb.append("<p>Titel: ")
+                    .append(medium.titel)
+                    .append(", Rückgabedatum: ")
+                    .append(medium.rueckgabe_datum)
+                    .append(", Tag(e) überfällig: ")
+                    .append(medium.rueckgabe_datum.until(LocalDate.now(), ChronoUnit.DAYS))
+                    .append("</p><br>");
+        }
+        sb.append("</body></html>");
+
+        return sb.toString();
+    }
 
 }

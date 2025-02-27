@@ -1,4 +1,4 @@
-// Medium Basisklasse mit allen wichtigen Attributen von einem Medium
+package backend;// Medium Basisklasse mit allen wichtigen Attributen von einem Medium
 
 import java.time.LocalDate; // Java time klasse um LocalDate zu nutzen
 

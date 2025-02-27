@@ -1,6 +1,9 @@
 package frontend;
 
+import frontend.popups.AusgelieheneMedienPopup;
 import frontend.popups.AusleihenPopup;
+import frontend.popups.VerfügbareMedienPopup;
+import frontend.popups.ÜberfälligeMedienPopup;
 
 import javax.swing.*;
 import java.awt.*;
@@ -77,6 +80,7 @@ public class MainFrame extends JFrame {
 
         // Buttons für die verschiedenen Funktionen
         JButton addMediumButton = createStyledButton("Neues Medium hinzufügen");
+
         JButton lendMediumButton = createStyledButton("Medium ausleihen");
         lendMediumButton.addActionListener(new ActionListener() {
             @Override
@@ -85,11 +89,38 @@ public class MainFrame extends JFrame {
                 popup.setVisible(true);
             }
         });
+
         JButton returnMediumButton = createStyledButton("Medium zurückgeben");
+
         JButton listAvailableMediaButton = createStyledButton("Verfügbare Medien anzeigen");
+        listAvailableMediaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                VerfügbareMedienPopup popup = new VerfügbareMedienPopup(MainFrame.this);
+                popup.setVisible(true);
+            }
+        });
+
         JButton listLentMediaButton = createStyledButton("Ausgeliehene Medien anzeigen");
+        listLentMediaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AusgelieheneMedienPopup popup = new AusgelieheneMedienPopup(MainFrame.this);
+                popup.setVisible(true);
+            }
+        });
+
         JButton listOverdueMediaButton = createStyledButton("Überfällige Medien anzeigen");
+        listOverdueMediaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ÜberfälligeMedienPopup popup = new ÜberfälligeMedienPopup(MainFrame.this);
+                popup.setVisible(true);
+            }
+        });
+
         JButton changeLocationButton = createStyledButton("Standplatz ändern");
+
         JButton removeMediumButton = createStyledButton("Medium ausmustern");
 
         // Buttons zum Panel hinzufügen
