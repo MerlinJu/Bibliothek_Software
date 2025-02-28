@@ -140,14 +140,17 @@ public class Bibliothek {
     }
 
 
-    public static void neuesMediumHinzufuegen(String titel, String autor, String standplatz, Medientyp typ) {
+    public static String neuesMediumHinzufuegen(String titel, String autor, String standplatz, Medientyp typ) {
+        String message;
+
         // erstellt ein neues Medium mit den angegebenen Parametern
         Medium neuesMedium = new Medium(titel, autor, standplatz, typ);
 
         for (Medium medium : medienListe) {
             if (medium.titel.equals(neuesMedium.titel)) {
+                message = "Medium existiert schon im Bestand!";
                 System.out.println("Medium existiert schon im Bestand!");
-                return; // bricht ab wenn Medium schon existiert
+                return message; // bricht ab wenn Medium schon existiert
             }
 
         }
@@ -157,7 +160,10 @@ public class Bibliothek {
 
         // aktualisiert die Datei mit der aktualisierten Liste
         updateMedien();
+
+        message = "Neues Medium hinzugefügt!";
         System.out.println("Neues Medium hinzugefügt!");
+        return message;
     }
 
 

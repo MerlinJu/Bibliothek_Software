@@ -1,9 +1,6 @@
 package frontend;
 
-import frontend.popups.AusgelieheneMedienPopup;
-import frontend.popups.AusleihenPopup;
-import frontend.popups.VerfügbareMedienPopup;
-import frontend.popups.ÜberfälligeMedienPopup;
+import frontend.popups.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -80,6 +77,13 @@ public class MainFrame extends JFrame {
 
         // Buttons für die verschiedenen Funktionen
         JButton addMediumButton = createStyledButton("Neues Medium hinzufügen");
+        addMediumButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                NeuesMediumPopup popup = new NeuesMediumPopup(MainFrame.this);
+                popup.setVisible(true);
+            }
+        });
 
         JButton lendMediumButton = createStyledButton("Medium ausleihen");
         lendMediumButton.addActionListener(new ActionListener() {
