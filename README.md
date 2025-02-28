@@ -1,6 +1,6 @@
-backend.Bibliothek Software in Java
+Bibliothek Software in Java
 
-Gruppenprojekt für Programmieren, Design und Implementierung von Algorithmen im 1. Semester an der BA Rhein-backend.Main
+Gruppenprojekt für Programmieren, Design und Implementierung von Algorithmen im 1. Semester an der BA Rhein-Main
 
 <u>Ideen für zusätzliche Funktionen:</u>
 
@@ -8,4 +8,6 @@ Gruppenprojekt für Programmieren, Design und Implementierung von Algorithmen im
 
 <u>Ideen für die Präsentation</u>
 
-<li>Als Ausblick für die Zukunft: Beim Ausleihen/Zurückgeben kann ein Barcode eingescannt werden, der dem Programm sagt, welches backend.Medium es ist.</li>
+<li>Als Ausblick für die Zukunft: Beim Ausleihen/Zurückgeben kann ein Barcode eingescannt werden, der dem Programm sagt, welches Medium es ist.</li>
+
+<li>standplatzValide() erklären</li>
