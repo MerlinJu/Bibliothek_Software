@@ -46,6 +46,7 @@ public class MainFrame extends JFrame {
         /** JavaDoc Kommentare */
 
         add(mainPanel);
+        Bibliothek.ladeMedien();
     }
 
     private JMenuBar createMenuBar() {
