@@ -36,7 +36,9 @@ public class Bibliothek {
 
         // Ich würde die Methode beim Start aufrufen, den Rückgabewert komplett entfernen und nochmal am Ende von updateMedien aufrufen
 
+        // MedienListe reseten, damit nichts doppelt eingelesen wird
         medienListe.clear(); // Die Liste wird komplett gelöscht, da sie ab hier komplett neu angelegt wird
+
         try (BufferedReader br = new BufferedReader(new FileReader(dateipfad) )) {
             String zeile;
             while ((zeile = br.readLine()) != null) {
