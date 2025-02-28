@@ -1,5 +1,6 @@
 package frontend;
 
+import backend.Bibliothek;
 import frontend.popups.*;
 
 import javax.swing.*;
@@ -45,6 +46,7 @@ public class MainFrame extends JFrame {
         /** JavaDoc Kommentare */
 
         add(mainPanel);
+        Bibliothek.ladeMedien();
     }
 
     private JMenuBar createMenuBar() {
