@@ -39,7 +39,7 @@ public class Bibliothek {
      * Zusätzlich enthalten die Zeilen entweder einen Standplatz oder ein Ausleih- sowie Rückgabedatum.</p>
      * <p>Diese Methode soll beim Start des Programms ausgeführt werden.</p>
      */
-    public static void ladeMedien() {
+    public static void ladeMedienAusDatei() {
 
         // Die Liste wird komplett gelöscht, da sie ab hier komplett neu angelegt wird
         medienListe.clear();
@@ -88,7 +88,7 @@ public class Bibliothek {
      *
      * <p>Diese Methode wird immer dann aufgerufen, wenn die {@link #medienListe} geändert wird.</p>
      */
-    private static void updateMedien() {
+    private static void updateMedienInDatei() {
         // returnd falls die medienListe leer ist, um eine Leere Ueberschreibung zu vermeiden
         if (medienListe.isEmpty()) {
             System.out.println("Keine Medien zu speichern");
@@ -146,7 +146,7 @@ public class Bibliothek {
             System.out.println("Medium nicht gefunden");
         }
 
-        updateMedienDatei();
+        updateMedienInDatei();
     }
 
     /**
@@ -185,7 +185,7 @@ public class Bibliothek {
                 if(medienZumAusmustern.contains(medium)) {	// Mustert das Medium aus
                     medienListe.remove(medium);
                     medienZumAusmustern.remove(medium);
-                    updateMedien();
+                    updateMedienInDatei();
                     return;
 
                 } else {	// Fügt das Medium wieder in den Bestand ein
@@ -193,7 +193,7 @@ public class Bibliothek {
                     medium.rueckgabe_datum = null;
                     medium.standplatz = neuerStandplatz;
                     medienListe.add(medium); // Fügt "neue" Information ein
-                    updateMedien();
+                    updateMedienInDatei();
                     return;
                 }
             }
@@ -235,7 +235,7 @@ public class Bibliothek {
         medienListe.add(neuesMedium);
 
         // aktualisiert die Datei mit der aktualisierten Liste
-        updateMedien();
+        updateMedienInDatei();
 
         message = "Neues Medium hinzugefügt!";
         System.out.println("Neues Medium hinzugefügt!");
@@ -275,24 +275,7 @@ public class Bibliothek {
             }
         }
       
-        updateMedienDatei();
-    }
-
-
-                if (medium.ausleihe_datum != null) {
-                    // Ist das Medium ausgeliehen <==> Hat das Medium ein Ausleihdatum? <==> Ist das Ausleihdatum nicht "null"?
-
-                    System.out.println("Medium ist momentan ausgeliehen. Es wird ausgemustert, sobald es zurückgegeben wurde.");
-                    medienZumAusmustern.add(medium); // Medium wird in der Liste vermerkt
-
-
-
-        // Fehlermeldung, falls gesuchtes Medium nicht gefunden wird
-        if(!mediumFound) {
-            System.out.println("Medium nicht gefunden");
-        }
-
-        updateMedienDatei();
+        updateMedienInDatei();
     }
               
 
@@ -426,7 +409,7 @@ public class Bibliothek {
 
             if(medium.standplatz != null && medium.titel.equals(zuÄnderndesMedium)){
                 medium.standplatz = neuerStandplatz; // Ändert den Standplatz
-                updateMedien();
+                updateMedienInDatei();
                 return;
             }
         }
