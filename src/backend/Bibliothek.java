@@ -89,6 +89,11 @@ public class Bibliothek {
      * <p>Diese Methode wird immer dann aufgerufen, wenn die {@link #medienListe} geändert wird.</p>
      */
     private static void updateMedien() {
+        // returnd falls die medienListe leer ist, um eine Leere Ueberschreibung zu vermeiden
+        if (medienListe.isEmpty()) {
+            System.out.println("Keine Medien zu speichern");
+            return;
+        }
 
         // Sortiert die Liste alphabetisch nach Titeln
         medienListe.sort(Comparator.comparing(medium -> medium.titel));
@@ -141,7 +146,7 @@ public class Bibliothek {
             System.out.println("Medium nicht gefunden");
         }
 
-        updateMedien();
+        updateMedienDatei();
     }
 
     /**
@@ -231,6 +236,7 @@ public class Bibliothek {
 
         // aktualisiert die Datei mit der aktualisierten Liste
         updateMedien();
+
         message = "Neues Medium hinzugefügt!";
         System.out.println("Neues Medium hinzugefügt!");
         return message;
@@ -242,10 +248,36 @@ public class Bibliothek {
      */
     public static void vorhandenesMediumAusmustern(String titel_zum_ausmustern) {
 
+        // Wo liegt gesuchtes Buch in Tabelle
         for(Medium medium : medienListe){
-            // Wo liegt gesuchtes Medium in der medienListe?
-
             if(medium.titel.equals(titel_zum_ausmustern)) {
+              
+                if (medium.rueckgabe_datum.isBefore(LocalDate.now() )) {
+                    System.out.println("Das Medium ist " +
+                                        medium.rueckgabe_datum.until(LocalDate.now(), ChronoUnit.DAYS) +
+                                        " Tag(e) überfällig.");
+                } 
+                  
+               if (medium.ausleihe_datum != null) {
+                    // Sofern ein medium ausgeliehen ist ( ausliehedatum ist nur wenn ausgeliehen ein LocalDate Objekt, ansonsten ein String "null" )
+                    System.out.println("Medium ist immomemt ausgeliehen, es wir ausgemustert sobald es zurückgegeben wurde.");
+
+                    // Logik für ausmustrern sobald zurückgegeben...
+
+               } else {
+                    // Sofern ein medium nicht ausgeliehen ist, kann es sofort ausgemustert werden
+                    medienListe.remove(medium);
+                    System.out.println("Das Medium mit dem Titel: " + medium.titel + " wurde erfolgreich ausgemustert.");
+               }
+                break;
+            } else {
+                System.out.println("Medium wurde nicht gefunden!");
+            }
+        }
+      
+        updateMedienDatei();
+    }
+
 
                 if (medium.ausleihe_datum != null) {
                     // Ist das Medium ausgeliehen <==> Hat das Medium ein Ausleihdatum? <==> Ist das Ausleihdatum nicht "null"?
@@ -254,18 +286,15 @@ public class Bibliothek {
                     medienZumAusmustern.add(medium); // Medium wird in der Liste vermerkt
 
 
-                } else {
-                    // Sofern ein Medium nicht ausgeliehen ist, kann es sofort ausgemustert werden
-                    medienListe.remove(medium);
-                    updateMedien();
-                    System.out.println("Das Medium mit dem Titel: " + medium.titel + " wurde erfolgreich ausgemustert.");
-                }
-                break;
-            } else {
-                System.out.println("Medium wurde nicht gefunden!");
-            }
+
+        // Fehlermeldung, falls gesuchtes Medium nicht gefunden wird
+        if(!mediumFound) {
+            System.out.println("Medium nicht gefunden");
         }
+
+        updateMedienDatei();
     }
+              
 
     /**
      * <p>{@code verfügbareMedien()} filtert die verfügbaren Medien.</p>
@@ -403,6 +432,7 @@ public class Bibliothek {
         }
         System.out.println("Medium wurde nicht gefunden!"); // Wird nur ausgegeben, wenn die for-Schleife ohne Ergebnis durchläuft
     }
+  
 
     /**
      * <p>{@code standplatzValide} überprüft einen String, ob dieser ein neuer Standort sein kann.</p>

@@ -155,6 +155,8 @@ public class MainFrame extends JFrame {
 
 
     public static void main(String[] args) {
+        Bibliothek.ladeMedien();
+
         SwingUtilities.invokeLater(() -> {
             MainFrame frame = new MainFrame();
             frame.setVisible(true);
