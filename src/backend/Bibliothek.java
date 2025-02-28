@@ -213,11 +213,7 @@ public class Bibliothek {
     public static String neuesMediumHinzufuegen(String titelNeu, String autorNeu, String standplatzNeu, Medientyp typNeu) {
         String message;
 
-        // Überprüft den Namen des Standplatzes
-        if(!standplatzValide(standplatzNeu)) {
-            message = "Der Standplatz ist nicht zulässig!";
-            return message; // Bricht ab bei ungültigem Format oder belegtem Standort
-        }
+
 
         // Erstellt ein neues Medium mit den angegebenen Parametern
         Medium neuesMedium = new Medium(titelNeu, autorNeu, standplatzNeu, typNeu);
@@ -228,7 +224,12 @@ public class Bibliothek {
                 System.out.println("Medium existiert schon im Bestand!");
                 return message; // bricht ab wenn Medium schon existiert
             }
+        }
 
+        // Überprüft den Namen des Standplatzes
+        if(!standplatzValide(standplatzNeu)) {
+            message = "Der Standplatz ist nicht zulässig!";
+            return message; // Bricht ab bei ungültigem Format oder belegtem Standort
         }
 
         // fügt das neue Medium der Liste hinzu
