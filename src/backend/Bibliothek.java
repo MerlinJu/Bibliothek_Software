@@ -81,7 +81,13 @@ public class Bibliothek {
      * Aktualisiert die Datei {@code medien.txt} mit dem aktuellen Stand der {@code medienListe}.
      * Die Datei wird komplett überschrieben, um die aktuellen Medieninformationen zu speichern.
      */
-    public static void updateMedien() {
+    public static void updateMedienDatei() {
+
+        // returnd falls die medienListe leer ist, um eine Leere Ueberschreibung zu vermeiden
+        if (medienListe.isEmpty()) {
+            System.out.println("Keine Medien zu speichern");
+            return;
+        }
 
         // Sortiert die Liste alphabetisch nach Titeln
         medienListe.sort(Comparator.comparing(medium -> medium.titel));
@@ -115,7 +121,7 @@ public class Bibliothek {
         // sichergehen, dass wir das erst tryen, sonst läuft man in ein error...
 
         // Wo liegt gesuchtes Buch in Tabelle
-        for(Medium medium : ladeMedien()) {
+        for(Medium medium : medienListe) {
             if(medium.titel.equals(mediumTitel)) {
                 if (medium.standplatz == null) {
                     System.out.println("Medium ist immoment schon ausgeliehen!");
@@ -136,7 +142,7 @@ public class Bibliothek {
             System.out.println("Medium nicht gefunden");
         }
 
-        updateMedien();
+        updateMedienDatei();
     }
 
 
@@ -159,7 +165,7 @@ public class Bibliothek {
         medienListe.add(neuesMedium);
 
         // aktualisiert die Datei mit der aktualisierten Liste
-        updateMedien();
+        updateMedienDatei();
 
         message = "Neues Medium hinzugefügt!";
         System.out.println("Neues Medium hinzugefügt!");
@@ -170,7 +176,7 @@ public class Bibliothek {
     public static void vorhandenesMediumAusmustern(String titel_zum_ausmustern) {
 
         // Wo liegt gesuchtes Buch in Tabelle
-        for(Medium medium : ladeMedien()){
+        for(Medium medium : medienListe){
             if(medium.titel.equals(titel_zum_ausmustern)) {
               
                 if (medium.rueckgabe_datum.isBefore(LocalDate.now() )) {
@@ -196,7 +202,7 @@ public class Bibliothek {
             }
         }
       
-        updateMedien();
+        updateMedienDatei();
     }
 
     public static void mediumZurückgeben(String mediumZurück, String neuerStandplatz){
@@ -204,7 +210,7 @@ public class Bibliothek {
         boolean mediumFound = false;
 
         // Wo liegt gesuchtes Buch in Tabelle
-        for(Medium medium : ladeMedien()){
+        for(Medium medium : medienListe){
             if(medium.titel.equals(mediumZurück)){
                 medienListe.remove(medium); // Löscht "alte" Information
                 if (medium.rueckgabe_datum.isBefore(LocalDate.now())){
@@ -226,7 +232,7 @@ public class Bibliothek {
             System.out.println("Medium nicht gefunden");
         }
 
-        updateMedien();
+        updateMedienDatei();
 
     }
 
@@ -241,7 +247,7 @@ public class Bibliothek {
         List<Medium> sortedList = new ArrayList<>(); // temporäre Liste für alle Medien, die zum Filter passen
         StringBuilder sb = new StringBuilder();
 
-        for (Medium medium : ladeMedien()){
+        for (Medium medium : medienListe){
 
             // Medien, bei denen der Standplatz nicht null ist, sind im Bestand
             if(medium.standplatz != null){
@@ -281,7 +287,7 @@ public class Bibliothek {
         List<Medium> sortedList = new ArrayList<>(); // temporäre Liste für alle Medien, die zum Filter passen
         StringBuilder sb = new StringBuilder();
 
-        for (Medium medium : ladeMedien()){
+        for (Medium medium : medienListe){
 
             // Medien, bei denen der Standplatz null ist, sind ausgeliehen
             if(medium.standplatz == null){
@@ -315,7 +321,7 @@ public class Bibliothek {
         List<Medium> sortedList = new ArrayList<>(); // temporäre Liste für alle Medien, die zum Filter passen
         StringBuilder sb = new StringBuilder();
 
-        for (Medium medium : ladeMedien()){
+        for (Medium medium : medienListe){
 
             // Medien, deren Rückgabedatum vor dem heutigen sind
             if(medium.rueckgabe_datum != null){
@@ -369,7 +375,7 @@ public class Bibliothek {
             }
         }
 
-        updateMedien();
+        updateMedienDatei();
 
     }
 
