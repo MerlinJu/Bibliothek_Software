@@ -32,6 +32,9 @@ public class Bibliothek {
         // Diese Methode darf nicht einfach so gecalled werden! , sonst verhängt sich das Programm in einer doppel update schleife, was zu riesigen Daten in der medien.txt datei führt
         // Deswegen nur in for schleife um durch die medien.txt datei zu loopen :D
 
+        // MedienListe reseten, damit nichts doppelt eingelesen wird
+        medienListe.clear();
+
         try (BufferedReader br = new BufferedReader(new FileReader(dateipfad) )) {
             String zeile;
             while ((zeile = br.readLine()) != null) {
@@ -96,10 +99,7 @@ public class Bibliothek {
      * Speichert die Änderungen am Ende in der {@code medien.txt} Datei.
      */
     public static void mediumAusleihen(String mediumTitel, LocalDate neuesAusleihDatum) {
-  
         boolean mediumFound = false;
-
-
 
         // HINWEIS! Hier ist noch ein Bug: da der constructor medien mit standort und ohne ausleihe datum init zulässt müssen wir hier
         // sichergehen, dass wir das erst tryen, sonst läuft man in ein error...
@@ -144,6 +144,7 @@ public class Bibliothek {
 
         // fügt das neue Medium der Liste hinzu
         medienListe.add(neuesMedium);
+
 
         // aktualisiert die Datei mit der aktualisierten Liste
         updateMedien();
