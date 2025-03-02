@@ -11,8 +11,6 @@ import java.awt.event.ActionListener;
 
 public class NeuesMediumPopup extends JDialog {
 
-
-
     public NeuesMediumPopup(JFrame parent) {
         super(parent, "Neues Medium hinzufügen", true);
         initializeUI();
@@ -90,8 +88,6 @@ public class NeuesMediumPopup extends JDialog {
             }
         });
         mainPanel.add(HinzufuegenButton);
-
-
 
 
 

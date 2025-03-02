@@ -82,6 +82,11 @@ public class Bibliothek {
         }
     }
 
+    // getter methode um im frontend auf die Meiden Liste zuzugreifen
+    public static List<Medium> getMedienListe() {
+        return medienListe;
+    }
+
 
     /**
      * <p>{@code updateMedien()} überschreibt die {@code medien.txt} mit dem aktuellen Stand der {@link #medienListe}.</p>
@@ -89,6 +94,8 @@ public class Bibliothek {
      * <p>Diese Methode wird immer dann aufgerufen, wenn die {@link #medienListe} geändert wird.</p>
      */
     private static void updateMedienInDatei() {
+        System.out.println(medienListe);
+
         // returnd falls die medienListe leer ist, um eine Leere Ueberschreibung zu vermeiden
         if (medienListe.isEmpty()) {
             System.out.println("Keine Medien zu speichern");
@@ -104,9 +111,8 @@ public class Bibliothek {
                 bw.write(medium.toString());
                 bw.newLine();
             }
-
             // Fängt einen möglichen Fehler (verpflichtend bei Nutzung von BufferedWriter)
-        } catch (IOException e) {
+            } catch (IOException e) {
             System.out.println("Fehler beim Speichern der Datei: " + e.getMessage());
         }
     }
@@ -116,26 +122,37 @@ public class Bibliothek {
      * @param mediumTitel Titel des Mediums, das ausgeliehen werden soll
      * @param ausleihDatum Datum der Ausleihe
      */
-    public static void mediumAusleihen(String mediumTitel, LocalDate ausleihDatum) {
-
+    public static String mediumAusleihen(String mediumTitel, LocalDate ausleihDatum) {
+        String message = "";
         boolean mediumFound = false;
-
-
 
         // HINWEIS! Hier ist noch ein Bug: da der constructor medien mit standort und ohne ausleihe datum init zulässt müssen wir hier
         // sichergehen, dass wir das erst tryen, sonst läuft man in ein error...
 
-        for(Medium medium : medienListe) {
-            if(medium.titel.equals(mediumTitel)) {
-                if (medium.standplatz == null) {
-                    System.out.println("Medium ist immoment schon ausgeliehen!");
+        for (int i = 0; i < medienListe.size(); i++) {
+            Medium medium = medienListe.get(i);
+
+            if (medium.titel.equals(mediumTitel)) {
+                if (medium.ausleihe_datum != null) {
+                    System.out.println("Medium ist bereits ausgeliehen!");
+                    return "Medium ist bereits ausgeliehen!";
                 }
-                medienListe.remove(medium); // Löscht "alte" Information
-                medium.ausleihe_datum = ausleihDatum;
-                medium.rueckgabe_datum = ausleihDatum.plusDays(30);
-                medium.standplatz = "";
-                System.out.println("Rückgabedatum: " + ausleihDatum.plusDays(30));
-                medienListe.add(medium); // Fügt "neue" Information ein
+
+                // Erstelle eine "ausgeliehene" Version des Mediums mit dem anderen Konstruktor
+                Medium ausgeliehenesMedium = new Medium(
+                        medium.titel,
+                        medium.autor,
+                        medium.medientyp,
+                        ausleihDatum,
+                        ausleihDatum.plusDays(30) // 30 Tage Leihzeit
+                );
+
+                // Ersetze das Medium in der Liste
+                medienListe.set(i, ausgeliehenesMedium);
+
+                System.out.println("Rückgabedatum: " + ausgeliehenesMedium.rueckgabe_datum);
+                message = "Rückgabedatum: " + ausgeliehenesMedium.rueckgabe_datum;
+
                 mediumFound = true;
                 break;
             }
@@ -144,10 +161,14 @@ public class Bibliothek {
         // Fehlermeldung, falls gesuchtes Medium nicht gefunden wird
         if(!mediumFound) {
             System.out.println("Medium nicht gefunden");
+            message = "Medium nicht gefunden!";
         }
 
         updateMedienInDatei();
+
+        return message;
     }
+
 
     /**
      * <p>{@code mediumZurückgeben()} fügt ein ausgeliehenes Medium wieder dem Bestand hinzu, indem es Ausleih- und Rückgabedatum
@@ -212,8 +233,6 @@ public class Bibliothek {
      */
     public static String neuesMediumHinzufuegen(String titelNeu, String autorNeu, String standplatzNeu, Medientyp typNeu) {
         String message;
-
-
 
         // Erstellt ein neues Medium mit den angegebenen Parametern
         Medium neuesMedium = new Medium(titelNeu, autorNeu, standplatzNeu, typNeu);
