@@ -30,6 +30,9 @@ public class Bibliothek {
      */
     private static List<Medium> medienZumAusmustern = new ArrayList<>();
 
+    // HINWEIS ausleihe Zeit, diese kann später dann evnetuell durch die EInstellungen abgeändert werden!
+    private static int ausleiheZeit_tage = 30;
+
 
     /**
      * <p>Die Methode {@code ladeMedien()} lädt die Medien aus der Datei {@code medien.txt} und
@@ -126,9 +129,6 @@ public class Bibliothek {
         String message = "";
         boolean mediumFound = false;
 
-        // HINWEIS! Hier ist noch ein Bug: da der constructor medien mit standort und ohne ausleihe datum init zulässt müssen wir hier
-        // sichergehen, dass wir das erst tryen, sonst läuft man in ein error...
-
         for (int i = 0; i < medienListe.size(); i++) {
             Medium medium = medienListe.get(i);
 
@@ -138,13 +138,13 @@ public class Bibliothek {
                     return "Medium ist bereits ausgeliehen!";
                 }
 
-                // Erstelle eine "ausgeliehene" Version des Mediums mit dem anderen Konstruktor
+                // Erstelle eine neue "ausgeliehene" Version des Mediums
                 Medium ausgeliehenesMedium = new Medium(
                         medium.titel,
                         medium.autor,
                         medium.medientyp,
                         ausleihDatum,
-                        ausleihDatum.plusDays(30) // 30 Tage Leihzeit
+                        ausleihDatum.plusDays(ausleiheZeit_tage)
                 );
 
                 // Ersetze das Medium in der Liste

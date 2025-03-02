@@ -43,6 +43,10 @@ public class AusleihenPopup extends JDialog {
             MediumOptions.add(medium.titel);
         }
 
+
+        // HINWEIS -> Eventuell später ändern zu Medien die im Bestannd sind und wirklich ausgeliehen werden können
+
+        // gibt alle medien wieder aus der Medienliste ( also auch ausgeliehene )
         mainPanel.add(new JLabel("Titel des zu ausleihenden Buches"));
         ausleiheTitelField = new JComboBox<>(MediumOptions);
         mainPanel.add(ausleiheTitelField);
