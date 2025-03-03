@@ -30,6 +30,9 @@ public class Bibliothek {
      */
     private static List<Medium> medienZumAusmustern = new ArrayList<>();
 
+    // HINWEIS ausleihe Zeit, diese kann später dann evnetuell durch die EInstellungen abgeändert werden!
+    private static int ausleiheZeit_tage = 30;
+
 
     /**
      * <p>Die Methode {@code ladeMedien()} lädt die Medien aus der Datei {@code medien.txt} und
@@ -39,7 +42,7 @@ public class Bibliothek {
      * Zusätzlich enthalten die Zeilen entweder einen Standplatz oder ein Ausleih- sowie Rückgabedatum.</p>
      * <p>Diese Methode soll beim Start des Programms ausgeführt werden.</p>
      */
-    public static void ladeMedien() {
+    public static void ladeMedienAusDatei() {
 
         // Die Liste wird komplett gelöscht, da sie ab hier komplett neu angelegt wird
         medienListe.clear();
@@ -82,13 +85,20 @@ public class Bibliothek {
         }
     }
 
+    // getter methode um im frontend auf die Meiden Liste zuzugreifen
+    public static List<Medium> getMedienListe() {
+        return medienListe;
+    }
+
 
     /**
      * <p>{@code updateMedien()} überschreibt die {@code medien.txt} mit dem aktuellen Stand der {@link #medienListe}.</p>
      *
      * <p>Diese Methode wird immer dann aufgerufen, wenn die {@link #medienListe} geändert wird.</p>
      */
-    private static void updateMedien() {
+    private static void updateMedienInDatei() {
+        System.out.println(medienListe);
+
         // returnd falls die medienListe leer ist, um eine Leere Ueberschreibung zu vermeiden
         if (medienListe.isEmpty()) {
             System.out.println("Keine Medien zu speichern");
@@ -104,9 +114,8 @@ public class Bibliothek {
                 bw.write(medium.toString());
                 bw.newLine();
             }
-
             // Fängt einen möglichen Fehler (verpflichtend bei Nutzung von BufferedWriter)
-        } catch (IOException e) {
+            } catch (IOException e) {
             System.out.println("Fehler beim Speichern der Datei: " + e.getMessage());
         }
     }
@@ -116,26 +125,34 @@ public class Bibliothek {
      * @param mediumTitel Titel des Mediums, das ausgeliehen werden soll
      * @param ausleihDatum Datum der Ausleihe
      */
-    public static void mediumAusleihen(String mediumTitel, LocalDate ausleihDatum) {
-
+    public static String mediumAusleihen(String mediumTitel, LocalDate ausleihDatum) {
+        String message = "";
         boolean mediumFound = false;
 
+        for (int i = 0; i < medienListe.size(); i++) {
+            Medium medium = medienListe.get(i);
 
-
-        // HINWEIS! Hier ist noch ein Bug: da der constructor medien mit standort und ohne ausleihe datum init zulässt müssen wir hier
-        // sichergehen, dass wir das erst tryen, sonst läuft man in ein error...
-
-        for(Medium medium : medienListe) {
-            if(medium.titel.equals(mediumTitel)) {
-                if (medium.standplatz == null) {
-                    System.out.println("Medium ist immoment schon ausgeliehen!");
+            if (medium.titel.equals(mediumTitel)) {
+                if (medium.ausleihe_datum != null) {
+                    System.out.println("Medium ist bereits ausgeliehen!");
+                    return "Medium ist bereits ausgeliehen!";
                 }
-                medienListe.remove(medium); // Löscht "alte" Information
-                medium.ausleihe_datum = ausleihDatum;
-                medium.rueckgabe_datum = ausleihDatum.plusDays(30);
-                medium.standplatz = "";
-                System.out.println("Rückgabedatum: " + ausleihDatum.plusDays(30));
-                medienListe.add(medium); // Fügt "neue" Information ein
+
+                // Erstelle eine neue "ausgeliehene" Version des Mediums
+                Medium ausgeliehenesMedium = new Medium(
+                        medium.titel,
+                        medium.autor,
+                        medium.medientyp,
+                        ausleihDatum,
+                        ausleihDatum.plusDays(ausleiheZeit_tage)
+                );
+
+                // Ersetze das Medium in der Liste
+                medienListe.set(i, ausgeliehenesMedium);
+
+                System.out.println("Rückgabedatum: " + ausgeliehenesMedium.rueckgabe_datum);
+                message = "Rückgabedatum: " + ausgeliehenesMedium.rueckgabe_datum;
+
                 mediumFound = true;
                 break;
             }
@@ -144,10 +161,14 @@ public class Bibliothek {
         // Fehlermeldung, falls gesuchtes Medium nicht gefunden wird
         if(!mediumFound) {
             System.out.println("Medium nicht gefunden");
+            message = "Medium nicht gefunden!";
         }
 
-        updateMedienDatei();
+        updateMedienInDatei();
+
+        return message;
     }
+
 
     /**
      * <p>{@code mediumZurückgeben()} fügt ein ausgeliehenes Medium wieder dem Bestand hinzu, indem es Ausleih- und Rückgabedatum
@@ -185,7 +206,7 @@ public class Bibliothek {
                 if(medienZumAusmustern.contains(medium)) {	// Mustert das Medium aus
                     medienListe.remove(medium);
                     medienZumAusmustern.remove(medium);
-                    updateMedien();
+                    updateMedienInDatei();
                     return;
 
                 } else {	// Fügt das Medium wieder in den Bestand ein
@@ -193,7 +214,7 @@ public class Bibliothek {
                     medium.rueckgabe_datum = null;
                     medium.standplatz = neuerStandplatz;
                     medienListe.add(medium); // Fügt "neue" Information ein
-                    updateMedien();
+                    updateMedienInDatei();
                     return;
                 }
             }
@@ -213,12 +234,6 @@ public class Bibliothek {
     public static String neuesMediumHinzufuegen(String titelNeu, String autorNeu, String standplatzNeu, Medientyp typNeu) {
         String message;
 
-        // Überprüft den Namen des Standplatzes
-        if(!standplatzValide(standplatzNeu)) {
-            message = "Der Standplatz ist nicht zulässig!";
-            return message; // Bricht ab bei ungültigem Format oder belegtem Standort
-        }
-
         // Erstellt ein neues Medium mit den angegebenen Parametern
         Medium neuesMedium = new Medium(titelNeu, autorNeu, standplatzNeu, typNeu);
 
@@ -228,14 +243,19 @@ public class Bibliothek {
                 System.out.println("Medium existiert schon im Bestand!");
                 return message; // bricht ab wenn Medium schon existiert
             }
+        }
 
+        // Überprüft den Namen des Standplatzes
+        if(!standplatzValide(standplatzNeu)) {
+            message = "Der Standplatz ist nicht zulässig!";
+            return message; // Bricht ab bei ungültigem Format oder belegtem Standort
         }
 
         // fügt das neue Medium der Liste hinzu
         medienListe.add(neuesMedium);
 
         // aktualisiert die Datei mit der aktualisierten Liste
-        updateMedien();
+        updateMedienInDatei();
 
         message = "Neues Medium hinzugefügt!";
         System.out.println("Neues Medium hinzugefügt!");
@@ -275,36 +295,18 @@ public class Bibliothek {
             }
         }
       
-        updateMedienDatei();
-    }
-
-
-                if (medium.ausleihe_datum != null) {
-                    // Ist das Medium ausgeliehen <==> Hat das Medium ein Ausleihdatum? <==> Ist das Ausleihdatum nicht "null"?
-
-                    System.out.println("Medium ist momentan ausgeliehen. Es wird ausgemustert, sobald es zurückgegeben wurde.");
-                    medienZumAusmustern.add(medium); // Medium wird in der Liste vermerkt
-
-
-
-        // Fehlermeldung, falls gesuchtes Medium nicht gefunden wird
-        if(!mediumFound) {
-            System.out.println("Medium nicht gefunden");
-        }
-
-        updateMedienDatei();
+        updateMedienInDatei();
     }
               
 
     /**
      * <p>{@code verfügbareMedien()} filtert die verfügbaren Medien.</p>
      * @param typ Medientyp nach welchem gefiltert werden soll
-     * @return Alle Medien, die im Bestand sind, alphabetisch sortiert als String im html Format
+     * @return Alle Medien, die im Bestand sind, alphabetisch sortiert als Liste mit Medium Objekten
      */
-    public static String verfügbareMedien(Medientyp typ){
-
+    public static List<Medium> verfügbareMedien(Medientyp typ){
         List<Medium> sortedList = new ArrayList<>(); // temporäre Liste für alle Medien, die zum Filter passen
-        StringBuilder sb = new StringBuilder();
+        // StringBuilder sb = new StringBuilder();
 
         for (Medium medium : medienListe){
 
@@ -315,38 +317,36 @@ public class Bibliothek {
                     sortedList.add(medium);
                 }
             }
-
         }
 
         // Nach Alphabet sortieren
         sortedList.sort(Comparator.comparing(medium -> medium.titel));
+        return sortedList;
 
         // String aus allen gefilterten Medien wird im html Format gebaut, damit Line Breaks im JLabel möglich sind
-        sb.append("<html><body>");
-        for (Medium medium : sortedList){
-            sb.append("<p>Titel: ")
-                    .append(medium.titel)
-                    .append(", Standplatz: ")
-                    .append(medium.standplatz)
-                    .append("</p><br>");
-        }
-        sb.append("</body></html>");
+        //sb.append("<html><body>");
+        //for (Medium medium : sortedList){
+          //  sb.append("<p>Titel: ")
+            //        .append(medium.titel)
+              //      .append(", Standplatz: ")
+                //    .append(medium.standplatz)
+                  //  .append("</p><br>");
+        //}
+        //sb.append("</body></html>");
 
-        return sb.toString();
+        //return sb.toString();
     }
+
 
     /**
      * <p>{@code verfügbareMedien()} filtert die ausgeliehenen Medien.</p>
      * @param typ Medientyp nach welchem gefiltert werden soll
-     * @return Alle ausgeliehenen Medien alphabetisch sortiert als String im html Format
+     * @return Alle ausgeliehenen Medien alphabetisch sortiert als Liste mit Medium Objekten
      */
-    public static String ausgelieheneMedien(Medientyp typ){
-
+    public static List<Medium> ausgelieheneMedien(Medientyp typ){
         List<Medium> sortedList = new ArrayList<>(); // temporäre Liste für alle Medien, die zum Filter passen
-        StringBuilder sb = new StringBuilder();
 
         for (Medium medium : medienListe){
-
             // Medien, bei denen der Standplatz null ist, sind ausgeliehen
             if(medium.standplatz == null){
                 // Je nach Parameter werden entweder alle oder nur ein bestimmter Medientyp übernommen
@@ -354,24 +354,11 @@ public class Bibliothek {
                     sortedList.add(medium);
                 }
             }
-
         }
 
         // Nach Alphabet sortieren
         sortedList.sort(Comparator.comparing(medium -> medium.titel));
-
-        // String aus allen gefilterten Medien wird im html Format gebaut, damit Line Breaks im JLabel möglich sind
-        sb.append("<html><body>");
-        for (Medium medium : sortedList){
-            sb.append("<p>Titel: ")
-                    .append(medium.titel)
-                    .append(", Rückgabedatum: ")
-                    .append(medium.rueckgabe_datum)
-                    .append("</p><br>");
-        }
-        sb.append("</body></html>");
-
-        return sb.toString();
+        return sortedList;
     }
 
     public static String überfälligeMedien(){
@@ -426,7 +413,7 @@ public class Bibliothek {
 
             if(medium.standplatz != null && medium.titel.equals(zuÄnderndesMedium)){
                 medium.standplatz = neuerStandplatz; // Ändert den Standplatz
-                updateMedien();
+                updateMedienInDatei();
                 return;
             }
         }

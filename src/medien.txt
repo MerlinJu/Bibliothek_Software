@@ -1,18 +1,6 @@
-Bat Out of Hell;Meat Loaf;1-c;DATENTRÄGER
-But Seriously;P. Collins;1-e;DATENTRÄGER
-Der Alchimist;P. Coelho;BUCH;2025-02-15;2025-03-17
-Der Herr der Ringe;J.R.R. Tolkien;2-f;BUCH
-Der König von Narnia;C.S. Lewis;2-c;BUCH
+Bat Out of Hell;Meat Loaf;DATENTRÄGER;2025-03-02;2025-04-01
+But Seriously;P. Collins;DATENTRÄGER;2025-03-02;2025-04-01
+Der König von Narnia;C.S. Lewis;BUCH;2025-03-02;2025-04-01
 Der kleine Prinz;A. de Saint-Exupery;2-e;BUCH
-E.T.;Universal Pictures;3-b;DIVERSE
-Große Freiheit;Unheilig;DATENTRÄGER;2025-02-15;2025-03-17
-Harry Potter und der Stein der Weisen;J.K. Rowling;2-h;BUCH
-Independence Day;20th Century Fox;DIVERSE;2025-02-15;2025-03-17
-Jurassic Park;Universal Pictures;DIVERSE;2025-02-15;2025-03-17
-Mensch;H. Grönemeyer;DATENTRÄGER;2025-04-13;2025-05-13
-Sakrileg;D. Brown;2-b;BUCH
-Thriller;M. Jackson;1-a;DATENTRÄGER
-Titanic;Paramount Pictures;DIVERSE;2025-02-15;2025-03-17
-Twilight;S. Meyer;2-g;BUCH
-fsdfdsfdsf;fsdfsdf;2-l;BUCH
-testTITEL;testAUTOR;1-g;BUCH
+tester;Merlin;1-3;BUCH
+testerr;Merlin;1-4;DIVERSE

@@ -10,8 +10,6 @@ import java.awt.event.ActionListener;
 
 public class MainFrame extends JFrame {
 
-
-
     public MainFrame() {
         initilaizeUI();
     }
@@ -46,7 +44,6 @@ public class MainFrame extends JFrame {
         /** JavaDoc Kommentare */
 
         add(mainPanel);
-        Bibliothek.ladeMedien();
     }
 
     private JMenuBar createMenuBar() {
@@ -153,9 +150,8 @@ public class MainFrame extends JFrame {
     }
 
 
-
     public static void main(String[] args) {
-        Bibliothek.ladeMedien();
+        Bibliothek.ladeMedienAusDatei();
 
         SwingUtilities.invokeLater(() -> {
             MainFrame frame = new MainFrame();

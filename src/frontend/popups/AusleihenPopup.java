@@ -1,13 +1,19 @@
 package frontend.popups;
 
+import backend.Bibliothek;
+import backend.Medium;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import java.time.LocalDate;
+import java.util.Vector;
+
 public class AusleihenPopup extends JDialog {
-    private JTextField ausleiheDatumField;
-    private JLabel rueckgabeDatumLabel;
+
+    JLabel rueckgabeDatumLabel;
 
     public AusleihenPopup(JFrame parent) {
         super(parent, "Medium ausleihen", true);
@@ -15,14 +21,38 @@ public class AusleihenPopup extends JDialog {
     }
 
     private void initializeUI() {
-        JPanel mainPanel = new JPanel(new GridLayout(3, 2, 10, 10));
+        JPanel mainPanel = new JPanel(new GridLayout(4, 2, 10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
+        JComboBox<LocalDate> ausleiheDatumField;
+        JComboBox<String> ausleiheTitelField;
 
         // Eingabefeld für das Ausleihedatum
+
+        // Date Optionen im dropdown menu
+        Vector<LocalDate> dateOptions = new Vector<>();
+        dateOptions.add(LocalDate.now()); // heutiges datum hinzufuegen
+
         mainPanel.add(new JLabel("Ausleihedatum (TT.MM.JJJJ)"));
-        ausleiheDatumField = new JTextField();
+        ausleiheDatumField = new JComboBox<>(dateOptions);
         mainPanel.add(ausleiheDatumField);
+
+        Bibliothek.ladeMedienAusDatei();
+        Vector<String> MediumOptions = new Vector<>();
+        for (Medium medium : Bibliothek.getMedienListe()) {
+            MediumOptions.add(medium.titel);
+        }
+
+
+        // HINWEIS -> Eventuell später ändern zu Medien die im Bestannd sind und wirklich ausgeliehen werden können
+
+        // gibt alle medien wieder aus der Medienliste ( also auch ausgeliehene )
+        mainPanel.add(new JLabel("Titel des zu ausleihenden Buches"));
+        ausleiheTitelField = new JComboBox<>(MediumOptions);
+        mainPanel.add(ausleiheTitelField);
+
+
+
 
         // Schaltfläche, um das Rückgabedatum zu berechnen
         JButton berechneRueckgabeButton = new JButton("Rückgabedatum berechnen");
@@ -30,7 +60,15 @@ public class AusleihenPopup extends JDialog {
         berechneRueckgabeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                berechneRueckgabeDatum();
+
+                LocalDate ausleiheDatum = (LocalDate) ausleiheDatumField.getSelectedItem();
+                if (ausleiheDatum != null) {
+                    berechneRueckgabeDatum(ausleiheDatum);
+                } else {
+                    System.out.println("Kein gültiges Datum ausgewählt!");
+                    JOptionPane.showMessageDialog(null, "Kein gültiges Datum ausgewählt!" ,"Fehler", JOptionPane.INFORMATION_MESSAGE);
+                }
+
             }
         });
         mainPanel.add(berechneRueckgabeButton);
@@ -50,6 +88,29 @@ public class AusleihenPopup extends JDialog {
         });
         mainPanel.add(schliessenButton);
 
+        JButton ausleihenButton = new JButton("Ausleihen");
+        ausleihenButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        ausleihenButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    LocalDate ausleiheDatum = (LocalDate) ausleiheDatumField.getSelectedItem();
+                    String ausleiheTitel =  (String) ausleiheTitelField.getSelectedItem();
+
+                    String message = Bibliothek.mediumAusleihen(ausleiheTitel, ausleiheDatum);
+
+                    JOptionPane.showMessageDialog(null, message, "Meldung", JOptionPane.INFORMATION_MESSAGE);
+                    dispose();
+                } catch (Exception exc) {
+                    // Allgemeiner Block für alle anderen Fehler
+                    JOptionPane.showMessageDialog(null, "Ein unbekannter Fehler ist aufgetreten: " + exc.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        mainPanel.add(ausleihenButton);
+
+
+
         // main panel zum dialog hinzufügen
         add(mainPanel);
 
@@ -58,12 +119,8 @@ public class AusleihenPopup extends JDialog {
         setResizable(false);
     }
 
-    private void berechneRueckgabeDatum() {
-        String ausleiheDatum = ausleiheDatumField.getText();
-
-        // Logik für rückgabewert
-
-        String rueckgabeDatum = "31.12.2023"; // Beispielwert
+    private void berechneRueckgabeDatum(LocalDate ausleiheDatum) {
+        LocalDate rueckgabeDatum = ausleiheDatum.plusDays(30); // Beispielwert
 
         rueckgabeDatumLabel.setText("Rückgabedatum: "  + rueckgabeDatum);
     }
