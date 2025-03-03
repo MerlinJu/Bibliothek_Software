@@ -304,10 +304,10 @@ public class Bibliothek {
      * @param typ Medientyp nach welchem gefiltert werden soll
      * @return Alle Medien, die im Bestand sind, alphabetisch sortiert als String im html Format
      */
-    public static String verfügbareMedien(Medientyp typ){
+    public static List<Medium> verfügbareMedien(Medientyp typ){
 
         List<Medium> sortedList = new ArrayList<>(); // temporäre Liste für alle Medien, die zum Filter passen
-        StringBuilder sb = new StringBuilder();
+        // StringBuilder sb = new StringBuilder();
 
         for (Medium medium : medienListe){
 
@@ -318,25 +318,26 @@ public class Bibliothek {
                     sortedList.add(medium);
                 }
             }
-
         }
 
         // Nach Alphabet sortieren
         sortedList.sort(Comparator.comparing(medium -> medium.titel));
+        return sortedList;
 
         // String aus allen gefilterten Medien wird im html Format gebaut, damit Line Breaks im JLabel möglich sind
-        sb.append("<html><body>");
-        for (Medium medium : sortedList){
-            sb.append("<p>Titel: ")
-                    .append(medium.titel)
-                    .append(", Standplatz: ")
-                    .append(medium.standplatz)
-                    .append("</p><br>");
-        }
-        sb.append("</body></html>");
+        //sb.append("<html><body>");
+        //for (Medium medium : sortedList){
+          //  sb.append("<p>Titel: ")
+            //        .append(medium.titel)
+              //      .append(", Standplatz: ")
+                //    .append(medium.standplatz)
+                  //  .append("</p><br>");
+        //}
+        //sb.append("</body></html>");
 
-        return sb.toString();
+        //return sb.toString();
     }
+
 
     /**
      * <p>{@code verfügbareMedien()} filtert die ausgeliehenen Medien.</p>

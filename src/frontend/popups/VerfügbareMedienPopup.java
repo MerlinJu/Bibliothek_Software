@@ -1,18 +1,24 @@
 package frontend.popups;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import backend.Bibliothek;
 import backend.Medientyp;
+import backend.Medium;
 
 // Design muss noch bearbeitet werden, aber sonst sollte es funktionieren
 
 public class VerfügbareMedienPopup extends JDialog{
 
-    private JLabel verfügbareMedien;
+    private JTable medienTabelle;
+    private DefaultTableModel tableModel;
+    private JComboBox<String> filterDropdown;
 
     public VerfügbareMedienPopup(JFrame parent) {
         super(parent, "Verfügbare Medien anzeigen", true);
@@ -20,64 +26,52 @@ public class VerfügbareMedienPopup extends JDialog{
     }
 
     private void initializeUI() {
-        JPanel mainPanel = new JPanel(new FlowLayout());
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        setLayout(new BorderLayout(10, 10));
 
-        // Label, in dem die gefilterten Medien angezeigt werden
-        verfügbareMedien = new JLabel();
-        verfügbareMedien.setText(Bibliothek.verfügbareMedien(null)); // Beim Öffnen des Popups werden standardmäßig alle Medien im Bestand aufgeführt
-        mainPanel.add(verfügbareMedien, BorderLayout.WEST);
-
-        // Button für den Alle-Filter
-        JButton filternNachAlle = new JButton("Filter: Alle");
-        filternNachAlle.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        filternNachAlle.addActionListener(new ActionListener() {
+        String[] filterOptions = {"Alle", "Buch", "Datenträger", "Diverse"};
+        filterDropdown = new JComboBox<>(filterOptions);
+        filterDropdown.setSelectedIndex(0); // Option "Alle" als default
+        filterDropdown.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                verfügbareMedien.setText(Bibliothek.verfügbareMedien(null));
+                updateTableData();
             }
         });
-        mainPanel.add(filternNachAlle);
 
-        // Button für den Buch-Filter
-        JButton filternNachBuch = new JButton("Filter: Buch");
-        filternNachBuch.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        filternNachBuch.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                verfügbareMedien.setText(Bibliothek.verfügbareMedien(Medientyp.BUCH));
-            }
-        });
-        mainPanel.add(filternNachBuch);
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        topPanel.add(new JLabel("Filter:"));
+        topPanel.add(filterDropdown);
+        add(topPanel, BorderLayout.NORTH);
 
-        // Button für den Datenträger-Filter
-        JButton filternNachDatenträger = new JButton("Filter: Datenträger");
-        filternNachDatenträger.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        filternNachDatenträger.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                verfügbareMedien.setText(Bibliothek.verfügbareMedien(Medientyp.DATENTRÄGER));
-            }
-        });
-        mainPanel.add(filternNachDatenträger);
+        tableModel = new DefaultTableModel(new String[]{"Titel", "Standplatz"}, 0);
+        medienTabelle = new JTable(tableModel);
+        JScrollPane scrollPane = new JScrollPane(medienTabelle);
+        add(scrollPane, BorderLayout.CENTER);
 
-        // Button für den Diverse-Filter
-        JButton filternNachDiverse = new JButton("Filter: Diverse");
-        filternNachDiverse.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        filternNachDiverse.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                verfügbareMedien.setText(Bibliothek.verfügbareMedien(Medientyp.DIVERSE));
-            }
-        });
-        mainPanel.add(filternNachDiverse);
+        updateTableData();
 
-        // main panel zum dialog hinzufügen
-        add(mainPanel);
-        pack();
-
+        setSize(400, 300);
         setLocationRelativeTo(getParent()); // Zentriert das Popup relativ zum Hauptfenster
         setResizable(false);
+    }
+
+    private void updateTableData() {
+        tableModel.setRowCount(0); // Tabelle clearen
+
+        String selectedFilter = (String) filterDropdown.getSelectedItem();
+        Medientyp filterTyp = null;
+        if ("Buch".equals(selectedFilter)) {
+            filterTyp = Medientyp.BUCH;
+        } else if ("Datenträger".equals(selectedFilter)) {
+            filterTyp = Medientyp.DATENTRÄGER;
+        } else if ("Diverse".equals(selectedFilter)) {
+            filterTyp = Medientyp.DIVERSE;
+        }
+
+        List<Medium> medienListe = Bibliothek.verfügbareMedien(filterTyp);
+        for (Medium medium : medienListe) {
+            tableModel.addRow(new Object[]{medium.titel, medium.standplatz});
+        }
     }
 
     public static void main(String[] args) {
