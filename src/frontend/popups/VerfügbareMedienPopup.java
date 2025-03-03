@@ -19,6 +19,7 @@ public class VerfügbareMedienPopup extends JDialog{
     private JTable medienTabelle;
     private DefaultTableModel tableModel;
     private JComboBox<String> filterDropdown;
+    private JButton schließenButton;
 
     public VerfügbareMedienPopup(JFrame parent) {
         super(parent, "Verfügbare Medien anzeigen", true);
@@ -38,9 +39,19 @@ public class VerfügbareMedienPopup extends JDialog{
             }
         });
 
-        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        topPanel.add(new JLabel("Filter:"));
-        topPanel.add(filterDropdown);
+        JPanel topPanel = new JPanel(new BorderLayout());
+
+        JPanel filterPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        filterPanel.add(new JLabel("Filter:"));
+        filterPanel.add(filterDropdown);
+
+        schließenButton = new JButton("Schließen");
+        schließenButton.addActionListener(e -> dispose());
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel.add(schließenButton);
+
+        topPanel.add(filterPanel, BorderLayout.WEST);
+        topPanel.add(buttonPanel, BorderLayout.EAST);
         add(topPanel, BorderLayout.NORTH);
 
         tableModel = new DefaultTableModel(new String[]{"Titel", "Standplatz"}, 0);
