@@ -1,4 +1,4 @@
-// Medium Basisklasse mit allen wichtigen Attributen von einem Medium
+package backend;// Medium Basisklasse mit allen wichtigen Attributen von einem Medium
 
 import java.time.LocalDate; // Java time klasse um LocalDate zu nutzen
 
@@ -35,7 +35,7 @@ public class Medium {
 
         return  titel +
                 ";" + autor +
-                (standplatz != null ? ";" + standplatz: "") +
+                (standplatz != null ? ";" + standplatz : "") +
                 ";" + medientyp +
                 (ausleihe_datum != null ? ";" + ausleihe_datum: "") +
                 (rueckgabe_datum != null ? ";" + rueckgabe_datum : "");
