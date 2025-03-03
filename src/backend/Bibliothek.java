@@ -361,39 +361,21 @@ public class Bibliothek {
         return sortedList;
     }
 
-    public static String überfälligeMedien(){
-
+    public static List<Medium> überfälligeMedien(){
         List<Medium> sortedList = new ArrayList<>(); // temporäre Liste für alle Medien, die zum Filter passen
-        StringBuilder sb = new StringBuilder();
 
         for (Medium medium : medienListe){
-
             // Medien, deren Rückgabedatum vor dem heutigen sind
             if(medium.rueckgabe_datum != null){
                 if(medium.rueckgabe_datum.isBefore(LocalDate.now())){
                     sortedList.add(medium);
                 }
             }
-
         }
 
         // Nach Alphabet sortieren
         sortedList.sort(Comparator.comparing(medium -> medium.rueckgabe_datum));
-
-        // String aus allen gefilterten Medien wird im html Format gebaut, damit Line Breaks im JLabel möglich sind
-        sb.append("<html><body>");
-        for (Medium medium : sortedList){
-            sb.append("<p>Titel: ")
-                    .append(medium.titel)
-                    .append(", Rückgabedatum: ")
-                    .append(medium.rueckgabe_datum)
-                    .append(", Tag(e) überfällig: ")
-                    .append(medium.rueckgabe_datum.until(LocalDate.now(), ChronoUnit.DAYS))
-                    .append("</p><br>");
-        }
-        sb.append("</body></html>");
-
-        return sb.toString();
+        return sortedList;
     }
 
     /**
