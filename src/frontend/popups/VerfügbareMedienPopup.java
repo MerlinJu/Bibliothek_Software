@@ -12,8 +12,6 @@ import backend.Bibliothek;
 import backend.Medientyp;
 import backend.Medium;
 
-// Design muss noch bearbeitet werden, aber sonst sollte es funktionieren
-
 public class VerfügbareMedienPopup extends JDialog{
 
     private JTable medienTabelle;
@@ -32,12 +30,7 @@ public class VerfügbareMedienPopup extends JDialog{
         String[] filterOptions = {"Alle", "Buch", "Datenträger", "Diverse"};
         filterDropdown = new JComboBox<>(filterOptions);
         filterDropdown.setSelectedIndex(0); // Option "Alle" als default
-        filterDropdown.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                updateTableData();
-            }
-        });
+        filterDropdown.addActionListener(e -> updateTableData());
 
         JPanel topPanel = new JPanel(new BorderLayout());
 
@@ -61,7 +54,7 @@ public class VerfügbareMedienPopup extends JDialog{
 
         updateTableData();
 
-        setSize(400, 300);
+        setSize(450, 300);
         setLocationRelativeTo(getParent()); // Zentriert das Popup relativ zum Hauptfenster
         setResizable(false);
     }

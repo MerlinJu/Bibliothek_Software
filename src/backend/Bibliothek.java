@@ -302,10 +302,9 @@ public class Bibliothek {
     /**
      * <p>{@code verfügbareMedien()} filtert die verfügbaren Medien.</p>
      * @param typ Medientyp nach welchem gefiltert werden soll
-     * @return Alle Medien, die im Bestand sind, alphabetisch sortiert als String im html Format
+     * @return Alle Medien, die im Bestand sind, alphabetisch sortiert als Liste mit Medium Objekten
      */
     public static List<Medium> verfügbareMedien(Medientyp typ){
-
         List<Medium> sortedList = new ArrayList<>(); // temporäre Liste für alle Medien, die zum Filter passen
         // StringBuilder sb = new StringBuilder();
 
@@ -342,15 +341,12 @@ public class Bibliothek {
     /**
      * <p>{@code verfügbareMedien()} filtert die ausgeliehenen Medien.</p>
      * @param typ Medientyp nach welchem gefiltert werden soll
-     * @return Alle ausgeliehenen Medien alphabetisch sortiert als String im html Format
+     * @return Alle ausgeliehenen Medien alphabetisch sortiert als Liste mit Medium Objekten
      */
-    public static String ausgelieheneMedien(Medientyp typ){
-
+    public static List<Medium> ausgelieheneMedien(Medientyp typ){
         List<Medium> sortedList = new ArrayList<>(); // temporäre Liste für alle Medien, die zum Filter passen
-        StringBuilder sb = new StringBuilder();
 
         for (Medium medium : medienListe){
-
             // Medien, bei denen der Standplatz null ist, sind ausgeliehen
             if(medium.standplatz == null){
                 // Je nach Parameter werden entweder alle oder nur ein bestimmter Medientyp übernommen
@@ -358,24 +354,11 @@ public class Bibliothek {
                     sortedList.add(medium);
                 }
             }
-
         }
 
         // Nach Alphabet sortieren
         sortedList.sort(Comparator.comparing(medium -> medium.titel));
-
-        // String aus allen gefilterten Medien wird im html Format gebaut, damit Line Breaks im JLabel möglich sind
-        sb.append("<html><body>");
-        for (Medium medium : sortedList){
-            sb.append("<p>Titel: ")
-                    .append(medium.titel)
-                    .append(", Rückgabedatum: ")
-                    .append(medium.rueckgabe_datum)
-                    .append("</p><br>");
-        }
-        sb.append("</body></html>");
-
-        return sb.toString();
+        return sortedList;
     }
 
     public static String überfälligeMedien(){

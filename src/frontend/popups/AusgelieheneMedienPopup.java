@@ -1,83 +1,78 @@
 package frontend.popups;
 
-import backend.Bibliothek;
-import backend.Medientyp;
-
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
-// Design muss noch bearbeitet werden, aber sonst sollte es funktionieren
+import backend.Bibliothek;
+import backend.Medientyp;
+import backend.Medium;
 
 public class AusgelieheneMedienPopup extends JDialog{
 
-    private JLabel ausgelieheneMedien;
+    private DefaultTableModel tableModel;
+    private JComboBox<String> filterDropdown;
 
     public AusgelieheneMedienPopup(JFrame parent) {
-        super(parent, "Ausgeliehene Medien anzeigen", true);
+        super(parent, "Verfügbare Medien anzeigen", true);
         initializeUI();
     }
 
     private void initializeUI() {
-        JPanel mainPanel = new JPanel(new FlowLayout());
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        setLayout(new BorderLayout(10, 10));
 
-        // Label, in dem die gefilterten Medien angezeigt werden
-        ausgelieheneMedien = new JLabel();
-        ausgelieheneMedien.setText(Bibliothek.ausgelieheneMedien(null)); // Beim Öffnen des Popups werden standardmäßig alle ausgeliehenen Medien aufgeführt
-        mainPanel.add(ausgelieheneMedien, BorderLayout.WEST);
+        String[] filterOptions = {"Alle", "Buch", "Datenträger", "Diverse"};
+        filterDropdown = new JComboBox<>(filterOptions);
+        filterDropdown.setSelectedIndex(0); // Option "Alle" als default
+        filterDropdown.addActionListener(e -> updateTableData());
 
-        // Button für den Alle-Filter
-        JButton filternNachAlle = new JButton("Filter: Alle");
-        filternNachAlle.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        filternNachAlle.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ausgelieheneMedien.setText(Bibliothek.ausgelieheneMedien(null));
-            }
-        });
-        mainPanel.add(filternNachAlle);
+        JPanel topPanel = new JPanel(new BorderLayout());
 
-        // Button für den Buch-Filter
-        JButton filternNachBuch = new JButton("Filter: Buch");
-        filternNachBuch.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        filternNachBuch.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ausgelieheneMedien.setText(Bibliothek.ausgelieheneMedien(Medientyp.BUCH));
-            }
-        });
-        mainPanel.add(filternNachBuch);
+        JPanel filterPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        filterPanel.add(new JLabel("Filter:"));
+        filterPanel.add(filterDropdown);
 
-        // Button für den Datenträger-Filter
-        JButton filternNachDatenträger = new JButton("Filter: Datenträger");
-        filternNachDatenträger.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        filternNachDatenträger.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ausgelieheneMedien.setText(Bibliothek.ausgelieheneMedien(Medientyp.DATENTRÄGER));
-            }
-        });
-        mainPanel.add(filternNachDatenträger);
+        JButton schließenButton = new JButton("Schließen");
+        schließenButton.addActionListener(e -> dispose());
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel.add(schließenButton);
 
-        // Button für den Diverse-Filter
-        JButton filternNachDiverse = new JButton("Filter: Diverse");
-        filternNachDiverse.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        filternNachDiverse.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ausgelieheneMedien.setText(Bibliothek.ausgelieheneMedien(Medientyp.DIVERSE));
-            }
-        });
-        mainPanel.add(filternNachDiverse);
+        topPanel.add(filterPanel, BorderLayout.WEST);
+        topPanel.add(buttonPanel, BorderLayout.EAST);
+        add(topPanel, BorderLayout.NORTH);
 
-        // main panel zum dialog hinzufügen
-        add(mainPanel);
-        pack();
+        tableModel = new DefaultTableModel(new String[]{"Titel", "Ausleihe Datum", "Rückgabe Datum"}, 0);
+        JTable medienTabelle = new JTable(tableModel);
+        JScrollPane scrollPane = new JScrollPane(medienTabelle);
+        add(scrollPane, BorderLayout.CENTER);
 
+        updateTableData();
+
+        setSize(450, 300);
         setLocationRelativeTo(getParent()); // Zentriert das Popup relativ zum Hauptfenster
         setResizable(false);
+    }
+
+    private void updateTableData() {
+        tableModel.setRowCount(0); // Tabelle clearen
+
+        String selectedFilter = (String) filterDropdown.getSelectedItem();
+        Medientyp filterTyp = null;
+        if ("Buch".equals(selectedFilter)) {
+            filterTyp = Medientyp.BUCH;
+        } else if ("Datenträger".equals(selectedFilter)) {
+            filterTyp = Medientyp.DATENTRÄGER;
+        } else if ("Diverse".equals(selectedFilter)) {
+            filterTyp = Medientyp.DIVERSE;
+        }
+
+        List<Medium> medienListe = Bibliothek.ausgelieheneMedien(filterTyp);
+        for (Medium medium : medienListe) {
+            tableModel.addRow(new Object[]{medium.titel, medium.ausleihe_datum, medium.rueckgabe_datum});
+        }
     }
 
     public static void main(String[] args) {
@@ -85,7 +80,7 @@ public class AusgelieheneMedienPopup extends JDialog{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
 
-        AusgelieheneMedienPopup popup = new AusgelieheneMedienPopup(frame);
+        VerfügbareMedienPopup popup = new VerfügbareMedienPopup(frame);
         popup.setVisible(true);
     }
 
