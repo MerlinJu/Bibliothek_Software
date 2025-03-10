@@ -94,6 +94,13 @@ public class MainFrame extends JFrame {
         });
 
         JButton returnMediumButton = createStyledButton("Medium zurückgeben");
+        returnMediumButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MediumZurückgebenPopup popup = new MediumZurückgebenPopup(MainFrame.this);
+                popup.setVisible(true);
+            }
+        });
 
         JButton listAvailableMediaButton = createStyledButton("Verfügbare Medien anzeigen");
         listAvailableMediaButton.addActionListener(new ActionListener() {

@@ -175,23 +175,24 @@ public class Bibliothek {
      * entfernt sowie einen neuen Standplatz zuweist.</p>
      * <p>Ist das zurückgegebene Medium überfällig, wird eine Meldung ausgegeben.</p>
      * <p>Es findet eine Prüfung statt, ob ein Medium nach der Rückgabe ausgemustert werden soll.</p>
-     * @param mediumZurück Medium, welches zurückgegeben werden soll
+     * @param mediumZurückTitel Medium, welches zurückgegeben werden soll
      * @param neuerStandplatz Standplatz, an welchem das Medium platziert werden soll
      */
-    public static void mediumZurückgeben(String mediumZurück, String neuerStandplatz){
+    public static String mediumZurückgeben(String mediumZurückTitel, String neuerStandplatz){
+        String message = "";
 
         // hier fehlt noch etwas: wenn ein Medium ausgemustert werden soll nach der rückgabe. Dann muss natürlich kein Standort mehr
         // als Parameter mitgegeben werden
 
         // Überprüft den Namen des Standplatzes
         if(!standplatzValide(neuerStandplatz)) {
-            return; // Bricht ab bei ungültigem Format oder belegtem Standort
+            return "Standplatz ist nicht valide!"; // Bricht ab bei ungültigem Format oder belegtem Standort
         }
 
         // Wo liegt gesuchtes Medium in der medienListe?
         for(Medium medium : medienListe){
 
-            if(medium.titel.equals(mediumZurück)){
+            if(medium.titel.equals(mediumZurückTitel)){
 
                 medienListe.remove(medium); // Löscht "alte" Information
 
@@ -207,7 +208,7 @@ public class Bibliothek {
                     medienListe.remove(medium);
                     medienZumAusmustern.remove(medium);
                     updateMedienInDatei();
-                    return;
+                    return "Medium erfolgreich zurückgegeben und ausgemustert!";
 
                 } else {	// Fügt das Medium wieder in den Bestand ein
                     medium.ausleihe_datum = null;
@@ -215,12 +216,13 @@ public class Bibliothek {
                     medium.standplatz = neuerStandplatz;
                     medienListe.add(medium); // Fügt "neue" Information ein
                     updateMedienInDatei();
-                    return;
+                    return "Medium erfolgreich zurückgegeben";
                 }
             }
         }
         // Fehlermeldung, falls gesuchtes Medium nicht gefunden wird
         System.out.println("Medium nicht gefunden");
+        return "Medium nicht gefunden";
     }
 
 
