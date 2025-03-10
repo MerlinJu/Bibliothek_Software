@@ -2,5 +2,6 @@ Bat Out of Hell;Meat Loaf;DATENTRÄGER;2025-03-02;2025-04-01
 But Seriously;P. Collins;DATENTRÄGER;2025-03-02;2025-04-01
 Der König von Narnia;C.S. Lewis;BUCH;2025-03-02;2025-04-01
 Der kleine Prinz;A. de Saint-Exupery;2-e;BUCH
+test1234;autor1234;DATENTRÄGER;2025-03-03;2025-04-02
 tester;Merlin;1-3;BUCH
 testerr;Merlin;1-4;DIVERSE
