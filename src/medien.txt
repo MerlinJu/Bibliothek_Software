@@ -5,13 +5,13 @@ Der Herr der Ringe;J.R.R. Tolkien;2-f;BUCH
 Der König von Narnia;C.S. Lewis;2-c;BUCH
 Der kleine Prinz;A. de Saint-Exupery;2-e;BUCH
 E.T.;Universal Pictures;3-b;DIVERSE
-Große Freiheit;Unheilig;DATENTRÄGER;2025-02-15;2025-03-17
+Große Freiheit;Unheilig;1-9;DATENTRÄGER
 Harry Potter und der Stein der Weisen;J.K. Rowling;2-h;BUCH
-Independence Day;20th Century Fox;DIVERSE;2025-02-15;2025-03-17
+Independence Day;20th Century Fox;1-8;DIVERSE
 Jurassic Park;Universal Pictures;DIVERSE;2025-02-15;2025-03-17
 Mensch;H. Grönemeyer;DATENTRÄGER;2025-04-13;2025-05-13
 Sakrileg;D. Brown;2-b;BUCH
-The Deal;Elle Kennedy;BUCH;2025-03-03;2025-03-04
+The Deal;Elle Kennedy;8-i;BUCH
 Thriller;M. Jackson;1-a;DATENTRÄGER
 Titanic;Paramount Pictures;DIVERSE;2025-02-15;2025-03-17
 Twilight;S. Meyer;2-g;BUCH

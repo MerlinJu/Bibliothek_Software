@@ -9,15 +9,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.AreaAveragingScaleFilter;
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Vector;
 
 public class MediumZurückgebenPopup extends JDialog {
     private JComboBox<String> ausgelieheneMedienDropdown;
     private JLabel rückgabeDatumLabel;
     private JLabel mediumAuswahl;
     private JButton zurückgebenButton, schließeButton;
+    private JLabel ueberfaelligLabel;
+    private JLabel ueberfaelligIn;
 
 
     public MediumZurückgebenPopup(JFrame parent) {
@@ -26,20 +27,54 @@ public class MediumZurückgebenPopup extends JDialog {
     }
 
     private void initializeUI() {
-        JPanel mainPanel = new JPanel(new GridLayout(3, 2, 10, 10));
+        JPanel mainPanel = new JPanel(new GridLayout(4, 2, 10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         mediumAuswahl = new JLabel("Medium:");
         mainPanel.add(mediumAuswahl);
 
+        Map<String, Medium> mediumMap = new HashMap<>();
         List<Medium> AusgelieheneMedien = Bibliothek.ausgelieheneMedien(null);
         List<String> AusgelieheneMedienTitel = new ArrayList<>();
+
         for (Medium medium : AusgelieheneMedien) {
             AusgelieheneMedienTitel.add(medium.titel);
+            mediumMap.put(medium.titel, medium);
         }
 
         ausgelieheneMedienDropdown = new JComboBox<>(new Vector<>(AusgelieheneMedienTitel));
         mainPanel.add(ausgelieheneMedienDropdown);
+
+        ueberfaelligLabel = new JLabel("Überfällig:");
+        mainPanel.add(ueberfaelligLabel);
+        ueberfaelligIn = new JLabel("");
+        mainPanel.add(ueberfaelligIn);
+
+        // Initialen Zustand setzen
+        String initialTitel = (String) ausgelieheneMedienDropdown.getSelectedItem();
+        Medium initialMedium = mediumMap.get(initialTitel);
+        if (initialMedium != null) {
+            ueberfaelligIn.setText(Bibliothek.istMediumÜberfällig(initialMedium));
+        } else {
+            ueberfaelligIn.setText("Nicht überfällig");
+        }
+
+        ausgelieheneMedienDropdown.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String gewähltesMediumTitel = (String) ausgelieheneMedienDropdown.getSelectedItem();
+                Medium medium = mediumMap.get(gewähltesMediumTitel); // Medium abrufen von der Hash Map, mithilfe von dem Titel der an das Medium Objekt geknüpft ist
+
+                if (medium != null) {
+                    ueberfaelligIn.setText(Bibliothek.istMediumÜberfällig(medium));
+                } else {
+                    ueberfaelligIn.setText("Nicht überfällig");
+                }
+
+            }
+        });
+
+
 
         JLabel neuerStandplatzLabel = new JLabel("neuer Standplatz:");
         mainPanel.add(neuerStandplatzLabel);
@@ -88,7 +123,7 @@ public class MediumZurückgebenPopup extends JDialog {
 
 
         add(mainPanel);
-        setSize(450, 200);
+        setSize(500, 200);
         setLocationRelativeTo(getParent()); // Zentriert das Popup relativ zum Hauptfenster
         setResizable(false);
 
