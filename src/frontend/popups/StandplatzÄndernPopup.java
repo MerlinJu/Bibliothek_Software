@@ -1,0 +1,77 @@
+package frontend.popups;
+
+import backend.Bibliothek;
+import backend.Medientyp;
+import backend.Medium;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.*;
+import java.util.List;
+
+public class StandplatzÄndernPopup extends JDialog {
+    private JComboBox<String> mediumDropdown;
+
+
+    public StandplatzÄndernPopup(JFrame parent) {
+        super(parent, "Standplatz ändern", true);
+        initializeUI();
+    }
+
+    private void initializeUI() {
+        JPanel mainPanel = new JPanel(new GridLayout(3, 2, 10, 10));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+
+        List<Medium> medienListe = Bibliothek.getMedienListe();
+        List<String> medienListeTitel = new ArrayList<>();
+        for (Medium medium : medienListe) {
+            medienListeTitel.add(medium.titel);
+        }
+        mediumDropdown = new JComboBox<>(new Vector<>(medienListeTitel));
+
+        JTextField neuerStandplatzField = new JTextField();
+
+        mainPanel.add(new JLabel("Medium auswählen:"));
+        mainPanel.add(mediumDropdown);
+
+        mainPanel.add(new JLabel("Neuer Standplatz"));
+        mainPanel.add(neuerStandplatzField);
+
+        // schließen Button
+        JButton schliessenButton = new JButton("Schließen");
+        schliessenButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        schliessenButton.addActionListener(e -> dispose());
+        mainPanel.add(schliessenButton);
+
+        // Bestätigen Button
+        JButton aendernButton = new JButton("Ändern");
+        aendernButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        aendernButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String ausgewähltesMediumTitel = (String) mediumDropdown.getSelectedItem();
+                String neuerStandplatz = neuerStandplatzField.getText().trim();
+
+                if (ausgewähltesMediumTitel == null || neuerStandplatz.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Bitte alle Felder ausfüllen!", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                String message = Bibliothek.standplatzÄndern(ausgewähltesMediumTitel, neuerStandplatz);
+
+                JOptionPane.showMessageDialog(null, message, "Information", JOptionPane.INFORMATION_MESSAGE);
+                dispose();
+            }
+        });
+        mainPanel.add(aendernButton);
+
+
+        add(mainPanel);
+        setSize(400, 200);
+        setLocationRelativeTo(getParent());
+        setResizable(false);
+    }
+}

@@ -404,14 +404,14 @@ public class Bibliothek {
 
     /**
      * <p>{@code standplatzÄndern} ändert den Standplatz eines Mediums im Bestand.</p>
-     * @param zuÄnderndesMedium Medium, von welchem der Standplatz geändert werden soll
+     * @param zuÄnderndesMedium Medium Titel, von welchem der Standplatz geändert werden soll
      * @param neuerStandplatz Neuer Standplatz, an welchem das Medium platziert werden soll
      */
-    public static void standplatzÄndern(String zuÄnderndesMedium, String neuerStandplatz){
+    public static String standplatzÄndern(String zuÄnderndesMedium, String neuerStandplatz){
 
         // Überprüft den Namen des Standplatzes
         if(!standplatzValide(neuerStandplatz)) {
-            return; // Bricht ab bei ungültigem Format oder belegtem Standort
+            return "Der angegebene Standplatz ist schon belegt oder ungültig!"; // Bricht ab bei ungültigem Format oder belegtem Standort
         }
 
         // Wo liegt gesuchtes Medium in der medienListe?
@@ -420,10 +420,12 @@ public class Bibliothek {
             if(medium.standplatz != null && medium.titel.equals(zuÄnderndesMedium)){
                 medium.standplatz = neuerStandplatz; // Ändert den Standplatz
                 updateMedienInDatei();
-                return;
+                return "Standplatz erfolgreich geändert!";
             }
         }
+
         System.out.println("Medium wurde nicht gefunden!"); // Wird nur ausgegeben, wenn die for-Schleife ohne Ergebnis durchläuft
+        return "Medium wurde nicht gefunden!";
     }
   
 
