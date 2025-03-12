@@ -29,12 +29,16 @@ public class AusleihenPopup extends JDialog {
 
         // Eingabefeld für das Ausleihedatum
 
-        // Date Optionen im dropdown menu
+        // alle date options
         Vector<LocalDate> dateOptions = new Vector<>();
-        dateOptions.add(LocalDate.now()); // heutiges datum hinzufuegen
+        LocalDate today = LocalDate.now();
+        for (int i = -7; i <= 7; i++) {  // Von 7 Tage vor heute bis 7 Tage nach heute
+            dateOptions.add(today.plusDays(i));
+        }
 
         mainPanel.add(new JLabel("Ausleihedatum (TT.MM.JJJJ)"));
         ausleiheDatumField = new JComboBox<>(dateOptions);
+        ausleiheDatumField.setSelectedItem(today);
         mainPanel.add(ausleiheDatumField);
 
         Bibliothek.ladeMedienAusDatei();
