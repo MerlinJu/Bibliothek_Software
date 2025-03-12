@@ -276,36 +276,35 @@ public class Bibliothek {
      *
      * @param titel_zum_ausmustern Titel des Medium, welches ausgemustert werden soll
      */
-    public static void vorhandenesMediumAusmustern(String titel_zum_ausmustern) {
+    public static String vorhandenesMediumAusmustern(String titel_zum_ausmustern) {
 
         // Wo liegt gesuchtes Buch in Tabelle
         for(Medium medium : medienListe){
             if(medium.titel.equals(titel_zum_ausmustern)) {
-              
-                if (medium.rueckgabe_datum.isBefore(LocalDate.now() )) {
-                    System.out.println("Das Medium ist " +
-                                        medium.rueckgabe_datum.until(LocalDate.now(), ChronoUnit.DAYS) +
-                                        " Tag(e) überfällig.");
-                } 
-                  
+
                if (medium.ausleihe_datum != null) {
                     // Sofern ein medium ausgeliehen ist ( ausliehedatum ist nur wenn ausgeliehen ein LocalDate Objekt, ansonsten ein String "null" )
-                    System.out.println("Medium ist immomemt ausgeliehen, es wir ausgemustert sobald es zurückgegeben wurde.");
 
-                    // Logik für ausmustrern sobald zurückgegeben...
+                    medienZumAusmustern.add(medium);
+                    // HIER MUSS NOCH LOGIK HIN SOFERN ZURÜCKGEGEBEN
+
+                   System.out.println("Medium ist immomemt ausgeliehen, es wir ausgemustert sobald es zurückgegeben wurde.");
+                   return "Medium ist immomemt ausgeliehen, es wir ausgemustert sobald es zurückgegeben wurde.";
 
                } else {
                     // Sofern ein medium nicht ausgeliehen ist, kann es sofort ausgemustert werden
                     medienListe.remove(medium);
+                    updateMedienInDatei();
+
                     System.out.println("Das Medium mit dem Titel: " + medium.titel + " wurde erfolgreich ausgemustert.");
+                    return "Das Medium mit dem Titel: " + medium.titel + "wurde erfolgreich ausgemustert.";
                }
-                break;
-            } else {
-                System.out.println("Medium wurde nicht gefunden!");
+
             }
         }
-      
-        updateMedienInDatei();
+
+        System.out.println("Medium wurde nicht gefunden!");
+        return "Medium wurde nicht gefunden!";
     }
               
 

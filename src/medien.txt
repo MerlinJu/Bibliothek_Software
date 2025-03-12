@@ -1,7 +1,3 @@
-Bat Out of Hell;Meat Loaf;1-1;DATENTRÄGER
-But Seriously;P. Collins;1-e;DATENTRÄGER
-Der Alchimist;P. Coelho;7-a;BUCH
-Der Herr der Ringe;J.R.R. Tolkien;2-f;BUCH
 Der König von Narnia;C.S. Lewis;2-c;BUCH
 Der kleine Prinz;A. de Saint-Exupery;2-e;BUCH
 E.T.;Universal Pictures;3-b;DIVERSE

@@ -130,6 +130,13 @@ public class MainFrame extends JFrame {
         });
 
         JButton removeMediumButton = createStyledButton("Medium ausmustern");
+        removeMediumButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MediumAusmusternPopup popup = new MediumAusmusternPopup(MainFrame.this);
+                popup.setVisible(true);
+            }
+        });
 
         // Buttons zum Panel hinzufügen
         panel.add(addMediumButton);
