@@ -1,7 +1,10 @@
-package backend;// Medium Basisklasse mit allen wichtigen Attributen von einem Medium
+package backend;
 
-import java.time.LocalDate; // Java time klasse um LocalDate zu nutzen
+import java.time.LocalDate; // Java time Klasse, um LocalDate zu nutzen
 
+/**
+ * <p>Medium Basisklasse mit allen wichtigen Attributen von einem Medium.</p>
+ */
 public class Medium {
     public String titel;
     public String autor;
@@ -10,7 +13,14 @@ public class Medium {
     public LocalDate ausleihe_datum;
     public LocalDate rueckgabe_datum;
 
-    // Konstruktor für nicht ausgeliehenes Medium (ohne Standplatz)
+    /**
+     * <p>Konstruktor für nicht ausgeliehenes Medium (ohne Standplatz).</p>
+     * @param titel Titel des Mediums
+     * @param autor Autor des Mediums
+     * @param medientyp Typ des Mediums
+     * @param ausleihe_datum Ausleihedatum des Mediums
+     * @param rueckgabe_datum Rückgabedatum des Mediums
+     */
     public Medium(String titel, String autor, Medientyp medientyp, LocalDate ausleihe_datum, LocalDate rueckgabe_datum) {
         this.titel = titel;
         this.autor = autor;
@@ -20,7 +30,13 @@ public class Medium {
         this.rueckgabe_datum = rueckgabe_datum;
     }
 
-    //Konstruktor für ausgeliehenes Medium (ohne Ausleih- und Rückgabedatum)
+    /**
+     * <p>Konstruktor für ausgeliehenes Medium (ohne Ausleih- und Rückgabedatum).</p>
+     * @param titel Titel des Mediums
+     * @param autor Autor des Mediums
+     * @param standplatz Standplatz des Mediums
+     * @param medientyp Typ des Mediums
+     */
     public Medium(String titel, String autor, String standplatz, Medientyp medientyp){
         this.titel = titel;
         this.autor = autor;
@@ -30,6 +46,11 @@ public class Medium {
         this.rueckgabe_datum = null;
     }
 
+    /**
+     * <p>Fügt alle vorhandenen Attribute eines {@link Medium} Objektes aneinander und fügt ein Trennzeichen ein, um
+     * einen String zu erhalten, dessen Formatierung dem CSV-Format entspricht.</p>
+     * @return String von Attributen eines {@link Medium} Objektes, getrennt mit ';'.
+     */
     @Override
     public String toString() {
 

@@ -1,39 +1,57 @@
 package frontend.popups;
 
-import backend.Bibliothek;
-import backend.Medientyp;
-
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
-// Design muss noch bearbeitet werden, aber sonst sollte es funktionieren
+import backend.Bibliothek;
+import backend.Medientyp;
+import backend.Medium;
 
 public class ÜberfälligeMedienPopup extends JDialog{
 
-    private JLabel überfälligeMedien;
+    private DefaultTableModel tableModel;
 
     public ÜberfälligeMedienPopup(JFrame parent) {
-        super(parent, "Überfällige Medien anzeigen", true);
+        super(parent, "Verfügbare Medien anzeigen", true);
         initializeUI();
     }
 
     private void initializeUI() {
-        JPanel mainPanel = new JPanel(new FlowLayout());
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        setLayout(new BorderLayout(10, 10));
 
-        // Label, in dem die gefilterten Medien angezeigt werden
-        überfälligeMedien = new JLabel();
-        überfälligeMedien.setText(Bibliothek.überfälligeMedien());
-        mainPanel.add(überfälligeMedien, BorderLayout.WEST);
+        JPanel topPanel = new JPanel(new BorderLayout());
 
-        // main panel zum dialog hinzufügen
-        add(mainPanel);
-        pack();
+        JButton schließenButton = new JButton("Schließen");
+        schließenButton.addActionListener(e -> dispose());
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.add(schließenButton);
 
+        topPanel.add(buttonPanel, BorderLayout.CENTER);
+        add(topPanel, BorderLayout.NORTH);
+
+        tableModel = new DefaultTableModel(new String[]{"Titel", "Ausleihe Datum", "Rückgabe Datum"}, 0);
+        JTable medienTabelle = new JTable(tableModel);
+        JScrollPane scrollPane = new JScrollPane(medienTabelle);
+        add(scrollPane, BorderLayout.CENTER);
+
+        updateTableData();
+
+        setSize(450, 300);
         setLocationRelativeTo(getParent()); // Zentriert das Popup relativ zum Hauptfenster
         setResizable(false);
+    }
+
+    private void updateTableData() {
+        tableModel.setRowCount(0); // Tabelle clearen
+
+        List<Medium> medienListe = Bibliothek.überfälligeMedien();
+        for (Medium medium : medienListe) {
+            tableModel.addRow(new Object[]{medium.titel, medium.ausleihe_datum, medium.rueckgabe_datum});
+        }
     }
 
     public static void main(String[] args) {
@@ -41,8 +59,7 @@ public class ÜberfälligeMedienPopup extends JDialog{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
 
-        ÜberfälligeMedienPopup popup = new ÜberfälligeMedienPopup(frame);
+        VerfügbareMedienPopup popup = new VerfügbareMedienPopup(frame);
         popup.setVisible(true);
     }
-
 }

@@ -1,7 +1,6 @@
 package frontend.popups;
 
 import backend.Bibliothek;
-import backend.Datenträger;
 import backend.Medientyp;
 
 import javax.swing.*;

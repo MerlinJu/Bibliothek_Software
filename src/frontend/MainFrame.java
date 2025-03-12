@@ -34,15 +34,6 @@ public class MainFrame extends JFrame {
         JPanel buttonPanel = createButtonPanel();
         mainPanel.add(buttonPanel, BorderLayout.CENTER);
 
-        JTextArea outputArea = new JTextArea();
-        outputArea.setEditable(false); // User kann Text nicht bearbeiten
-        outputArea.setFont(new Font("Monospaced", Font.PLAIN, 12)); // Schriftart anpassen
-        JScrollPane scrollPane = new JScrollPane(outputArea);
-        scrollPane.setBorder(BorderFactory.createTitledBorder("Ausgabe")); // Rahmen mit Titel
-        mainPanel.add(scrollPane, BorderLayout.SOUTH);
-
-        /** JavaDoc Kommentare */
-
         add(mainPanel);
     }
 
@@ -94,6 +85,13 @@ public class MainFrame extends JFrame {
         });
 
         JButton returnMediumButton = createStyledButton("Medium zurückgeben");
+        returnMediumButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MediumZurückgebenPopup popup = new MediumZurückgebenPopup(MainFrame.this);
+                popup.setVisible(true);
+            }
+        });
 
         JButton listAvailableMediaButton = createStyledButton("Verfügbare Medien anzeigen");
         listAvailableMediaButton.addActionListener(new ActionListener() {
@@ -123,8 +121,22 @@ public class MainFrame extends JFrame {
         });
 
         JButton changeLocationButton = createStyledButton("Standplatz ändern");
+        changeLocationButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                StandplatzÄndernPopup popup = new StandplatzÄndernPopup(MainFrame.this);
+                popup.setVisible(true);
+            }
+        });
 
         JButton removeMediumButton = createStyledButton("Medium ausmustern");
+        removeMediumButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MediumAusmusternPopup popup = new MediumAusmusternPopup(MainFrame.this);
+                popup.setVisible(true);
+            }
+        });
 
         // Buttons zum Panel hinzufügen
         panel.add(addMediumButton);
