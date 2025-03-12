@@ -11,3 +11,6 @@ The Deal;Elle Kennedy;8-i;BUCH
 Thriller;M. Jackson;1-a;DATENTRÄGER
 Titanic;Paramount Pictures;DIVERSE;2025-02-15;2025-03-17
 Twilight;S. Meyer;2-g;BUCH
+test1234;autor1234;DATENTRÄGER;2025-03-03;2025-04-02
+tester;Merlin;1-3;BUCH
+testerr;Merlin;1-4;DIVERSE

@@ -85,7 +85,7 @@ public class Bibliothek {
         }
     }
 
-    // getter methode um im frontend auf die Meiden Liste zuzugreifen
+    // getter methode um im frontend auf die Medien Liste zuzugreifen
     public static List<Medium> getMedienListe() {
         return medienListe;
     }
@@ -273,8 +273,8 @@ public class Bibliothek {
     }
 
     /**
-     *
-     * @param titel_zum_ausmustern Titel des Medium, welches ausgemustert werden soll
+     * <p>Entfernt ein verfügbares Medium aus der {@link #medienListe}.</p>
+     * @param titel_zum_ausmustern Titel des Mediums, welches ausgemustert werden soll
      */
     public static String vorhandenesMediumAusmustern(String titel_zum_ausmustern) {
 
@@ -370,6 +370,11 @@ public class Bibliothek {
         return sortedList;
     }
 
+
+    /**
+     * <p>{@code überfälligeMedien()} überprüft das Rückgabedatum aller Medien und filtert nach überfälligen Medien.</p>
+     * @return List aus allen überfälligen Medien Objekten mit Rückgabedatum und überfälligen Tagen im html-Format
+     */
     public static List<Medium> überfälligeMedien(){
         List<Medium> sortedList = new ArrayList<>(); // temporäre Liste für alle Medien, die zum Filter passen
 
