@@ -1,6 +1,6 @@
 package backend;
 
-import java.time.LocalDate; // Java time Klasse, um LocalDate zu nutzen
+import java.time.LocalDate;
 
 /**
  * <p>Medium Basisklasse mit allen wichtigen Attributen von einem Medium.</p>
@@ -10,51 +10,51 @@ public class Medium {
     public final String autor;
     public String standplatz;
     public final Medientyp medientyp;
-    public LocalDate ausleihe_datum;
-    public LocalDate rueckgabe_datum;
+    public LocalDate ausleiheDatum;
+    public LocalDate rueckgabeDatum;
     public Status status;
 
     /**
-     * <p>Konstruktor für nicht ausgeliehenes Medium (ohne Standplatz).</p>
+     * <p>Konstruktor für ausgeliehenes Medium (ohne Standplatz).</p>
      * @param titel Titel des Mediums
      * @param autor Autor des Mediums
-     * @param medientyp Typ des Mediums
-     * @param ausleihe_datum Ausleihedatum des Mediums
-     * @param rueckgabe_datum Rückgabedatum des Mediums
-     * @param status Status, ob Medium verfügbar, ausgeliehen oder vorgemerkt zum Ausmustern
+     * @param medientyp {@link Medientyp} des Mediums
+     * @param ausleiheDatum Ausleihdatum des Mediums
+     * @param rueckgabeDatum Rückgabedatum des Mediums
+     * @param status {@link Status}, ob Medium verfügbar, ausgeliehen oder vorgemerkt zum Ausmustern
      */
-    public Medium(String titel, String autor, Medientyp medientyp, LocalDate ausleihe_datum, LocalDate rueckgabe_datum, Status status) {
+    public Medium(String titel, String autor, Medientyp medientyp, LocalDate ausleiheDatum, LocalDate rueckgabeDatum, Status status) {
         this.titel = titel;
         this.autor = autor;
         this.standplatz = null;
         this.medientyp = medientyp;
-        this.ausleihe_datum = ausleihe_datum;
-        this.rueckgabe_datum = rueckgabe_datum;
+        this.ausleiheDatum = ausleiheDatum;
+        this.rueckgabeDatum = rueckgabeDatum;
         this.status = status;
     }
 
     /**
-     * <p>Konstruktor für ausgeliehenes Medium (ohne Ausleih- und Rückgabedatum).</p>
+     * <p>Konstruktor für nicht ausgeliehenes Medium (ohne Ausleih- und Rückgabedatum).</p>
      * @param titel Titel des Mediums
      * @param autor Autor des Mediums
      * @param standplatz Standplatz des Mediums
-     * @param medientyp Typ des Mediums
-     * @param status Status, ob Medium verfügbar, ausgeliehen oder vorgemerkt zum Ausmustern
+     * @param medientyp {@link Medientyp} des Mediums
+     * @param status {@link Status}, ob Medium verfügbar, ausgeliehen oder vorgemerkt zum Ausmustern
      */
     public Medium(String titel, String autor, String standplatz, Medientyp medientyp, Status status){
         this.titel = titel;
         this.autor = autor;
         this.standplatz = standplatz;
         this.medientyp = medientyp;
-        this.ausleihe_datum = null;
-        this.rueckgabe_datum = null;
+        this.ausleiheDatum = null;
+        this.rueckgabeDatum = null;
         this.status = status;
     }
 
     /**
      * <p>Fügt alle vorhandenen Attribute eines {@link Medium} Objektes aneinander und fügt ein Trennzeichen ein, um
      * einen String zu erhalten, dessen Formatierung dem CSV-Format entspricht.</p>
-     * @return String von Attributen eines {@link Medium} Objektes, getrennt mit ';'.
+     * @return String von Attributen eines {@link Medium} Objektes, getrennt mit Semikolon
      */
     @Override
     public String toString() {
@@ -63,8 +63,8 @@ public class Medium {
                 ";" + autor +
                 (standplatz != null ? ";" + standplatz : "") +
                 ";" + medientyp +
-                (ausleihe_datum != null ? ";" + ausleihe_datum: "") +
-                (rueckgabe_datum != null ? ";" + rueckgabe_datum : "") +
+                (ausleiheDatum != null ? ";" + ausleiheDatum : "") +
+                (rueckgabeDatum != null ? ";" + rueckgabeDatum : "") +
                 ";" + status;
     }
 

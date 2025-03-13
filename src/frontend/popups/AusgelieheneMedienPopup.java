@@ -3,8 +3,6 @@ package frontend.popups;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 import backend.Bibliothek;
@@ -17,7 +15,7 @@ public class AusgelieheneMedienPopup extends JDialog{
     private JComboBox<String> filterDropdown;
 
     public AusgelieheneMedienPopup(JFrame parent) {
-        super(parent, "Verfügbare Medien anzeigen", true);
+        super(parent, "Ausgeliehene Medien anzeigen", true);
         initializeUI();
     }
 
@@ -62,14 +60,14 @@ public class AusgelieheneMedienPopup extends JDialog{
         String selectedFilter = (String) filterDropdown.getSelectedItem();
         Medientyp filterTyp = switch (selectedFilter) {
             case "Buch" -> Medientyp.BUCH;
-            case "Datenträger" -> Medientyp.DATENTRÄGER;
+            case "Datenträger" -> Medientyp.DATENTRAEGER;
             case "Diverse" -> Medientyp.DIVERSE;
             case null, default -> null;
         };
 
         List<Medium> medienListe = Bibliothek.ausgelieheneMedien(filterTyp);
         for (Medium medium : medienListe) {
-            tableModel.addRow(new Object[]{medium.titel, medium.ausleihe_datum, medium.rueckgabe_datum});
+            tableModel.addRow(new Object[]{medium.titel, medium.ausleiheDatum, medium.rueckgabeDatum});
         }
     }
 

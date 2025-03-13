@@ -1,11 +1,8 @@
 package frontend.popups;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 import backend.Bibliothek;
@@ -65,7 +62,7 @@ public class VerfügbareMedienPopup extends JDialog{
         String selectedFilter = (String) filterDropdown.getSelectedItem();
         Medientyp filterTyp = switch (selectedFilter) {
             case "Buch" -> Medientyp.BUCH;
-            case "Datenträger" -> Medientyp.DATENTRÄGER;
+            case "Datenträger" -> Medientyp.DATENTRAEGER;
             case "Diverse" -> Medientyp.DIVERSE;
             case null, default -> null;
         };

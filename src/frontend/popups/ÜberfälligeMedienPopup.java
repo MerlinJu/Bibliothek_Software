@@ -3,12 +3,9 @@ package frontend.popups;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 import backend.Bibliothek;
-import backend.Medientyp;
 import backend.Medium;
 
 public class ÜberfälligeMedienPopup extends JDialog{
@@ -16,7 +13,7 @@ public class ÜberfälligeMedienPopup extends JDialog{
     private DefaultTableModel tableModel;
 
     public ÜberfälligeMedienPopup(JFrame parent) {
-        super(parent, "Verfügbare Medien anzeigen", true);
+        super(parent, "Überfällige Medien anzeigen", true);
         initializeUI();
     }
 
@@ -50,7 +47,7 @@ public class ÜberfälligeMedienPopup extends JDialog{
 
         List<Medium> medienListe = Bibliothek.überfälligeMedien();
         for (Medium medium : medienListe) {
-            tableModel.addRow(new Object[]{medium.titel, medium.ausleihe_datum, medium.rueckgabe_datum});
+            tableModel.addRow(new Object[]{medium.titel, medium.ausleiheDatum, medium.rueckgabeDatum});
         }
     }
 

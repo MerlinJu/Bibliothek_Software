@@ -78,12 +78,6 @@ public class MediumZurückgebenPopup extends JDialog {
                     ueberfaelligIn.setText("Nicht überfällig");
                 }
 
-                // Funktoniert fast...
-                if(mediumMap.get(gewähltesMediumTitel).status == Status.AUSGELIEHEN_VORGEMERKT){
-                    mainPanel.remove(neuerStandplatzLabel);
-                    mainPanel.remove(neuerStandplatz);
-                }
-
             }
         });
 

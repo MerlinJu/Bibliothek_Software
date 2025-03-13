@@ -28,8 +28,7 @@ public class Bibliothek {
         return medienListe;
     }
 
-    // HINWEIS ausleihe Zeit, diese kann später dann evnetuell durch die EInstellungen abgeändert werden!
-    private static int ausleiheZeit_tage = 30;
+    private static int ausleihdauer = 30;
 
 
     /**
@@ -130,7 +129,7 @@ public class Bibliothek {
                 continue;
             }
 
-            if (!medium.status.equals(Status.VERFÜGBAR)) {
+            if (!medium.status.equals(Status.VORHANDEN)) {
                 System.out.println("Medium ist bereits ausgeliehen!");
                 return "Medium ist bereits ausgeliehen!";
             }
@@ -141,15 +140,15 @@ public class Bibliothek {
                     medium.autor,
                     medium.medientyp,
                     ausleihDatum,
-                    ausleihDatum.plusDays(ausleiheZeit_tage),
+                    ausleihDatum.plusDays(ausleihdauer),
                     Status.AUSGELIEHEN
             );
 
             // Ersetze das Medium in der Liste
             medienListe.set(i, ausgeliehenesMedium);
 
-            System.out.println("Rückgabedatum: " + ausgeliehenesMedium.rueckgabe_datum);
-            message = "Rückgabedatum: " + ausgeliehenesMedium.rueckgabe_datum;
+            System.out.println("Rückgabedatum: " + ausgeliehenesMedium.rueckgabeDatum);
+            message = "Rückgabedatum: " + ausgeliehenesMedium.rueckgabeDatum;
 
             mediumFound = true;
             break;
@@ -193,7 +192,7 @@ public class Bibliothek {
             medienListe.remove(medium); // Löscht "alte" Information
 
             // Überprüfung auf Überfälligkeit
-            if (medium.rueckgabe_datum.isBefore(LocalDate.now())){
+            if (medium.rueckgabeDatum.isBefore(LocalDate.now())){
                 message = "Medium zu spät zurückgegeben";
             } else{
                 message = "Medium erfolgreich zurückgegeben";
@@ -203,10 +202,10 @@ public class Bibliothek {
             if(medium.status == Status.AUSGELIEHEN_VORGEMERKT) {
                 message += " und ausgemustert";
             } else {
-                medium.ausleihe_datum = null;
-                medium.rueckgabe_datum = null;
+                medium.ausleiheDatum = null;
+                medium.rueckgabeDatum = null;
                 medium.standplatz = neuerStandplatz;
-                medium.status = Status.VERFÜGBAR;
+                medium.status = Status.VORHANDEN;
                 medienListe.add(medium); // Fügt "neue" Information ein
             }
             updateMedienInDatei();
@@ -240,7 +239,7 @@ public class Bibliothek {
         }
 
         // Erstellt ein neues Medium mit den angegebenen Parametern
-        Medium neuesMedium = new Medium(titelNeu, autorNeu, standplatzNeu, typNeu, Status.VERFÜGBAR);
+        Medium neuesMedium = new Medium(titelNeu, autorNeu, standplatzNeu, typNeu, Status.VORHANDEN);
 
         // fügt das neue Medium der Liste hinzu
         medienListe.add(neuesMedium);
@@ -266,7 +265,7 @@ public class Bibliothek {
 
             switch (medium.status){
 
-                case VERFÜGBAR:
+                case VORHANDEN:
                     medienListe.remove(medium);
                     updateMedienInDatei();
 
@@ -301,7 +300,7 @@ public class Bibliothek {
 
         for (Medium medium : medienListe){
 
-            if(medium.status != Status.VERFÜGBAR){
+            if(medium.status != Status.VORHANDEN){
                 continue;
             }
 
@@ -327,7 +326,7 @@ public class Bibliothek {
 
         for (Medium medium : medienListe){
 
-            if(medium.status == Status.VERFÜGBAR){
+            if(medium.status == Status.VORHANDEN){
                 continue;
             }
 
@@ -352,13 +351,13 @@ public class Bibliothek {
 
         for (Medium medium : medienListe){
             // Medien, die ausgeliehen sind und deren Rückgabedatum vor dem heutigen sind
-            if(medium.status != Status.VERFÜGBAR && medium.rueckgabe_datum.isBefore(LocalDate.now())){
+            if(medium.status != Status.VORHANDEN && medium.rueckgabeDatum.isBefore(LocalDate.now())){
                 sortedList.add(medium);
             }
         }
 
         // Nach Alphabet sortieren
-        sortedList.sort(Comparator.comparing(medium -> medium.rueckgabe_datum));
+        sortedList.sort(Comparator.comparing(medium -> medium.rueckgabeDatum));
         return sortedList;
     }
 
@@ -368,7 +367,7 @@ public class Bibliothek {
         for (Medium m : überfälligeMedien()) {
             if (m.equals(medium)) { // Objekt ebene vergleichen
                 return "Das Medium ist " +
-                        medium.rueckgabe_datum.until(LocalDate.now(), ChronoUnit.DAYS) +
+                        medium.rueckgabeDatum.until(LocalDate.now(), ChronoUnit.DAYS) +
                         " Tag(e) überfällig.";
             }
         }
