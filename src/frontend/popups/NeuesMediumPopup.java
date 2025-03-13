@@ -1,5 +1,6 @@
 package frontend.popups;
 
+import backend.Status;
 import backend.Bibliothek;
 import backend.Medientyp;
 
@@ -64,6 +65,7 @@ public class NeuesMediumPopup extends JDialog {
                     String autor = neuesMediumAutor.getText().trim();
                     String standplatz = neuesMediumStandplatz.getText().trim();
                     Medientyp typ = (Medientyp) neuesMediumTyp.getSelectedItem();
+                    Status status = Status.VERFÜGBAR;
 
                     // Überpruefen, ob alle Felder ausgefüllt sind
                     if (titel.isEmpty() || autor.isEmpty() || standplatz.isEmpty()) {
@@ -71,7 +73,7 @@ public class NeuesMediumPopup extends JDialog {
                     }
 
                     // Hier wird das neue Medium hinzugefuegt und ein String mit error oder erfolg returnd
-                    String result = Bibliothek.neuesMediumHinzufuegen(titel, autor, standplatz, typ);
+                    String result = Bibliothek.neuesMediumHinzufuegen(titel, autor, standplatz, typ, status);
 
                     // zeigt erfolg oder error als popup an
                     JOptionPane.showMessageDialog(null, result, "Meldung", JOptionPane.INFORMATION_MESSAGE);

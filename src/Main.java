@@ -12,7 +12,7 @@ public class Main extends Bibliothek {
         ladeMedienAusDatei();
 
         System.out.println("neues Medium Hinzufügen...");
-        neuesMediumHinzufuegen("testTITEL", "testAUTOR", "1-g", Medientyp.BUCH);
+        //neuesMediumHinzufuegen("testTITEL", "testAUTOR", "1-g", Medientyp.BUCH);
 
         // Medium wird durch den clear in ladeMedien nicht uebernommen
         LocalDate DatumHeute = LocalDate.now();

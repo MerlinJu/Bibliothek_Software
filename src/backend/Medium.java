@@ -12,6 +12,7 @@ public class Medium {
     public Medientyp medientyp;
     public LocalDate ausleihe_datum;
     public LocalDate rueckgabe_datum;
+    public Status status;
 
     /**
      * <p>Konstruktor für nicht ausgeliehenes Medium (ohne Standplatz).</p>
@@ -21,13 +22,14 @@ public class Medium {
      * @param ausleihe_datum Ausleihedatum des Mediums
      * @param rueckgabe_datum Rückgabedatum des Mediums
      */
-    public Medium(String titel, String autor, Medientyp medientyp, LocalDate ausleihe_datum, LocalDate rueckgabe_datum) {
+    public Medium(String titel, String autor, Medientyp medientyp, LocalDate ausleihe_datum, LocalDate rueckgabe_datum, Status status) {
         this.titel = titel;
         this.autor = autor;
         this.standplatz = null;
         this.medientyp = medientyp;
         this.ausleihe_datum = ausleihe_datum;
         this.rueckgabe_datum = rueckgabe_datum;
+        this.status = status;
     }
 
     /**
@@ -37,13 +39,14 @@ public class Medium {
      * @param standplatz Standplatz des Mediums
      * @param medientyp Typ des Mediums
      */
-    public Medium(String titel, String autor, String standplatz, Medientyp medientyp){
+    public Medium(String titel, String autor, String standplatz, Medientyp medientyp, Status status){
         this.titel = titel;
         this.autor = autor;
         this.standplatz = standplatz;
         this.medientyp = medientyp;
         this.ausleihe_datum = null;
         this.rueckgabe_datum = null;
+        this.status = status;
     }
 
     /**
@@ -59,7 +62,8 @@ public class Medium {
                 (standplatz != null ? ";" + standplatz : "") +
                 ";" + medientyp +
                 (ausleihe_datum != null ? ";" + ausleihe_datum: "") +
-                (rueckgabe_datum != null ? ";" + rueckgabe_datum : "");
+                (rueckgabe_datum != null ? ";" + rueckgabe_datum : "") +
+                ";" + status;
     }
 
 }

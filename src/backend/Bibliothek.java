@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import frontend.popups.NeuesMediumPopup;
-
 /**
  * Die Klasse {@code Bibliothek} verwaltet den Medienbestand und ermöglicht das Laden von Medien
  * aus einer Datei. Sie liest eine Datei, die Medieninformationen im CSV-Format enthält, und erstellt
@@ -24,11 +22,6 @@ public class Bibliothek {
      * Liste, welche immer den aktuellen Stand der {@code medien.txt} beinhaltet
      */
     private static List<Medium> medienListe = new ArrayList<>();
-
-    /**
-     * Liste mit Medien, die ausgemustert werden sollen, allerdings noch ausgeliehen sind
-     */
-    private static List<Medium> medienZumAusmustern = new ArrayList<>();
 
     // HINWEIS ausleihe Zeit, diese kann später dann evnetuell durch die EInstellungen abgeändert werden!
     private static int ausleiheZeit_tage = 30;
@@ -56,24 +49,26 @@ public class Bibliothek {
                 String[] teile = zeile.split(";");
 
                 // Da ein Medienobjekt 4 oder 5 Informationen haben kann, werden hier beide Fälle abgedeckt
-                if (teile.length == 4) {		//Bedingung für nicht ausgeliehene Medien
+                if (teile.length == 5) {		//Bedingung für nicht ausgeliehene Medien
                     String titel = teile[0];
                     String autor = teile[1];
                     String standplatz = teile[2];
                     Medientyp typ = Medientyp.valueOf(teile[3]);
+                    Status status = Status.valueOf(teile[4]);
 
-                    Medium medium = new Medium(titel, autor, standplatz, typ); // Objekt wird erstellt
+                    Medium medium = new Medium(titel, autor, standplatz, typ, status); // Objekt wird erstellt
                     medienListe.add(medium); // Objekt wird der ArrayList hinzugefügt
                 }
 
-                else if (teile.length == 5) {	//Bedingung für ausgeliehene Medien
+                else if (teile.length == 6) {	//Bedingung für ausgeliehene Medien
                     String titel = teile[0];
                     String autor = teile[1];
                     Medientyp typ = Medientyp.valueOf(teile[2]);
                     LocalDate ausleihe_datum = LocalDate.parse(teile[3]);
                     LocalDate rueckgabe_datum = LocalDate.parse(teile[4]);
+                    Status status = Status.valueOf(teile[5]);
 
-                    Medium medium = new Medium(titel, autor, typ, ausleihe_datum, rueckgabe_datum); // Objekt wird erstellt
+                    Medium medium = new Medium(titel, autor, typ, ausleihe_datum, rueckgabe_datum, status); // Objekt wird erstellt
                     medienListe.add(medium); // Objekt wird der ArrayList hinzugefügt
                 }
 
@@ -133,7 +128,7 @@ public class Bibliothek {
             Medium medium = medienListe.get(i);
 
             if (medium.titel.equals(mediumTitel)) {
-                if (medium.ausleihe_datum != null) {
+                if (medium.status == Status.AUSGELIEHEN || medium.status == Status.AUSGELIEHEN_VORGEMERKT) {
                     System.out.println("Medium ist bereits ausgeliehen!");
                     return "Medium ist bereits ausgeliehen!";
                 }
@@ -144,7 +139,8 @@ public class Bibliothek {
                         medium.autor,
                         medium.medientyp,
                         ausleihDatum,
-                        ausleihDatum.plusDays(ausleiheZeit_tage)
+                        ausleihDatum.plusDays(ausleiheZeit_tage),
+                        Status.AUSGELIEHEN
                 );
 
                 // Ersetze das Medium in der Liste
@@ -182,9 +178,6 @@ public class Bibliothek {
         String message = "";
         Boolean late = false;
 
-        // hier fehlt noch etwas: wenn ein Medium ausgemustert werden soll nach der rückgabe. Dann muss natürlich kein Standort mehr
-        // als Parameter mitgegeben werden
-
         // Überprüft den Namen des Standplatzes
         if(!standplatzValide(neuerStandplatz)) {
             return "Standplatz ist nicht valide!"; // Bricht ab bei ungültigem Format oder belegtem Standort
@@ -206,9 +199,8 @@ public class Bibliothek {
                 }
 
                 // Ist das Medium zum Ausmustern vorgemerkt?
-                if(medienZumAusmustern.contains(medium)) {	// Mustert das Medium aus
+                if(medium.status == Status.AUSGELIEHEN_VORGEMERKT) {	// Mustert das Medium aus
                     medienListe.remove(medium);
-                    medienZumAusmustern.remove(medium);
                     updateMedienInDatei();
                     if (!late) {
                         return "Medium erfolgreich zurückgegeben und ausgemustert!";
@@ -219,6 +211,7 @@ public class Bibliothek {
                     medium.ausleihe_datum = null;
                     medium.rueckgabe_datum = null;
                     medium.standplatz = neuerStandplatz;
+                    medium.status = Status.VERFÜGBAR;
                     medienListe.add(medium); // Fügt "neue" Information ein
                     updateMedienInDatei();
                     if (!late) {
@@ -241,11 +234,11 @@ public class Bibliothek {
      * @param standplatzNeu Standplatz des neuen Mediums
      * @param typNeu Medientyp des neuen Mediums
      */
-    public static String neuesMediumHinzufuegen(String titelNeu, String autorNeu, String standplatzNeu, Medientyp typNeu) {
+    public static String neuesMediumHinzufuegen(String titelNeu, String autorNeu, String standplatzNeu, Medientyp typNeu, Status statusNeu) {
         String message;
 
         // Erstellt ein neues Medium mit den angegebenen Parametern
-        Medium neuesMedium = new Medium(titelNeu, autorNeu, standplatzNeu, typNeu);
+        Medium neuesMedium = new Medium(titelNeu, autorNeu, standplatzNeu, typNeu, statusNeu);
 
         for (Medium medium : medienListe) {
             if (medium.titel.equals(neuesMedium.titel)) {
@@ -283,13 +276,12 @@ public class Bibliothek {
             if(medium.titel.equals(titel_zum_ausmustern)) {
 
                if (medium.ausleihe_datum != null) {
-                    // Sofern ein medium ausgeliehen ist ( ausliehedatum ist nur wenn ausgeliehen ein LocalDate Objekt, ansonsten ein String "null" )
+                   // Sofern ein medium ausgeliehen ist ( ausliehedatum ist nur wenn ausgeliehen ein LocalDate Objekt, ansonsten ein String "null" )
 
-                    medienZumAusmustern.add(medium);
-                    // HIER MUSS NOCH LOGIK HIN SOFERN ZURÜCKGEGEBEN
+                   medium.status = Status.AUSGELIEHEN_VORGEMERKT;
 
-                   System.out.println("Medium ist immomemt ausgeliehen, es wir ausgemustert sobald es zurückgegeben wurde.");
-                   return "Medium ist immomemt ausgeliehen, es wir ausgemustert sobald es zurückgegeben wurde.";
+                   System.out.println("Medium ist momentan ausgeliehen. Es wird ausgemustert, sobald es zurückgegeben wurde.");
+                   return "Medium ist momentan ausgeliehen. Es wird ausgemustert, sobald es zurückgegeben wurde.";
 
                } else {
                     // Sofern ein medium nicht ausgeliehen ist, kann es sofort ausgemustert werden
