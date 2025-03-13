@@ -24,10 +24,8 @@ public class StandplatzÄndernPopup extends JDialog {
         JPanel mainPanel = new JPanel(new GridLayout(3, 2, 10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-
-        List<Medium> medienListe = Bibliothek.getMedienListe();
         List<String> medienListeTitel = new ArrayList<>();
-        for (Medium medium : medienListe) {
+        for (Medium medium : Bibliothek.verfügbareMedien(null)) {
             medienListeTitel.add(medium.titel);
         }
         mediumDropdown = new JComboBox<>(new Vector<>(medienListeTitel));

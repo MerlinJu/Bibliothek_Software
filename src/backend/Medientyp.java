@@ -1,6 +1,8 @@
 package backend;
 
-// Medientyp Klasse, welche nur diese 3 Werte akzeptiert um Fehler zu vermeiden
+/**
+ * <p>Drei verschiedene Typen für ein Medium {@code BUCH}, {@code DATENTRÄGER} und {@code DIVERSE}.</p>
+ */
 public enum Medientyp {
     BUCH, DATENTRÄGER, DIVERSE
 }

@@ -63,14 +63,12 @@ public class VerfügbareMedienPopup extends JDialog{
         tableModel.setRowCount(0); // Tabelle clearen
 
         String selectedFilter = (String) filterDropdown.getSelectedItem();
-        Medientyp filterTyp = null;
-        if ("Buch".equals(selectedFilter)) {
-            filterTyp = Medientyp.BUCH;
-        } else if ("Datenträger".equals(selectedFilter)) {
-            filterTyp = Medientyp.DATENTRÄGER;
-        } else if ("Diverse".equals(selectedFilter)) {
-            filterTyp = Medientyp.DIVERSE;
-        }
+        Medientyp filterTyp = switch (selectedFilter) {
+            case "Buch" -> Medientyp.BUCH;
+            case "Datenträger" -> Medientyp.DATENTRÄGER;
+            case "Diverse" -> Medientyp.DIVERSE;
+            case null, default -> null;
+        };
 
         List<Medium> medienListe = Bibliothek.verfügbareMedien(filterTyp);
         for (Medium medium : medienListe) {

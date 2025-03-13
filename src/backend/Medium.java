@@ -21,6 +21,7 @@ public class Medium {
      * @param medientyp Typ des Mediums
      * @param ausleihe_datum Ausleihedatum des Mediums
      * @param rueckgabe_datum Rückgabedatum des Mediums
+     * @param status Status, ob Medium verfügbar, ausgeliehen oder vorgemerkt zum Ausmustern
      */
     public Medium(String titel, String autor, Medientyp medientyp, LocalDate ausleihe_datum, LocalDate rueckgabe_datum, Status status) {
         this.titel = titel;
@@ -38,6 +39,7 @@ public class Medium {
      * @param autor Autor des Mediums
      * @param standplatz Standplatz des Mediums
      * @param medientyp Typ des Mediums
+     * @param status Status, ob Medium verfügbar, ausgeliehen oder vorgemerkt zum Ausmustern
      */
     public Medium(String titel, String autor, String standplatz, Medientyp medientyp, Status status){
         this.titel = titel;
