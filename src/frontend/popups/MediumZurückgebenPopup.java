@@ -2,6 +2,7 @@ package frontend.popups;
 
 import backend.Bibliothek;
 import backend.Medium;
+import backend.Status;
 
 import javax.swing.*;
 import java.awt.*;
@@ -59,6 +60,12 @@ public class MediumZurückgebenPopup extends JDialog {
             ueberfaelligIn.setText("Nicht überfällig");
         }
 
+        JLabel neuerStandplatzLabel = new JLabel("neuer Standplatz:");
+        mainPanel.add(neuerStandplatzLabel);
+
+        JTextField neuerStandplatz = new JTextField();
+        mainPanel.add(neuerStandplatz);
+
         ausgelieheneMedienDropdown.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -71,16 +78,14 @@ public class MediumZurückgebenPopup extends JDialog {
                     ueberfaelligIn.setText("Nicht überfällig");
                 }
 
+                // Funktoniert fast...
+                if(mediumMap.get(gewähltesMediumTitel).status == Status.AUSGELIEHEN_VORGEMERKT){
+                    mainPanel.remove(neuerStandplatzLabel);
+                    mainPanel.remove(neuerStandplatz);
+                }
+
             }
         });
-
-
-
-        JLabel neuerStandplatzLabel = new JLabel("neuer Standplatz:");
-        mainPanel.add(neuerStandplatzLabel);
-
-        JTextField neuerStandplatz = new JTextField();
-        mainPanel.add(neuerStandplatz);
 
         // Buttons
 
@@ -99,16 +104,21 @@ public class MediumZurückgebenPopup extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    String mediumTitel = (String) ausgelieheneMedienDropdown.getSelectedItem();
+                    String gewähltesMediumTitel = (String) ausgelieheneMedienDropdown.getSelectedItem();
                     String standplatz = neuerStandplatz.getText().trim();
 
-                    if (standplatz.isEmpty()) {
-                        throw new IllegalArgumentException("Alle Felder müssen ausgefüllt sein!");
+                    if(mediumMap.get(gewähltesMediumTitel).status != Status.AUSGELIEHEN_VORGEMERKT) {
+                        if (standplatz.isEmpty()) {
+                            throw new IllegalArgumentException("Alle Felder müssen ausgefüllt sein!");
+                        } else if (Bibliothek.standplatzUngültig(standplatz)) {
+                            throw new IllegalArgumentException("Das Format des Standplatzes ist ungültig!");
+                        }
                     }
 
-                    String result = Bibliothek.mediumZurückgeben(mediumTitel, standplatz);
+                    String result = Bibliothek.mediumZurückgeben(gewähltesMediumTitel, standplatz);
 
                     JOptionPane.showMessageDialog(null, result, "Meldung", JOptionPane.INFORMATION_MESSAGE);
+                    dispose();
                 } catch (StringIndexOutOfBoundsException SIOOBe) {
                     // Beispiel für eine Ausnahme, die beim Überschreiten der maximalen Textlänge ausgelöst wird
                     JOptionPane.showMessageDialog(null, "Der eingegebene Text ist zu lang!", "Fehler", JOptionPane.ERROR_MESSAGE);

@@ -79,7 +79,7 @@ public class MainFrame extends JFrame {
         lendMediumButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                AusleihenPopup popup = new AusleihenPopup(MainFrame.this);
+                MediumAusleihenPopup popup = new MediumAusleihenPopup(MainFrame.this);
                 popup.setVisible(true);
             }
         });

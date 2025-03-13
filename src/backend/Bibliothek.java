@@ -23,6 +23,11 @@ public class Bibliothek {
      */
     private static List<Medium> medienListe = new ArrayList<>();
 
+    // getter methode um im frontend auf die Medien Liste zuzugreifen
+    public static List<Medium> getMedienListe() {
+        return medienListe;
+    }
+
     // HINWEIS ausleihe Zeit, diese kann später dann evnetuell durch die EInstellungen abgeändert werden!
     private static int ausleiheZeit_tage = 30;
 
@@ -79,12 +84,6 @@ public class Bibliothek {
             System.out.println("Fehler beim Laden der Datei: " + e.getMessage());
         }
     }
-
-    // getter methode um im frontend auf die Medien Liste zuzugreifen
-    public static List<Medium> getMedienListe() {
-        return medienListe;
-    }
-
 
     /**
      * <p>{@code updateMedien()} überschreibt die {@code medien.txt} mit dem aktuellen Stand der {@link #medienListe}.</p>
@@ -179,10 +178,10 @@ public class Bibliothek {
     public static String mediumZurückgeben(String mediumZurückTitel, String neuerStandplatz){
         String message = "";
 
-        // Überprüft den Namen des Standplatzes
-        if(standplatzUngültig(neuerStandplatz)) {
-            return "Standplatz ist nicht valide!"; // Bricht ab bei ungültigem Format oder belegtem Standort
-        }
+//        // Überprüft den Namen des Standplatzes
+//        if(standplatzUngültig(neuerStandplatz)) {
+//            return "Standplatz ist nicht valide!"; // Bricht ab bei ungültigem Format oder belegtem Standort
+//        }
 
         // Wo liegt gesuchtes Medium in der medienListe?
         for(Medium medium : medienListe){
@@ -276,6 +275,7 @@ public class Bibliothek {
 
                 case AUSGELIEHEN:
                     medium.status = Status.AUSGELIEHEN_VORGEMERKT;
+                    updateMedienInDatei();
 
                     System.out.println("Medium ist momentan ausgeliehen. Es wird ausgemustert, sobald es zurückgegeben wurde.");
                     return "Medium ist momentan ausgeliehen. Es wird ausgemustert, sobald es zurückgegeben wurde.";
@@ -411,7 +411,7 @@ public class Bibliothek {
      * @param standplatz Standplatz welcher überprüft werden soll
      * @return Boolean Wert, ob der Name des Standplatzes valide ist
      */
-    private static boolean standplatzUngültig(String standplatz) {
+    public static boolean standplatzUngültig(String standplatz) {
 
         // Prüfung auf korrektes Format
         if(!standplatz.matches("^[a-z0-9]+-[a-z0-9]+$")){

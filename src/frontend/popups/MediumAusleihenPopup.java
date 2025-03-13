@@ -11,11 +11,11 @@ import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.util.Vector;
 
-public class AusleihenPopup extends JDialog {
+public class MediumAusleihenPopup extends JDialog {
 
     JLabel rueckgabeDatumLabel;
 
-    public AusleihenPopup(JFrame parent) {
+    public MediumAusleihenPopup(JFrame parent) {
         super(parent, "Medium ausleihen", true);
         initializeUI();
     }
@@ -43,15 +43,11 @@ public class AusleihenPopup extends JDialog {
 
         Bibliothek.ladeMedienAusDatei();
         Vector<String> MediumOptions = new Vector<>();
-        for (Medium medium : Bibliothek.getMedienListe()) {
+        for (Medium medium : Bibliothek.verfügbareMedien(null)) {
             MediumOptions.add(medium.titel);
         }
 
-
-        // HINWEIS -> Eventuell später ändern zu Medien die im Bestannd sind und wirklich ausgeliehen werden können
-
-        // gibt alle medien wieder aus der Medienliste ( also auch ausgeliehene )
-        mainPanel.add(new JLabel("Titel des zu ausleihenden Buches"));
+        mainPanel.add(new JLabel("Titel des auszuleihenden Buches"));
         ausleiheTitelField = new JComboBox<>(MediumOptions);
         mainPanel.add(ausleiheTitelField);
 
@@ -99,7 +95,7 @@ public class AusleihenPopup extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 try {
                     LocalDate ausleiheDatum = (LocalDate) ausleiheDatumField.getSelectedItem();
-                    String ausleiheTitel =  (String) ausleiheTitelField.getSelectedItem();
+                    String ausleiheTitel = (String) ausleiheTitelField.getSelectedItem();
 
                     String message = Bibliothek.mediumAusleihen(ausleiheTitel, ausleiheDatum);
 
@@ -134,7 +130,7 @@ public class AusleihenPopup extends JDialog {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
 
-        AusleihenPopup popup = new AusleihenPopup(frame);
+        MediumAusleihenPopup popup = new MediumAusleihenPopup(frame);
         popup.setVisible(true);
     }
 

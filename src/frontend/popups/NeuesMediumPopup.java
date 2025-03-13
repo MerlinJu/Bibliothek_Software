@@ -84,6 +84,7 @@ public class NeuesMediumPopup extends JDialog {
                     // Allgemeiner Block für alle anderen Fehler
                     JOptionPane.showMessageDialog(null, "Ein unbekannter Fehler ist aufgetreten: " + exc.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
                 }
+                dispose();
 
             }
         });

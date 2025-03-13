@@ -6,10 +6,10 @@ import java.time.LocalDate; // Java time Klasse, um LocalDate zu nutzen
  * <p>Medium Basisklasse mit allen wichtigen Attributen von einem Medium.</p>
  */
 public class Medium {
-    public String titel;
-    public String autor;
+    public final String titel;
+    public final String autor;
     public String standplatz;
-    public Medientyp medientyp;
+    public final Medientyp medientyp;
     public LocalDate ausleihe_datum;
     public LocalDate rueckgabe_datum;
     public Status status;
