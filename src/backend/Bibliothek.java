@@ -9,40 +9,44 @@ import java.util.List;
 
 /**
  * Die Klasse {@code Bibliothek} verwaltet den Medienbestand und ermöglicht das Laden von Medien
- * aus einer Datei. Sie liest eine Datei, die Medieninformationen im CSV-Format enthält, und erstellt
+ * aus und in eine Datei. Sie liest eine Datei, die Medieninformationen im CSV-Format enthält, und erstellt
  * eine Liste von {@link Medium}-Objekten.
  * <p>
  * Die Medieninformationen beinhalten den Titel, Autor, Standplatz und den Medientyp.
  * </p>
  */
 public class Bibliothek {
-    private final static String dateipfad = "src/medien.txt"; // Pfad zu der Mediendatei, welche den kompletten Medienbestand beinhaltet
+
+    // Pfad zu der Mediendatei, welche den kompletten Medienbestand beinhaltet
+    private final static String dateipfad = "src/medien.txt";
 
     /**
-     * Liste, welche immer den aktuellen Stand der {@code medien.txt} beinhaltet
+     * <p>Liste von {@link Medium}-Objekten, in welcher die Attribute dieser Objekte durch Methoden in der
+     * {@link Bibliothek}-Klasse verändert werden können.</p>
+     * <p>Die Objektinformationen in der {@code medien.txt} Datei werden bei Start des Programms mit
+     * {@link #ladeMedienAusDatei()} in die {@code medienListe} geladen und beim Schließen des Programms mit
+     * {@link #schreibeMedienInDatei()} werden alle Objektattribute in selbige Datei überschrieben.</p>
      */
     private static List<Medium> medienListe = new ArrayList<>();
 
-    // getter methode um im frontend auf die Medien Liste zuzugreifen
+    /**
+     * <p>Getter Methode um vom Frontend auf die Medien Liste zuzugreifen.</p>
+     * @return {@link #medienListe}
+     */
     public static List<Medium> getMedienListe() {
         return medienListe;
     }
 
-    private static int ausleihdauer = 30;
+    private static int ausleihdauer = 30;   // Dauer einer Ausleihperiode
 
 
     /**
-     * <p>Die Methode {@code ladeMedien()} lädt die Medien aus der Datei {@code medien.txt} und
-     * erstellt eine Liste von {@link Medium}-Objekten.</p>
-     * <p>Jede Zeile der Datei sollte die folgenden Informationen im CSV-Format enthalten:
-     * Titel, Autor, Medientyp.
-     * Zusätzlich enthalten die Zeilen entweder einen Standplatz oder ein Ausleih- sowie Rückgabedatum.</p>
-     * <p>Diese Methode soll beim Start des Programms ausgeführt werden.</p>
+     * <p>Lädt die Inhalte pro Zeile aus der Datei {@code medien.txt} und erstellt {@link Medium}-Objekte, welche zur
+     * {@link #medienListe} hinzugefügt werden.
+     * Eine Zeile enthält alle Attribute des Objektes getrennt mit einem Semikolon.</p>
+     * <p>Diese Methode wird nur beim Start des Programms ausgeführt.</p>
      */
     public static void ladeMedienAusDatei() {
-
-        // Die Liste wird komplett gelöscht, da sie ab hier komplett neu angelegt wird
-        medienListe.clear();
 
         // Der BufferedReader liest die medien.txt
         try (BufferedReader br = new BufferedReader(new FileReader(dateipfad) )) {
@@ -52,8 +56,8 @@ public class Bibliothek {
             while ((zeile = br.readLine()) != null) {
                 String[] teile = zeile.split(";");
 
-                // Da ein Medienobjekt 4 oder 5 Informationen haben kann, werden hier beide Fälle abgedeckt
-                if (teile.length == 5) {		//Bedingung für nicht ausgeliehene Medien
+                // Überladener Medium-Konstruktor kann 5 oder 6 Parameter entgegennehmen
+                if (teile.length == 5) {		//Bedingung für nicht ausgeliehenes Medium
                     String titel = teile[0];
                     String autor = teile[1];
                     String standplatz = teile[2];
@@ -64,7 +68,7 @@ public class Bibliothek {
                     medienListe.add(medium); // Objekt wird der ArrayList hinzugefügt
                 }
 
-                else if (teile.length == 6) {	//Bedingung für ausgeliehene Medien
+                else if (teile.length == 6) {	//Bedingung für ausgeliehenes Medium
                     String titel = teile[0];
                     String autor = teile[1];
                     Medientyp typ = Medientyp.valueOf(teile[2]);
@@ -85,14 +89,12 @@ public class Bibliothek {
     }
 
     /**
-     * <p>{@code updateMedien()} überschreibt die {@code medien.txt} mit dem aktuellen Stand der {@link #medienListe}.</p>
-     *
-     * <p>Diese Methode wird immer dann aufgerufen, wenn die {@link #medienListe} geändert wird.</p>
+     * <p>Überschreibt die {@code medien.txt} mit dem aktuellen Stand der {@link #medienListe}.</p>
+     * <p>Diese Methode wird nur beim Schließen des Programms ausgeführt.</p>
      */
-    private static void updateMedienInDatei() {
-        System.out.println(medienListe);
+    public static void schreibeMedienInDatei() {
 
-        // returnd, falls die medienListe leer ist, um eine Leere Überschreibung zu vermeiden
+        // Beendet die Ausführung der Methode, falls die medienListe leer ist, um eine Leere Überschreibung zu vermeiden
         if (medienListe.isEmpty()) {
             System.out.println("Keine Medien zu speichern");
             return;
@@ -104,6 +106,7 @@ public class Bibliothek {
         // Der BufferedReader schreibt die medien.txt komplett neu
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(dateipfad))){
             for(Medium medium : medienListe) {
+                // Schreibt alle Attribute eines Medium-Objektes im CSV-Format in eine Zeile
                 bw.write(medium.toString());
                 bw.newLine();
             }
@@ -114,27 +117,27 @@ public class Bibliothek {
     }
 
     /**
-     * Weist einem Medium ein Ausleih- sowie Rückgabedatum zu und entfernt den Standplatz.
+     * <p>Leiht ein vorhandenes Medium aus, indem es einem Medium ein Ausleih- sowie Rückgabedatum zuweist und den
+     * Standplatz entfernt.</p>
      * @param mediumTitel Titel des Mediums, das ausgeliehen werden soll
      * @param ausleihDatum Datum der Ausleihe
+     * @return Meldung über Rückgabedatum oder fehlgeschlagene Ausleihe
      */
     public static String mediumAusleihen(String mediumTitel, LocalDate ausleihDatum) {
-        String message = "";
-        boolean mediumFound = false;
 
         for (int i = 0; i < medienListe.size(); i++) {
             Medium medium = medienListe.get(i);
 
+            // Überspringt nicht zutreffende Medien, um unnötige Iterationen zu vermeiden
             if(!medium.titel.equals(mediumTitel)){
                 continue;
             }
 
             if (!medium.status.equals(Status.VORHANDEN)) {
-                System.out.println("Medium ist bereits ausgeliehen!");
                 return "Medium ist bereits ausgeliehen!";
             }
 
-            // Erstelle eine neue "ausgeliehene" Version des Mediums
+            // Erstellt eine neue "ausgeliehene" Version des Mediums
             Medium ausgeliehenesMedium = new Medium(
                     medium.titel,
                     medium.autor,
@@ -144,30 +147,19 @@ public class Bibliothek {
                     Status.AUSGELIEHEN
             );
 
-            // Ersetze das Medium in der Liste
+            // Ersetze das Medium in der Liste mit den neuen Attributen
             medienListe.set(i, ausgeliehenesMedium);
 
-            System.out.println("Rückgabedatum: " + ausgeliehenesMedium.rueckgabeDatum);
-            message = "Rückgabedatum: " + ausgeliehenesMedium.rueckgabeDatum;
-
-            mediumFound = true;
-            break;
+            return "Rückgabedatum: " + ausgeliehenesMedium.rueckgabeDatum;
         }
 
         // Fehlermeldung, falls gesuchtes Medium nicht gefunden wird
-        if(!mediumFound) {
-            System.out.println("Medium nicht gefunden");
-            message = "Medium nicht gefunden!";
-        }
-
-        updateMedienInDatei();
-
-        return message;
+        return "Medium nicht gefunden!";
     }
 
 
     /**
-     * <p>{@code mediumZurückgeben()} fügt ein ausgeliehenes Medium wieder dem Bestand hinzu, indem es Ausleih- und Rückgabedatum
+     * <p>Fügt ein ausgeliehenes Medium wieder dem Bestand hinzu, indem es einem Medium ein Ausleih- und Rückgabedatum
      * entfernt sowie einen neuen Standplatz zuweist.</p>
      * <p>Ist das zurückgegebene Medium überfällig, wird eine Meldung ausgegeben.</p>
      * <p>Es findet eine Prüfung statt, ob ein Medium nach der Rückgabe ausgemustert werden soll.</p>
@@ -175,16 +167,15 @@ public class Bibliothek {
      * @param neuerStandplatz Standplatz, an welchem das Medium platziert werden soll
      */
     public static String mediumZurückgeben(String mediumZurückTitel, String neuerStandplatz){
-        String message = "";
+        String message;
 
-        // Wo liegt gesuchtes Medium in der medienListe?
-        for(Medium medium : medienListe){
+        for(int i = 0; i < medienListe.size(); i++){
+            Medium medium = medienListe.get(i);
 
+            // Überspringt nicht zutreffende Medien, um unnötige Iterationen zu vermeiden
             if(!medium.titel.equals(mediumZurückTitel)){
                 continue;
             }
-
-            medienListe.remove(medium); // Löscht "alte" Information
 
             // Überprüfung auf Überfälligkeit
             if (medium.rueckgabeDatum.isBefore(LocalDate.now())){
@@ -195,19 +186,26 @@ public class Bibliothek {
 
             // Ist das Medium zum Ausmustern vorgemerkt?
             if(medium.status == Status.AUSGELIEHEN_VORGEMERKT) {
+                // Entfernt das Medium aus der Liste
+                medienListe.remove(i);
+
                 message += " und ausgemustert";
             } else {
-                medium.ausleiheDatum = null;
-                medium.rueckgabeDatum = null;
-                medium.standplatz = neuerStandplatz;
-                medium.status = Status.VORHANDEN;
-                medienListe.add(medium); // Fügt "neue" Information ein
+                // Erstellt eine neue "ausgeliehene" Version des Mediums
+                Medium zurueckgegebenesMedium = new Medium(
+                        medium.titel,
+                        medium.autor,
+                        neuerStandplatz,
+                        medium.medientyp,
+                        Status.VORHANDEN
+                );
+
+                // Ersetze das Medium in der Liste
+                medienListe.set(i, zurueckgegebenesMedium);
             }
-            updateMedienInDatei();
             return message;
         }
         // Fehlermeldung, falls gesuchtes Medium nicht gefunden wird
-        System.out.println("Medium nicht gefunden");
         return "Medium nicht gefunden";
     }
 
@@ -240,7 +238,7 @@ public class Bibliothek {
         medienListe.add(neuesMedium);
 
         // aktualisiert die Datei mit der aktualisierten Liste
-        updateMedienInDatei();
+        //schreibeMedienInDatei();
 
         return "Neues Medium hinzugefügt!";
     }
@@ -262,14 +260,14 @@ public class Bibliothek {
 
                 case VORHANDEN:
                     medienListe.remove(medium);
-                    updateMedienInDatei();
+                    //schreibeMedienInDatei();
 
                     System.out.println("Das Medium mit dem Titel: " + medium.titel + " wurde erfolgreich ausgemustert.");
                     return "Das Medium mit dem Titel: " + medium.titel + "wurde erfolgreich ausgemustert.";
 
                 case AUSGELIEHEN:
                     medium.status = Status.AUSGELIEHEN_VORGEMERKT;
-                    updateMedienInDatei();
+                    //schreibeMedienInDatei();
 
                     System.out.println("Medium ist momentan ausgeliehen. Es wird ausgemustert, sobald es zurückgegeben wurde.");
                     return "Medium ist momentan ausgeliehen. Es wird ausgemustert, sobald es zurückgegeben wurde.";
@@ -386,7 +384,6 @@ public class Bibliothek {
 
             if(medium.titel.equals(zuÄnderndesMedium)){
                 medium.standplatz = neuerStandplatz; // Ändert den Standplatz
-                updateMedienInDatei();
                 return "Standplatz erfolgreich geändert!";
             }
         }

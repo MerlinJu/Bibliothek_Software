@@ -4,6 +4,9 @@ import java.time.LocalDate;
 
 /**
  * <p>Medium Basisklasse mit allen wichtigen Attributen von einem Medium.</p>
+ * <p>Ein Medium-Objekt kann entweder 5 oder 6 Attribute erhalten:</p>
+ * <li>Für ausgeliehene Medien: {@link #Medium(String, String, Medientyp, LocalDate, LocalDate, Status)}</li>
+ * <li>Für Medien im Bestand: {@link #Medium(String, String, String, Medientyp, Status)}</li>
  */
 public class Medium {
     public final String titel;

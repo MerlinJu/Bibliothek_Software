@@ -1,14 +1,11 @@
 Der König von Narnia;C.S. Lewis;BUCH;2025-03-13;2024-04-12;AUSGELIEHEN
 Der kleine Prinz;A. de Saint-Exupery;BUCH;2025-03-13;2025-04-12;AUSGELIEHEN
 E.T.;Universal Pictures;DIVERSE;2025-03-13;2025-04-12;AUSGELIEHEN
-Harry Potter und der Stein der Weisen;J.K. Rowling;2-h;BUCH;VORHANDEN
-Independence Day;20th Century Fox;4-w;DIVERSE;VORHANDEN
+Harry Potter und der Stein der Weisen;J.K. Rowling;3-b;BUCH;VORHANDEN
 Mensch;H. Grönemeyer;DATENTRAEGER;2025-04-13;2024-05-13;AUSGELIEHEN
-Sakrileg;D. Brown;2-b;BUCH;VORHANDEN
-The Deal;Elle Kennedy;8-i;BUCH;VORHANDEN
+Sakrileg;D. Brown;5-f;BUCH;VORHANDEN
 Thriller;M. Jackson;1-a;DATENTRAEGER;VORHANDEN
 Titanic;Paramount Pictures;3-f;DIVERSE;VORHANDEN
 Twilight;S. Meyer;2-g;BUCH;VORHANDEN
-a;a;3-u;BUCH;VORHANDEN
 tester;Merlin;1-3;BUCH;VORHANDEN
 testerr;Merlin;1-4;DIVERSE;VORHANDEN

@@ -165,6 +165,9 @@ public class MainFrame extends JFrame {
     public static void main(String[] args) {
         Bibliothek.ladeMedienAusDatei();
 
+        // Beim Beenden des Programms wird der Inhalt der medienListe in die medien.txt Datei überschrieben
+        Runtime.getRuntime().addShutdownHook(new Thread(Bibliothek::schreibeMedienInDatei));
+
         SwingUtilities.invokeLater(() -> {
             MainFrame frame = new MainFrame();
             frame.setVisible(true);
