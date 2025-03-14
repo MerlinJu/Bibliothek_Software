@@ -30,7 +30,7 @@ public class MediumAusmusternPopup extends JDialog {
 
         mediumDropdown = new JComboBox<>(medienTitelListe);
 
-        mainPanel.add(new JLabel("Medium auswählen:"));
+        mainPanel.add(new JLabel("Medium:"));
         mainPanel.add(mediumDropdown);
 
         // Schließen-Button

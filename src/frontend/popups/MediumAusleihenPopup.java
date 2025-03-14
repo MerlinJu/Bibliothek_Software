@@ -36,7 +36,7 @@ public class MediumAusleihenPopup extends JDialog {
             dateOptions.add(today.plusDays(i));
         }
 
-        mainPanel.add(new JLabel("Ausleihedatum (TT.MM.JJJJ)"));
+        mainPanel.add(new JLabel("Ausleihedatum:"));
         ausleiheDatumField = new JComboBox<>(dateOptions);
         ausleiheDatumField.setSelectedItem(today);
         mainPanel.add(ausleiheDatumField);
@@ -47,7 +47,7 @@ public class MediumAusleihenPopup extends JDialog {
             MediumOptions.add(medium.titel);
         }
 
-        mainPanel.add(new JLabel("Titel des auszuleihenden Buches"));
+        mainPanel.add(new JLabel("Medium zum ausleihen:"));
         ausleiheTitelField = new JComboBox<>(MediumOptions);
         mainPanel.add(ausleiheTitelField);
 

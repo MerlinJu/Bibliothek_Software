@@ -177,11 +177,6 @@ public class Bibliothek {
     public static String mediumZurückgeben(String mediumZurückTitel, String neuerStandplatz){
         String message = "";
 
-//        // Überprüft den Namen des Standplatzes
-//        if(standplatzUngültig(neuerStandplatz)) {
-//            return "Standplatz ist nicht valide!"; // Bricht ab bei ungültigem Format oder belegtem Standort
-//        }
-
         // Wo liegt gesuchtes Medium in der medienListe?
         for(Medium medium : medienListe){
 
@@ -366,9 +361,8 @@ public class Bibliothek {
         System.out.println(überfälligeMedien());
         for (Medium m : überfälligeMedien()) {
             if (m.equals(medium)) { // Objekt ebene vergleichen
-                return "Das Medium ist " +
-                        medium.rueckgabeDatum.until(LocalDate.now(), ChronoUnit.DAYS) +
-                        " Tag(e) überfällig.";
+                return medium.rueckgabeDatum.until(LocalDate.now(), ChronoUnit.DAYS) +
+                        " Tag(e) überfällig";
             }
         }
 

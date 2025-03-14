@@ -32,10 +32,10 @@ public class StandplatzÄndernPopup extends JDialog {
 
         JTextField neuerStandplatzField = new JTextField();
 
-        mainPanel.add(new JLabel("Medium auswählen:"));
+        mainPanel.add(new JLabel("Medium:"));
         mainPanel.add(mediumDropdown);
 
-        mainPanel.add(new JLabel("Neuer Standplatz"));
+        mainPanel.add(new JLabel("Neuer Standplatz:"));
         mainPanel.add(neuerStandplatzField);
 
         // schließen Button

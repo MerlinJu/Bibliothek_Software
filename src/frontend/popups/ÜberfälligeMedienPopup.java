@@ -3,6 +3,8 @@ package frontend.popups;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import backend.Bibliothek;
@@ -30,7 +32,7 @@ public class ÜberfälligeMedienPopup extends JDialog{
         topPanel.add(buttonPanel, BorderLayout.CENTER);
         add(topPanel, BorderLayout.NORTH);
 
-        tableModel = new DefaultTableModel(new String[]{"Titel", "Ausleihe Datum", "Rückgabe Datum"}, 0);
+        tableModel = new DefaultTableModel(new String[]{"Titel", "Ausleihe Datum", "Rückgabe Datum", "Tag(e) überfällig"}, 0);
         JTable medienTabelle = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(medienTabelle);
         add(scrollPane, BorderLayout.CENTER);
@@ -47,7 +49,7 @@ public class ÜberfälligeMedienPopup extends JDialog{
 
         List<Medium> medienListe = Bibliothek.überfälligeMedien();
         for (Medium medium : medienListe) {
-            tableModel.addRow(new Object[]{medium.titel, medium.ausleiheDatum, medium.rueckgabeDatum});
+            tableModel.addRow(new Object[]{medium.titel, medium.ausleiheDatum, medium.rueckgabeDatum, medium.rueckgabeDatum.until(LocalDate.now(), ChronoUnit.DAYS)});
         }
     }
 
