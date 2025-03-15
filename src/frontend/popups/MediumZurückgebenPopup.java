@@ -8,8 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.AreaAveragingScaleFilter;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.List;
 
@@ -55,7 +53,7 @@ public class MediumZurückgebenPopup extends JDialog {
         String initialTitel = (String) ausgelieheneMedienDropdown.getSelectedItem();
         Medium initialMedium = mediumMap.get(initialTitel);
         if (initialMedium != null) {
-            ueberfaelligIn.setText(Bibliothek.istMediumÜberfällig(initialMedium));
+            ueberfaelligIn.setText(Bibliothek.istMediumUeberfaellig(initialMedium));
         } else {
             ueberfaelligIn.setText("Nicht überfällig");
         }
@@ -73,7 +71,7 @@ public class MediumZurückgebenPopup extends JDialog {
                 Medium medium = mediumMap.get(gewähltesMediumTitel); // Medium abrufen von der Hash Map, mithilfe von dem Titel der an das Medium Objekt geknüpft ist
 
                 if (medium != null) {
-                    ueberfaelligIn.setText(Bibliothek.istMediumÜberfällig(medium));
+                    ueberfaelligIn.setText(Bibliothek.istMediumUeberfaellig(medium));
                 } else {
                     ueberfaelligIn.setText("Nicht überfällig");
                 }
@@ -104,12 +102,12 @@ public class MediumZurückgebenPopup extends JDialog {
                     if(mediumMap.get(gewähltesMediumTitel).status != Status.AUSGELIEHEN_VORGEMERKT) {
                         if (standplatz.isEmpty()) {
                             throw new IllegalArgumentException("Alle Felder müssen ausgefüllt sein!");
-                        } else if (Bibliothek.standplatzUngültig(standplatz)) {
+                        } else if (Bibliothek.standplatzUngueltig(standplatz)) {
                             throw new IllegalArgumentException("Das Format des Standplatzes ist ungültig!");
                         }
                     }
 
-                    String result = Bibliothek.mediumZurückgeben(gewähltesMediumTitel, standplatz);
+                    String result = Bibliothek.mediumZurueckgeben(gewähltesMediumTitel, standplatz);
 
                     JOptionPane.showMessageDialog(null, result, "Meldung", JOptionPane.INFORMATION_MESSAGE);
                     dispose();

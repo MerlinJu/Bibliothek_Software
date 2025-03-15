@@ -8,12 +8,10 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Die Klasse {@code Bibliothek} verwaltet den Medienbestand und ermöglicht das Laden von Medien
- * aus und in eine Datei. Sie liest eine Datei, die Medieninformationen im CSV-Format enthält, und erstellt
- * eine Liste von {@link Medium}-Objekten.
- * <p>
- * Die Medieninformationen beinhalten den Titel, Autor, Standplatz und den Medientyp.
- * </p>
+ * <p>Verwaltet den Medienbestand durch folgende Funktionalitäten:</p>
+ * <li>Den aktuellen Medienbestand aus {@code medien.txt} laden/speichern</li>
+ * <li>Attribute von Medien ändern</li>
+ * <li>Medien nach bestimmten Eigenschaften filtern</li>
  */
 public class Bibliothek {
 
@@ -21,10 +19,10 @@ public class Bibliothek {
     private final static String dateipfad = "src/medien.txt";
 
     /**
-     * <p>Liste von {@link Medium}-Objekten, in welcher die Attribute dieser Objekte durch Methoden in der
-     * {@link Bibliothek}-Klasse verändert werden können.</p>
+     * <p>Liste von {@link Medium}-Objekten, deren Attribute durch Methoden in der {@link Bibliothek}-Klasse verändert
+     * werden können.</p>
      * <p>Die Objektinformationen in der {@code medien.txt} Datei werden bei Start des Programms mit
-     * {@link #ladeMedienAusDatei()} in die {@code medienListe} geladen und beim Schließen des Programms mit
+     * {@link #ladeMedienAusDatei()} in diese Liste geladen und beim Schließen des Programms mit
      * {@link #schreibeMedienInDatei()} werden alle Objektattribute in selbige Datei überschrieben.</p>
      */
     private static List<Medium> medienListe = new ArrayList<>();
@@ -88,6 +86,7 @@ public class Bibliothek {
         }
     }
 
+
     /**
      * <p>Überschreibt die {@code medien.txt} mit dem aktuellen Stand der {@link #medienListe}.</p>
      * <p>Diese Methode wird nur beim Schließen des Programms ausgeführt.</p>
@@ -115,6 +114,7 @@ public class Bibliothek {
             System.out.println("Fehler beim Speichern der Datei: " + e.getMessage());
         }
     }
+
 
     /**
      * <p>Leiht ein vorhandenes Medium aus, indem es einem Medium ein Ausleih- sowie Rückgabedatum zuweist und den
@@ -163,17 +163,18 @@ public class Bibliothek {
      * entfernt sowie einen neuen Standplatz zuweist.</p>
      * <p>Ist das zurückgegebene Medium überfällig, wird eine Meldung ausgegeben.</p>
      * <p>Es findet eine Prüfung statt, ob ein Medium nach der Rückgabe ausgemustert werden soll.</p>
-     * @param mediumZurückTitel Medium, welches zurückgegeben werden soll
+     * @param mediumZurueckTitel Medium, welches zurückgegeben werden soll
      * @param neuerStandplatz Standplatz, an welchem das Medium platziert werden soll
+     * @return Meldung über (nicht) erfolgte Rückgabe
      */
-    public static String mediumZurückgeben(String mediumZurückTitel, String neuerStandplatz){
+    public static String mediumZurueckgeben(String mediumZurueckTitel, String neuerStandplatz){
         String message;
 
         for(int i = 0; i < medienListe.size(); i++){
             Medium medium = medienListe.get(i);
 
             // Überspringt nicht zutreffende Medien, um unnötige Iterationen zu vermeiden
-            if(!medium.titel.equals(mediumZurückTitel)){
+            if(!medium.titel.equals(mediumZurueckTitel)){
                 continue;
             }
 
@@ -211,11 +212,12 @@ public class Bibliothek {
 
 
     /**
-     * {@code neuesMediumHinzufuegen()} erstellt ein neues Medium und fügt es der {@link #medienListe} hinzu.
+     * <p>Erstellt ein neues Medium und fügt es der {@link #medienListe} hinzu.</p>
      * @param titelNeu Titel des neuen Mediums
      * @param autorNeu Autor des neuen Mediums
      * @param standplatzNeu Standplatz des neuen Mediums
      * @param typNeu Medientyp des neuen Mediums
+     * @return Meldung über (nicht) erfolgte Hinzufügung
      */
     public static String neuesMediumHinzufuegen(String titelNeu, String autorNeu, String standplatzNeu, Medientyp typNeu) {
 
@@ -227,78 +229,77 @@ public class Bibliothek {
         }
 
         // Überprüft den Namen des Standplatzes
-        if(standplatzUngültig(standplatzNeu)) {
-            return "Der Standplatz ist nicht zulässig!"; // Bricht ab bei ungültigem Format oder belegtem Standort
+        if(standplatzUngueltig(standplatzNeu)) {
+            return "Der Standplatz ist nicht zulässig!";
         }
 
         // Erstellt ein neues Medium mit den angegebenen Parametern
         Medium neuesMedium = new Medium(titelNeu, autorNeu, standplatzNeu, typNeu, Status.VORHANDEN);
 
-        // fügt das neue Medium der Liste hinzu
+        // Fügt das neue Medium der medienListe hinzu
         medienListe.add(neuesMedium);
-
-        // aktualisiert die Datei mit der aktualisierten Liste
-        //schreibeMedienInDatei();
 
         return "Neues Medium hinzugefügt!";
     }
 
+
     /**
      * <p>Entfernt ein verfügbares Medium aus der {@link #medienListe}.</p>
-     * @param titel_zum_ausmustern Titel des Mediums, welches ausgemustert werden soll
+     * <p>Sollte ein Medium noch ausgeliehen sein, wird es zur Ausmusterung vorgemerkt.</p>
+     * @param titelZumAusmustern Titel des Mediums, welches ausgemustert werden soll
+     * @return Meldung mit Informationen über die (nicht) erfolgte Ausmusterung
      */
-    public static String vorhandenesMediumAusmustern(String titel_zum_ausmustern) {
+    public static String vorhandenesMediumAusmustern(String titelZumAusmustern) {
 
         // Wo liegt gesuchtes Buch in Tabelle
         for(Medium medium : medienListe){
 
-            if (!medium.titel.equals(titel_zum_ausmustern)){
+            // Überspringt nicht zutreffende Medien, um unnötige Iterationen zu vermeiden
+            if (!medium.titel.equals(titelZumAusmustern)){
                 continue;
             }
 
+            // Returned eine Meldung je nach Status
             switch (medium.status){
 
                 case VORHANDEN:
                     medienListe.remove(medium);
-                    //schreibeMedienInDatei();
-
-                    System.out.println("Das Medium mit dem Titel: " + medium.titel + " wurde erfolgreich ausgemustert.");
                     return "Das Medium mit dem Titel: " + medium.titel + "wurde erfolgreich ausgemustert.";
 
                 case AUSGELIEHEN:
                     medium.status = Status.AUSGELIEHEN_VORGEMERKT;
-                    //schreibeMedienInDatei();
-
-                    System.out.println("Medium ist momentan ausgeliehen. Es wird ausgemustert, sobald es zurückgegeben wurde.");
                     return "Medium ist momentan ausgeliehen. Es wird ausgemustert, sobald es zurückgegeben wurde.";
 
                 case AUSGELIEHEN_VORGEMERKT:
                     return "Das Medium ist bereits zum Ausmustern vorgemerkt.";
 
+                case null, default:
+                    return "Ein Fehler ist aufgetreten. Der Status des Mediums ist unbekannt.";
             }
         }
-
-        System.out.println("Medium wurde nicht gefunden!");
         return "Medium wurde nicht gefunden!";
     }
               
 
     /**
-     * <p>{@code verfügbareMedien()} filtert die verfügbaren Medien.</p>
-     * @param typ Medientyp nach welchem gefiltert werden soll
-     * @return Alle Medien, die im Bestand sind, alphabetisch sortiert als Liste mit Medium Objekten
+     * <p>Filtert die verfügbaren Medien.</p>
+     * @param filterTyp {@link Medientyp} nach welchem gefiltert werden soll
+     * @return Liste mit vorhandenen Medium-Objekten alphabetisch sortiert nach festgelegtem {@link Medientyp}
      */
-    public static List<Medium> verfügbareMedien(Medientyp typ){
-        List<Medium> sortedList = new ArrayList<>(); // temporäre Liste für alle Medien, die zum Filter passen
+    public static List<Medium> verfuegbareMedien(Medientyp filterTyp){
+
+        // Temporäre Liste für alle Medien, die zum Filter passen
+        List<Medium> sortedList = new ArrayList<>();
 
         for (Medium medium : medienListe){
 
+            // Überspringt nicht zutreffende Medien, um unnötige Iterationen zu vermeiden
             if(medium.status != Status.VORHANDEN){
                 continue;
             }
 
             // Je nach Parameter werden entweder alle oder nur ein bestimmter Medientyp übernommen
-            if(typ == null || typ == medium.medientyp) {
+            if(filterTyp == null || filterTyp == medium.medientyp) {
                 sortedList.add(medium);
             }
         }
@@ -310,21 +311,24 @@ public class Bibliothek {
 
 
     /**
-     * <p>{@code verfügbareMedien()} filtert die ausgeliehenen Medien.</p>
-     * @param typ Medientyp nach welchem gefiltert werden soll
-     * @return Alle ausgeliehenen Medien alphabetisch sortiert als Liste mit Medium Objekten
+     * <p>Filtert die ausgeliehenen Medien.</p>
+     * @param filterTyp {@link Medientyp} nach welchem gefiltert werden soll
+     * @return Liste mit ausgeliehenen Medium-Objekten alphabetisch sortiert nach festgelegtem {@link Medientyp}
      */
-    public static List<Medium> ausgelieheneMedien(Medientyp typ){
-        List<Medium> sortedList = new ArrayList<>(); // temporäre Liste für alle Medien, die zum Filter passen
+    public static List<Medium> ausgelieheneMedien(Medientyp filterTyp){
+
+        // Temporäre Liste für alle Medien, die zum Filter passen
+        List<Medium> sortedList = new ArrayList<>();
 
         for (Medium medium : medienListe){
 
+            // Überspringt nicht zutreffende Medien, um unnötige Iterationen zu vermeiden
             if(medium.status == Status.VORHANDEN){
                 continue;
             }
 
             // Je nach Parameter werden entweder alle oder nur ein bestimmter Medientyp übernommen
-            if(typ == null || typ == medium.medientyp) {
+            if(filterTyp == null || filterTyp == medium.medientyp) {
                 sortedList.add(medium);
             }
         }
@@ -336,15 +340,23 @@ public class Bibliothek {
 
 
     /**
-     * <p>{@code überfälligeMedien()} überprüft das Rückgabedatum aller ausgeliehenen Medien und filtert nach überfälligen Medien.</p>
-     * @return List aus allen überfälligen Medien Objekten
+     * <p>Filtert nach überfälligen Medien.</p>
+     * @return Liste mit allen überfälligen Medien Objekten alphabetisch sortiert
      */
-    public static List<Medium> überfälligeMedien(){
-        List<Medium> sortedList = new ArrayList<>(); // temporäre Liste für alle Medien, die zum Filter passen
+    public static List<Medium> ueberfaelligeMedien(){
+
+        // Temporäre Liste für alle Medien, die zum Filter passen
+        List<Medium> sortedList = new ArrayList<>();
 
         for (Medium medium : medienListe){
-            // Medien, die ausgeliehen sind und deren Rückgabedatum vor dem heutigen sind
-            if(medium.status != Status.VORHANDEN && medium.rueckgabeDatum.isBefore(LocalDate.now())){
+
+            // Überspringt nicht zutreffende Medien, um unnötige Iterationen zu vermeiden
+            if(medium.status == Status.VORHANDEN){
+                continue;
+            }
+
+            // Medien, deren Rückgabedatum vor dem heutigen sind
+            if(medium.rueckgabeDatum.isBefore(LocalDate.now())){
                 sortedList.add(medium);
             }
         }
@@ -355,53 +367,62 @@ public class Bibliothek {
     }
 
 
-    public static String istMediumÜberfällig(Medium medium) {
-        System.out.println(überfälligeMedien());
-        for (Medium m : überfälligeMedien()) {
-            if (m.equals(medium)) { // Objekt ebene vergleichen
-                return medium.rueckgabeDatum.until(LocalDate.now(), ChronoUnit.DAYS) +
-                        " Tag(e) überfällig";
+    /**
+     * <p>Überprüft, ob ein {@link Medium} überfällig ist.</p>
+     * @param medium {@link Medium} zum Überprüfen
+     * @return Meldung, ob {@link Medium} überfällig ist. Falls überfällig, wird die Anzahl der überfälligen Tage
+     * angegeben
+     */
+    public static String istMediumUeberfaellig(Medium medium) {
+
+        // Vergleicht das Medium mit allen überfälligen Medien
+        for (Medium m : ueberfaelligeMedien()) {
+
+            if (medium.equals(m)) {
+                return medium.rueckgabeDatum.until(LocalDate.now(), ChronoUnit.DAYS) + " Tag(e) überfällig";
             }
         }
 
         return "Medium ist nicht überfällig";
     }
 
+
     /**
-     * <p>{@code standplatzÄndern} ändert den Standplatz eines Mediums im Bestand.</p>
-     * @param zuÄnderndesMedium Medium Titel, von welchem der Standplatz geändert werden soll
-     * @param neuerStandplatz Neuer Standplatz, an welchem das Medium platziert werden soll
+     * <p>Ändert den Standplatz eines vorhandenen {@link Medium}-Objektes.</p>
+     * @param zuAenderndesMedium {@link Medium}, von welchem der Standplatz geändert werden soll
+     * @param neuerStandplatz Neuer Standplatz, an welchem das {@link Medium} platziert werden soll
+     * @return Meldung über (nicht) erfolgte Standplatzänderung
      */
-    public static String standplatzÄndern(String zuÄnderndesMedium, String neuerStandplatz){
+    public static String standplatzAendern(String zuAenderndesMedium, String neuerStandplatz){
 
         // Überprüft den Namen des Standplatzes
-        if(standplatzUngültig(neuerStandplatz)) {
-            return "Der angegebene Standplatz ist schon belegt oder ungültig!"; // Bricht ab bei ungültigem Format oder belegtem Standort
+        if(standplatzUngueltig(neuerStandplatz)) {
+            return "Der angegebene Standplatz ist schon belegt oder ungültig!";
         }
 
         // Wo liegt gesuchtes Medium in der medienListe?
         for (Medium medium : medienListe){
 
-            if(medium.titel.equals(zuÄnderndesMedium)){
+            if(medium.titel.equals(zuAenderndesMedium)){
                 medium.standplatz = neuerStandplatz; // Ändert den Standplatz
                 return "Standplatz erfolgreich geändert!";
             }
         }
 
-        System.out.println("Medium wurde nicht gefunden!"); // Wird nur ausgegeben, wenn die for-Schleife ohne Ergebnis durchläuft
+        // Wird nur ausgegeben, wenn die for-Schleife ohne Ergebnis durchläuft
         return "Medium wurde nicht gefunden!";
     }
   
 
     /**
-     * <p>{@code standplatzValide} überprüft einen String, ob dieser ein neuer Standort sein kann.</p>
+     * <p>Überprüft einen String, ob dieser ein neuer Standplatz sein kann.</p>
      * <p>Geprüft wird Folgendes:</p>
      * <li>Ist das Format korrekt? (min. 1 Kleinbuchstabe oder Zahl + Bindestrich + min. 1 Kleinbuchstabe oder Zahl)</li>
      * <li>Ist dieser Standplatz bereits belegt?</li><br>
      * @param standplatz Standplatz welcher überprüft werden soll
      * @return Boolean Wert, ob der Name des Standplatzes valide ist
      */
-    public static boolean standplatzUngültig(String standplatz) {
+    public static boolean standplatzUngueltig(String standplatz) {
 
         // Prüfung auf korrektes Format
         if(!standplatz.matches("^[a-z0-9]+-[a-z0-9]+$")){

@@ -47,7 +47,7 @@ public class ÜberfälligeMedienPopup extends JDialog{
     private void updateTableData() {
         tableModel.setRowCount(0); // Tabelle clearen
 
-        List<Medium> medienListe = Bibliothek.überfälligeMedien();
+        List<Medium> medienListe = Bibliothek.ueberfaelligeMedien();
         for (Medium medium : medienListe) {
             tableModel.addRow(new Object[]{medium.titel, medium.ausleiheDatum, medium.rueckgabeDatum, medium.rueckgabeDatum.until(LocalDate.now(), ChronoUnit.DAYS)});
         }

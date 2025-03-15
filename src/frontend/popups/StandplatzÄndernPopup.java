@@ -1,7 +1,6 @@
 package frontend.popups;
 
 import backend.Bibliothek;
-import backend.Medientyp;
 import backend.Medium;
 
 import javax.swing.*;
@@ -25,7 +24,7 @@ public class StandplatzÄndernPopup extends JDialog {
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         List<String> medienListeTitel = new ArrayList<>();
-        for (Medium medium : Bibliothek.verfügbareMedien(null)) {
+        for (Medium medium : Bibliothek.verfuegbareMedien(null)) {
             medienListeTitel.add(medium.titel);
         }
         mediumDropdown = new JComboBox<>(new Vector<>(medienListeTitel));
@@ -58,7 +57,7 @@ public class StandplatzÄndernPopup extends JDialog {
                     return;
                 }
 
-                String message = Bibliothek.standplatzÄndern(ausgewähltesMediumTitel, neuerStandplatz);
+                String message = Bibliothek.standplatzAendern(ausgewähltesMediumTitel, neuerStandplatz);
 
                 JOptionPane.showMessageDialog(null, message, "Information", JOptionPane.INFORMATION_MESSAGE);
                 dispose();
