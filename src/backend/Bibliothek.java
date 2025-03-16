@@ -264,7 +264,7 @@ public class Bibliothek {
 
                 case VORHANDEN:
                     medienListe.remove(medium);
-                    return "Das Medium mit dem Titel: " + medium.titel + "wurde erfolgreich ausgemustert.";
+                    return "Das Medium mit dem Titel: " + medium.titel + " wurde erfolgreich ausgemustert.";
 
                 case AUSGELIEHEN:
                     medium.status = Status.AUSGELIEHEN_VORGEMERKT;
@@ -426,14 +426,12 @@ public class Bibliothek {
 
         // Prüfung auf korrektes Format
         if(!standplatz.matches("^[a-z0-9]+-[a-z0-9]+$")){
-            System.out.println("Der Name des Standplatzes ist nicht zulässig!");
             return true;
         }
 
         // Prüfung, ob Standplatz belegt ist
         for(Medium medium : medienListe){
             if(medium.standplatz != null && medium.standplatz.equals(standplatz)){
-                System.out.println("Der gewählte Standplatz ist schon belegt!");
                 return true;
             }
         }

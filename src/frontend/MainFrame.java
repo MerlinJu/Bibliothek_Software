@@ -66,8 +66,8 @@ public class MainFrame extends JFrame {
         JPanel panel = new JPanel(new GridLayout(0, 1, 10, 10)); // Grid Layout
 
         // Buttons für die verschiedenen Funktionen
-        JButton addMediumButton = createStyledButton("Neues Medium hinzufügen");
-        addMediumButton.addActionListener(new ActionListener() {
+        JButton mediumHinzufuegenButton = createStyledButton("Neues Medium hinzufügen");
+        mediumHinzufuegenButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 NeuesMediumPopup popup = new NeuesMediumPopup(MainFrame.this);
@@ -75,8 +75,8 @@ public class MainFrame extends JFrame {
             }
         });
 
-        JButton lendMediumButton = createStyledButton("Medium ausleihen");
-        lendMediumButton.addActionListener(new ActionListener() {
+        JButton mediumAusleihenButton = createStyledButton("Medium ausleihen");
+        mediumAusleihenButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 MediumAusleihenPopup popup = new MediumAusleihenPopup(MainFrame.this);
@@ -84,26 +84,26 @@ public class MainFrame extends JFrame {
             }
         });
 
-        JButton returnMediumButton = createStyledButton("Medium zurückgeben");
-        returnMediumButton.addActionListener(new ActionListener() {
+        JButton mediumZurueckgebenButton = createStyledButton("Medium zurückgeben");
+        mediumZurueckgebenButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                MediumZurückgebenPopup popup = new MediumZurückgebenPopup(MainFrame.this);
+                MediumZurueckgebenPopup popup = new MediumZurueckgebenPopup(MainFrame.this);
                 popup.setVisible(true);
             }
         });
 
-        JButton listAvailableMediaButton = createStyledButton("Verfügbare Medien anzeigen");
-        listAvailableMediaButton.addActionListener(new ActionListener() {
+        JButton verfuegbareMedienButton = createStyledButton("Verfügbare Medien anzeigen");
+        verfuegbareMedienButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                VerfügbareMedienPopup popup = new VerfügbareMedienPopup(MainFrame.this);
+                VerfuegbareMedienPopup popup = new VerfuegbareMedienPopup(MainFrame.this);
                 popup.setVisible(true);
             }
         });
 
-        JButton listLentMediaButton = createStyledButton("Ausgeliehene Medien anzeigen");
-        listLentMediaButton.addActionListener(new ActionListener() {
+        JButton ausgelieheneMedienButton = createStyledButton("Ausgeliehene Medien anzeigen");
+        ausgelieheneMedienButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 AusgelieheneMedienPopup popup = new AusgelieheneMedienPopup(MainFrame.this);
@@ -111,26 +111,26 @@ public class MainFrame extends JFrame {
             }
         });
 
-        JButton listOverdueMediaButton = createStyledButton("Überfällige Medien anzeigen");
-        listOverdueMediaButton.addActionListener(new ActionListener() {
+        JButton ueberfaelligeMedienButton = createStyledButton("Überfällige Medien anzeigen");
+        ueberfaelligeMedienButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ÜberfälligeMedienPopup popup = new ÜberfälligeMedienPopup(MainFrame.this);
+                UeberfaelligeMedienPopup popup = new UeberfaelligeMedienPopup(MainFrame.this);
                 popup.setVisible(true);
             }
         });
 
-        JButton changeLocationButton = createStyledButton("Standplatz ändern");
-        changeLocationButton.addActionListener(new ActionListener() {
+        JButton standplatzAendernButton = createStyledButton("Standplatz ändern");
+        standplatzAendernButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                StandplatzÄndernPopup popup = new StandplatzÄndernPopup(MainFrame.this);
+                StandplatzAendernPopup popup = new StandplatzAendernPopup(MainFrame.this);
                 popup.setVisible(true);
             }
         });
 
-        JButton removeMediumButton = createStyledButton("Medium ausmustern");
-        removeMediumButton.addActionListener(new ActionListener() {
+        JButton mediumAusmusternButton = createStyledButton("Medium ausmustern");
+        mediumAusmusternButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 MediumAusmusternPopup popup = new MediumAusmusternPopup(MainFrame.this);
@@ -139,14 +139,14 @@ public class MainFrame extends JFrame {
         });
 
         // Buttons zum Panel hinzufügen
-        panel.add(addMediumButton);
-        panel.add(lendMediumButton);
-        panel.add(returnMediumButton);
-        panel.add(listAvailableMediaButton);
-        panel.add(listLentMediaButton);
-        panel.add(listOverdueMediaButton);
-        panel.add(changeLocationButton);
-        panel.add(removeMediumButton);
+        panel.add(mediumHinzufuegenButton);
+        panel.add(mediumAusleihenButton);
+        panel.add(mediumZurueckgebenButton);
+        panel.add(verfuegbareMedienButton);
+        panel.add(ausgelieheneMedienButton);
+        panel.add(ueberfaelligeMedienButton);
+        panel.add(standplatzAendernButton);
+        panel.add(mediumAusmusternButton);
 
         return panel;
     }

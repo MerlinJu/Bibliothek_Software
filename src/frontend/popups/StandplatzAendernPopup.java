@@ -10,11 +10,11 @@ import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.List;
 
-public class StandplatzÄndernPopup extends JDialog {
+public class StandplatzAendernPopup extends JDialog {
     private JComboBox<String> mediumDropdown;
 
 
-    public StandplatzÄndernPopup(JFrame parent) {
+    public StandplatzAendernPopup(JFrame parent) {
         super(parent, "Standplatz ändern", true);
         initializeUI();
     }
@@ -49,15 +49,15 @@ public class StandplatzÄndernPopup extends JDialog {
         aendernButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String ausgewähltesMediumTitel = (String) mediumDropdown.getSelectedItem();
+                String ausgewaehltesMediumTitel = (String) mediumDropdown.getSelectedItem();
                 String neuerStandplatz = neuerStandplatzField.getText().trim();
 
-                if (ausgewähltesMediumTitel == null || neuerStandplatz.isEmpty()) {
+                if (ausgewaehltesMediumTitel == null || neuerStandplatz.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Bitte alle Felder ausfüllen!", "Fehler", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
-                String message = Bibliothek.standplatzAendern(ausgewähltesMediumTitel, neuerStandplatz);
+                String message = Bibliothek.standplatzAendern(ausgewaehltesMediumTitel, neuerStandplatz);
 
                 JOptionPane.showMessageDialog(null, message, "Information", JOptionPane.INFORMATION_MESSAGE);
                 dispose();

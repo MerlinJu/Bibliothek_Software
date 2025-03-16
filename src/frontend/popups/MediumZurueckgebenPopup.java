@@ -11,16 +11,15 @@ import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.List;
 
-public class MediumZurückgebenPopup extends JDialog {
+public class MediumZurueckgebenPopup extends JDialog {
     private JComboBox<String> ausgelieheneMedienDropdown;
-    private JLabel rückgabeDatumLabel;
     private JLabel mediumAuswahl;
-    private JButton zurückgebenButton, schließeButton;
+    private JButton zurueckgebenButton;
     private JLabel ueberfaelligLabel;
     private JLabel ueberfaelligIn;
 
 
-    public MediumZurückgebenPopup(JFrame parent) {
+    public MediumZurueckgebenPopup(JFrame parent) {
         super(parent, "Medium zurückgeben", true);
         initializeUI();
     }
@@ -58,7 +57,7 @@ public class MediumZurückgebenPopup extends JDialog {
             ueberfaelligIn.setText("Nicht überfällig");
         }
 
-        JLabel neuerStandplatzLabel = new JLabel("neuer Standplatz:");
+        JLabel neuerStandplatzLabel = new JLabel("Neuer Standplatz:");
         mainPanel.add(neuerStandplatzLabel);
 
         JTextField neuerStandplatz = new JTextField();
@@ -67,8 +66,8 @@ public class MediumZurückgebenPopup extends JDialog {
         ausgelieheneMedienDropdown.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String gewähltesMediumTitel = (String) ausgelieheneMedienDropdown.getSelectedItem();
-                Medium medium = mediumMap.get(gewähltesMediumTitel); // Medium abrufen von der Hash Map, mithilfe von dem Titel der an das Medium Objekt geknüpft ist
+                String gewaehltesMediumTitel = (String) ausgelieheneMedienDropdown.getSelectedItem();
+                Medium medium = mediumMap.get(gewaehltesMediumTitel); // Medium abrufen von der Hash Map, mithilfe von dem Titel der an das Medium Objekt geknüpft ist
 
                 if (medium != null) {
                     ueberfaelligIn.setText(Bibliothek.istMediumUeberfaellig(medium));
@@ -81,33 +80,31 @@ public class MediumZurückgebenPopup extends JDialog {
 
         // Buttons
 
-        JButton schließenButton = new JButton("Schließen");
-        schließenButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        schließenButton.addActionListener(new ActionListener() {
+        JButton schliessenButton = new JButton("Schließen");
+        schliessenButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        schliessenButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
             }
         });
-        mainPanel.add(schließenButton);
+        mainPanel.add(schliessenButton);
 
-        zurückgebenButton = new JButton("Zurückgeben");
-        zurückgebenButton.addActionListener(new ActionListener() {
+        zurueckgebenButton = new JButton("Zurückgeben");
+        zurueckgebenButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    String gewähltesMediumTitel = (String) ausgelieheneMedienDropdown.getSelectedItem();
+                    String gewaehltesMediumTitel = (String) ausgelieheneMedienDropdown.getSelectedItem();
                     String standplatz = neuerStandplatz.getText().trim();
 
-                    if(mediumMap.get(gewähltesMediumTitel).status != Status.AUSGELIEHEN_VORGEMERKT) {
-                        if (standplatz.isEmpty()) {
-                            throw new IllegalArgumentException("Alle Felder müssen ausgefüllt sein!");
-                        } else if (Bibliothek.standplatzUngueltig(standplatz)) {
-                            throw new IllegalArgumentException("Das Format des Standplatzes ist ungültig!");
-                        }
+                    // Überprüft, ob der Standplatz im gültigen Format ist (entfällt bei vorgemerkten Medien)
+                    if(mediumMap.get(gewaehltesMediumTitel).status != Status.AUSGELIEHEN_VORGEMERKT && Bibliothek.standplatzUngueltig(standplatz)) {
+                        JOptionPane.showMessageDialog(null, "Das Format des Standplatzes ist ungültig!", "Fehler", JOptionPane.ERROR_MESSAGE);
+                        return;
                     }
 
-                    String result = Bibliothek.mediumZurueckgeben(gewähltesMediumTitel, standplatz);
+                    String result = Bibliothek.mediumZurueckgeben(gewaehltesMediumTitel, standplatz);
 
                     JOptionPane.showMessageDialog(null, result, "Meldung", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
@@ -121,7 +118,7 @@ public class MediumZurückgebenPopup extends JDialog {
 
             }
         });
-        mainPanel.add(zurückgebenButton);
+        mainPanel.add(zurueckgebenButton);
 
 
         add(mainPanel);

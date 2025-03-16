@@ -46,7 +46,7 @@ public class MediumAusleihenPopup extends JDialog {
             MediumOptions.add(medium.titel);
         }
 
-        mainPanel.add(new JLabel("Medium zum ausleihen:"));
+        mainPanel.add(new JLabel("Auszuleihendes Medium:"));
         ausleiheTitelField = new JComboBox<>(MediumOptions);
         mainPanel.add(ausleiheTitelField);
 

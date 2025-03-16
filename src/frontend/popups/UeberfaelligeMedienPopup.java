@@ -10,11 +10,11 @@ import java.util.List;
 import backend.Bibliothek;
 import backend.Medium;
 
-public class ÜberfälligeMedienPopup extends JDialog{
+public class UeberfaelligeMedienPopup extends JDialog{
 
     private DefaultTableModel tableModel;
 
-    public ÜberfälligeMedienPopup(JFrame parent) {
+    public UeberfaelligeMedienPopup(JFrame parent) {
         super(parent, "Überfällige Medien anzeigen", true);
         initializeUI();
     }
@@ -24,10 +24,10 @@ public class ÜberfälligeMedienPopup extends JDialog{
 
         JPanel topPanel = new JPanel(new BorderLayout());
 
-        JButton schließenButton = new JButton("Schließen");
-        schließenButton.addActionListener(e -> dispose());
+        JButton schliessenButton = new JButton("Schließen");
+        schliessenButton.addActionListener(e -> dispose());
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        buttonPanel.add(schließenButton);
+        buttonPanel.add(schliessenButton);
 
         topPanel.add(buttonPanel, BorderLayout.CENTER);
         add(topPanel, BorderLayout.NORTH);
@@ -58,7 +58,7 @@ public class ÜberfälligeMedienPopup extends JDialog{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
 
-        VerfügbareMedienPopup popup = new VerfügbareMedienPopup(frame);
+        UeberfaelligeMedienPopup popup = new UeberfaelligeMedienPopup(frame);
         popup.setVisible(true);
     }
 }

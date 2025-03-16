@@ -33,10 +33,10 @@ public class AusgelieheneMedienPopup extends JDialog{
         filterPanel.add(new JLabel("Filter:"));
         filterPanel.add(filterDropdown);
 
-        JButton schließenButton = new JButton("Schließen");
-        schließenButton.addActionListener(e -> dispose());
+        JButton schliessenButton = new JButton("Schließen");
+        schliessenButton.addActionListener(e -> dispose());
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        buttonPanel.add(schließenButton);
+        buttonPanel.add(schliessenButton);
 
         topPanel.add(filterPanel, BorderLayout.WEST);
         topPanel.add(buttonPanel, BorderLayout.EAST);
@@ -76,7 +76,7 @@ public class AusgelieheneMedienPopup extends JDialog{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
 
-        VerfügbareMedienPopup popup = new VerfügbareMedienPopup(frame);
+        AusgelieheneMedienPopup popup = new AusgelieheneMedienPopup(frame);
         popup.setVisible(true);
     }
 

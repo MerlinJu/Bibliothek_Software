@@ -1,6 +1,5 @@
 package frontend.popups;
 
-import backend.Status;
 import backend.Bibliothek;
 import backend.Medientyp;
 
@@ -54,7 +53,7 @@ public class NeuesMediumPopup extends JDialog {
         });
         mainPanel.add(schliessenButton);
 
-        // Button um Medium hinzuzufuegen
+        // Button um Medium hinzuzufügen
         JButton HinzufuegenButton = new JButton("Hinzufügen");
         HinzufuegenButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         HinzufuegenButton.addActionListener(new ActionListener() {
@@ -71,7 +70,7 @@ public class NeuesMediumPopup extends JDialog {
                         throw new IllegalArgumentException("Alle Felder müssen ausgefüllt sein!");
                     }
 
-                    // Hier wird das neue Medium hinzugefuegt und ein String mit error oder erfolg returnd
+                    // Hier wird das neue Medium hinzugefügt und ein String mit Error oder Erfolg zurückgegeben
                     String result = Bibliothek.neuesMediumHinzufuegen(titel, autor, standplatz, typ);
 
                     // zeigt erfolg oder error als popup an

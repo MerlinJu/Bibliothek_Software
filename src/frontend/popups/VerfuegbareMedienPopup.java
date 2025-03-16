@@ -9,14 +9,14 @@ import backend.Bibliothek;
 import backend.Medientyp;
 import backend.Medium;
 
-public class VerfügbareMedienPopup extends JDialog{
+public class VerfuegbareMedienPopup extends JDialog{
 
     private JTable medienTabelle;
     private DefaultTableModel tableModel;
     private JComboBox<String> filterDropdown;
-    private JButton schließenButton;
+    private JButton schliessenButton;
 
-    public VerfügbareMedienPopup(JFrame parent) {
+    public VerfuegbareMedienPopup(JFrame parent) {
         super(parent, "Verfügbare Medien anzeigen", true);
         initializeUI();
     }
@@ -35,10 +35,10 @@ public class VerfügbareMedienPopup extends JDialog{
         filterPanel.add(new JLabel("Filter:"));
         filterPanel.add(filterDropdown);
 
-        schließenButton = new JButton("Schließen");
-        schließenButton.addActionListener(e -> dispose());
+        schliessenButton = new JButton("Schließen");
+        schliessenButton.addActionListener(e -> dispose());
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        buttonPanel.add(schließenButton);
+        buttonPanel.add(schliessenButton);
 
         topPanel.add(filterPanel, BorderLayout.WEST);
         topPanel.add(buttonPanel, BorderLayout.EAST);
@@ -78,7 +78,7 @@ public class VerfügbareMedienPopup extends JDialog{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
 
-        VerfügbareMedienPopup popup = new VerfügbareMedienPopup(frame);
+        VerfuegbareMedienPopup popup = new VerfuegbareMedienPopup(frame);
         popup.setVisible(true);
     }
 

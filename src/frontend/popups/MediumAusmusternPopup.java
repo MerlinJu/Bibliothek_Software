@@ -43,14 +43,14 @@ public class MediumAusmusternPopup extends JDialog {
         JButton ausmusternButton = new JButton("Ausmustern");
         ausmusternButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         ausmusternButton.addActionListener((ActionEvent e) -> {
-            String ausgewähltesMedium = (String) mediumDropdown.getSelectedItem();
+            String ausgewaehltesMedium = (String) mediumDropdown.getSelectedItem();
 
-            if (ausgewähltesMedium == null) {
+            if (ausgewaehltesMedium == null) {
                 JOptionPane.showMessageDialog(null, "Bitte ein Medium auswählen!", "Fehler", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            String message =  Bibliothek.vorhandenesMediumAusmustern(ausgewähltesMedium);
+            String message =  Bibliothek.vorhandenesMediumAusmustern(ausgewaehltesMedium);
 
             JOptionPane.showMessageDialog(null, message, "Information", JOptionPane.INFORMATION_MESSAGE);
             dispose();
