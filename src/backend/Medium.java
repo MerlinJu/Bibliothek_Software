@@ -9,13 +9,14 @@ import java.time.LocalDate;
  * <li>Für Medien im Bestand: {@link #Medium(String, String, String, Medientyp, Status)}</li>
  */
 public class Medium {
-    public final String titel;
-    public final String autor;
-    public String standplatz;
-    public final Medientyp medientyp;
-    public LocalDate ausleiheDatum;
-    public LocalDate rueckgabeDatum;
-    public Status status;
+
+    private final String titel;
+    private final String autor;
+    private String standplatz;
+    private final Medientyp medientyp;
+    private LocalDate ausleiheDatum;
+    private LocalDate rueckgabeDatum;
+    private Status status;
 
     /**
      * <p>Konstruktor für ausgeliehenes Medium (ohne Standplatz).</p>
@@ -51,6 +52,86 @@ public class Medium {
         this.medientyp = medientyp;
         this.ausleiheDatum = null;
         this.rueckgabeDatum = null;
+        this.status = status;
+    }
+
+    /**
+     * <p>Rückgabe von {@code titel}.</p>
+     * @return Aktueller Wert von {@code titel}
+     */
+    public String getTitel() {
+        return titel;
+    }
+
+    /**
+     * <p>Rückgabe von {@code standplatz}.</p>
+     * @return Aktueller Wert von {@code standplatz}
+     */
+    public String getStandplatz() {
+        return standplatz;
+    }
+
+    /**
+     * <p>Setzt {@code standplatz}.</p>
+     * @param standplatz Neuer {@code standplatz} Wert
+     */
+    public void setStandplatz(String standplatz) {
+        this.standplatz = standplatz;
+    }
+
+    /**
+     * <p>Rückgabe von {@code medientyp}.</p>
+     * @return Aktueller Wert von {@code medientyp}
+     */
+    public Medientyp getMedientyp() {
+        return medientyp;
+    }
+
+    /**
+     * <p>Rückgabe von {@code ausleiheDatum}.</p>
+     * @return Aktueller Wert von {@code ausleiheDatum}
+     */
+    public LocalDate getAusleiheDatum() {
+        return ausleiheDatum;
+    }
+
+    /**
+     * <p>Setzt {@code ausleiheDatum}.</p>
+     * @param ausleiheDatum Neuer {@code ausleiheDatum} Wert
+     */
+    public void setAusleiheDatum(LocalDate ausleiheDatum) {
+        this.ausleiheDatum = ausleiheDatum;
+    }
+
+    /**
+     * <p>Rückgabe von {@code rueckgabeDatum}.</p>
+     * @return Aktueller Wert von {@code rueckgabeDatum}
+     */
+    public LocalDate getRueckgabeDatum() {
+        return rueckgabeDatum;
+    }
+
+    /**
+     * <p>Setzt {@code rueckgabeDatum}.</p>
+     * @param rueckgabeDatum Neuer {@code rueckgabeDatum} Wert
+     */
+    public void setRueckgabeDatum(LocalDate rueckgabeDatum) {
+        this.rueckgabeDatum = rueckgabeDatum;
+    }
+
+    /**
+     * <p>Rückgabe von {@code status}.</p>
+     * @return Aktueller Wert von {@code status}
+     */
+    public Status getStatus() {
+        return status;
+    }
+
+    /**
+     * <p>Setzt {@code status}.</p>
+     * @param status Neuer {@code status} Wert
+     */
+    public void setStatus(Status status) {
         this.status = status;
     }
 

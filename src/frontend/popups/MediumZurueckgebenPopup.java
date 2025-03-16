@@ -36,8 +36,8 @@ public class MediumZurueckgebenPopup extends JDialog {
         List<String> AusgelieheneMedienTitel = new ArrayList<>();
 
         for (Medium medium : AusgelieheneMedien) {
-            AusgelieheneMedienTitel.add(medium.titel);
-            mediumMap.put(medium.titel, medium);
+            AusgelieheneMedienTitel.add(medium.getTitel());
+            mediumMap.put(medium.getTitel(), medium);
         }
 
         ausgelieheneMedienDropdown = new JComboBox<>(new Vector<>(AusgelieheneMedienTitel));
@@ -99,7 +99,7 @@ public class MediumZurueckgebenPopup extends JDialog {
                     String standplatz = neuerStandplatz.getText().trim();
 
                     // Überprüft, ob der Standplatz im gültigen Format ist (entfällt bei vorgemerkten Medien)
-                    if(mediumMap.get(gewaehltesMediumTitel).status != Status.AUSGELIEHEN_VORGEMERKT && Bibliothek.standplatzUngueltig(standplatz)) {
+                    if(mediumMap.get(gewaehltesMediumTitel).getStatus() != Status.AUSGELIEHEN_VORGEMERKT && Bibliothek.standplatzUngueltig(standplatz)) {
                         JOptionPane.showMessageDialog(null, "Das Format des Standplatzes ist ungültig!", "Fehler", JOptionPane.ERROR_MESSAGE);
                         return;
                     }

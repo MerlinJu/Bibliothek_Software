@@ -25,7 +25,7 @@ public class MediumAusmusternPopup extends JDialog {
         List<Medium> medienListe = Bibliothek.getMedienListe();
         Vector<String> medienTitelListe = new Vector<>();
         for (Medium medium : medienListe) {
-            medienTitelListe.add(medium.titel);
+            medienTitelListe.add(medium.getTitel());
         }
 
         mediumDropdown = new JComboBox<>(medienTitelListe);

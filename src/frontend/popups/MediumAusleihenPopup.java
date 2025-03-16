@@ -43,7 +43,7 @@ public class MediumAusleihenPopup extends JDialog {
 
         Vector<String> MediumOptions = new Vector<>();
         for (Medium medium : Bibliothek.verfuegbareMedien(null)) {
-            MediumOptions.add(medium.titel);
+            MediumOptions.add(medium.getTitel());
         }
 
         mainPanel.add(new JLabel("Auszuleihendes Medium:"));

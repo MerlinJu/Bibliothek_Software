@@ -25,7 +25,7 @@ public class StandplatzAendernPopup extends JDialog {
 
         List<String> medienListeTitel = new ArrayList<>();
         for (Medium medium : Bibliothek.verfuegbareMedien(null)) {
-            medienListeTitel.add(medium.titel);
+            medienListeTitel.add(medium.getTitel());
         }
         mediumDropdown = new JComboBox<>(new Vector<>(medienListeTitel));
 

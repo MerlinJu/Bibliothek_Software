@@ -69,7 +69,7 @@ public class VerfuegbareMedienPopup extends JDialog{
 
         List<Medium> medienListe = Bibliothek.verfuegbareMedien(filterTyp);
         for (Medium medium : medienListe) {
-            tableModel.addRow(new Object[]{medium.titel, medium.standplatz});
+            tableModel.addRow(new Object[]{medium.getTitel(), medium.getStandplatz()});
         }
     }
 

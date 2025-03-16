@@ -67,7 +67,7 @@ public class AusgelieheneMedienPopup extends JDialog{
 
         List<Medium> medienListe = Bibliothek.ausgelieheneMedien(filterTyp);
         for (Medium medium : medienListe) {
-            tableModel.addRow(new Object[]{medium.titel, medium.ausleiheDatum, medium.rueckgabeDatum});
+            tableModel.addRow(new Object[]{medium.getTitel(), medium.getAusleiheDatum(), medium.getRueckgabeDatum()});
         }
     }
 

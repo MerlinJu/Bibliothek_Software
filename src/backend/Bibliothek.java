@@ -70,11 +70,11 @@ public class Bibliothek {
                     String titel = teile[0];
                     String autor = teile[1];
                     Medientyp typ = Medientyp.valueOf(teile[2]);
-                    LocalDate ausleihe_datum = LocalDate.parse(teile[3]);
-                    LocalDate rueckgabe_datum = LocalDate.parse(teile[4]);
+                    LocalDate ausleiheDatum = LocalDate.parse(teile[3]);
+                    LocalDate rueckgabeDatum = LocalDate.parse(teile[4]);
                     Status status = Status.valueOf(teile[5]);
 
-                    Medium medium = new Medium(titel, autor, typ, ausleihe_datum, rueckgabe_datum, status); // Objekt wird erstellt
+                    Medium medium = new Medium(titel, autor, typ, ausleiheDatum, rueckgabeDatum, status); // Objekt wird erstellt
                     medienListe.add(medium); // Objekt wird der ArrayList hinzugefügt
                 }
 
@@ -100,7 +100,7 @@ public class Bibliothek {
         }
 
         // Sortiert die Liste alphabetisch nach Titeln
-        medienListe.sort(Comparator.comparing(medium -> medium.titel));
+        medienListe.sort(Comparator.comparing(Medium::getTitel));
 
         // Der BufferedReader schreibt die medien.txt komplett neu
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(dateipfad))){
@@ -125,32 +125,22 @@ public class Bibliothek {
      */
     public static String mediumAusleihen(String mediumTitel, LocalDate ausleihDatum) {
 
-        for (int i = 0; i < medienListe.size(); i++) {
-            Medium medium = medienListe.get(i);
-
+        for (Medium medium : medienListe) {
             // Überspringt nicht zutreffende Medien, um unnötige Iterationen zu vermeiden
-            if(!medium.titel.equals(mediumTitel)){
+            if (!medium.getTitel().equals(mediumTitel)) {
                 continue;
             }
 
-            if (!medium.status.equals(Status.VORHANDEN)) {
+            if (!medium.getStatus().equals(Status.VORHANDEN)) {
                 return "Medium ist bereits ausgeliehen!";
             }
 
-            // Erstellt eine neue "ausgeliehene" Version des Mediums
-            Medium ausgeliehenesMedium = new Medium(
-                    medium.titel,
-                    medium.autor,
-                    medium.medientyp,
-                    ausleihDatum,
-                    ausleihDatum.plusDays(ausleihdauer),
-                    Status.AUSGELIEHEN
-            );
+            medium.setStandplatz(null);
+            medium.setAusleiheDatum(ausleihDatum);
+            medium.setRueckgabeDatum(ausleihDatum.plusDays(ausleihdauer));
+            medium.setStatus(Status.AUSGELIEHEN);
 
-            // Ersetze das Medium in der Liste mit den neuen Attributen
-            medienListe.set(i, ausgeliehenesMedium);
-
-            return "Rückgabedatum: " + ausgeliehenesMedium.rueckgabeDatum;
+            return "Rückgabedatum: " + medium.getRueckgabeDatum();
         }
 
         // Fehlermeldung, falls gesuchtes Medium nicht gefunden wird
@@ -170,39 +160,28 @@ public class Bibliothek {
     public static String mediumZurueckgeben(String mediumZurueckTitel, String neuerStandplatz){
         String message;
 
-        for(int i = 0; i < medienListe.size(); i++){
-            Medium medium = medienListe.get(i);
-
+        for (Medium medium : medienListe) {
             // Überspringt nicht zutreffende Medien, um unnötige Iterationen zu vermeiden
-            if(!medium.titel.equals(mediumZurueckTitel)){
+            if (!medium.getTitel().equals(mediumZurueckTitel)) {
                 continue;
             }
 
             // Überprüfung auf Überfälligkeit
-            if (medium.rueckgabeDatum.isBefore(LocalDate.now())){
+            if (medium.getRueckgabeDatum().isBefore(LocalDate.now())) {
                 message = "Medium zu spät zurückgegeben";
-            } else{
+            } else {
                 message = "Medium erfolgreich zurückgegeben";
             }
 
             // Ist das Medium zum Ausmustern vorgemerkt?
-            if(medium.status == Status.AUSGELIEHEN_VORGEMERKT) {
-                // Entfernt das Medium aus der Liste
-                medienListe.remove(i);
-
+            if (medium.getStatus() == Status.AUSGELIEHEN_VORGEMERKT) {
+                medienListe.remove(medium);
                 message += " und ausgemustert";
             } else {
-                // Erstellt eine neue "ausgeliehene" Version des Mediums
-                Medium zurueckgegebenesMedium = new Medium(
-                        medium.titel,
-                        medium.autor,
-                        neuerStandplatz,
-                        medium.medientyp,
-                        Status.VORHANDEN
-                );
-
-                // Ersetze das Medium in der Liste
-                medienListe.set(i, zurueckgegebenesMedium);
+                medium.setStandplatz(neuerStandplatz);
+                medium.setAusleiheDatum(null);
+                medium.setRueckgabeDatum(null);
+                medium.setStatus(Status.VORHANDEN);
             }
             return message;
         }
@@ -223,7 +202,7 @@ public class Bibliothek {
 
         // Überprüft, ob Medium bereits vorhanden ist
         for (Medium medium : medienListe) {
-            if (medium.titel.equals(titelNeu)) {
+            if (medium.getTitel().equals(titelNeu)) {
                 return "Medium existiert schon im Bestand!";
             }
         }
@@ -255,19 +234,19 @@ public class Bibliothek {
         for(Medium medium : medienListe){
 
             // Überspringt nicht zutreffende Medien, um unnötige Iterationen zu vermeiden
-            if (!medium.titel.equals(titelZumAusmustern)){
+            if (!medium.getTitel().equals(titelZumAusmustern)){
                 continue;
             }
 
             // Returned eine Meldung je nach Status
-            switch (medium.status){
+            switch (medium.getStatus()){
 
                 case VORHANDEN:
                     medienListe.remove(medium);
-                    return "Das Medium mit dem Titel: " + medium.titel + " wurde erfolgreich ausgemustert.";
+                    return "Das Medium mit dem Titel: " + medium.getTitel() + " wurde erfolgreich ausgemustert.";
 
                 case AUSGELIEHEN:
-                    medium.status = Status.AUSGELIEHEN_VORGEMERKT;
+                    medium.setStatus(Status.AUSGELIEHEN_VORGEMERKT);
                     return "Medium ist momentan ausgeliehen. Es wird ausgemustert, sobald es zurückgegeben wurde.";
 
                 case AUSGELIEHEN_VORGEMERKT:
@@ -294,18 +273,18 @@ public class Bibliothek {
         for (Medium medium : medienListe){
 
             // Überspringt nicht zutreffende Medien, um unnötige Iterationen zu vermeiden
-            if(medium.status != Status.VORHANDEN){
+            if(medium.getStatus() != Status.VORHANDEN){
                 continue;
             }
 
             // Je nach Parameter werden entweder alle oder nur ein bestimmter Medientyp übernommen
-            if(filterTyp == null || filterTyp == medium.medientyp) {
+            if(filterTyp == null || filterTyp == medium.getMedientyp()) {
                 sortedList.add(medium);
             }
         }
 
         // Nach Alphabet sortieren
-        sortedList.sort(Comparator.comparing(medium -> medium.titel));
+        sortedList.sort(Comparator.comparing(Medium::getTitel));
         return sortedList;
     }
 
@@ -323,18 +302,18 @@ public class Bibliothek {
         for (Medium medium : medienListe){
 
             // Überspringt nicht zutreffende Medien, um unnötige Iterationen zu vermeiden
-            if(medium.status == Status.VORHANDEN){
+            if(medium.getStatus() == Status.VORHANDEN){
                 continue;
             }
 
             // Je nach Parameter werden entweder alle oder nur ein bestimmter Medientyp übernommen
-            if(filterTyp == null || filterTyp == medium.medientyp) {
+            if(filterTyp == null || filterTyp == medium.getMedientyp()) {
                 sortedList.add(medium);
             }
         }
 
         // Nach Alphabet sortieren
-        sortedList.sort(Comparator.comparing(medium -> medium.titel));
+        sortedList.sort(Comparator.comparing(Medium::getTitel));
         return sortedList;
     }
 
@@ -351,18 +330,18 @@ public class Bibliothek {
         for (Medium medium : medienListe){
 
             // Überspringt nicht zutreffende Medien, um unnötige Iterationen zu vermeiden
-            if(medium.status == Status.VORHANDEN){
+            if(medium.getStatus() == Status.VORHANDEN){
                 continue;
             }
 
             // Medien, deren Rückgabedatum vor dem heutigen sind
-            if(medium.rueckgabeDatum.isBefore(LocalDate.now())){
+            if(medium.getRueckgabeDatum().isBefore(LocalDate.now())){
                 sortedList.add(medium);
             }
         }
 
         // Nach Alphabet sortieren
-        sortedList.sort(Comparator.comparing(medium -> medium.rueckgabeDatum));
+        sortedList.sort(Comparator.comparing(Medium::getRueckgabeDatum));
         return sortedList;
     }
 
@@ -379,7 +358,7 @@ public class Bibliothek {
         for (Medium m : ueberfaelligeMedien()) {
 
             if (medium.equals(m)) {
-                return medium.rueckgabeDatum.until(LocalDate.now(), ChronoUnit.DAYS) + " Tag(e) überfällig";
+                return medium.getRueckgabeDatum().until(LocalDate.now(), ChronoUnit.DAYS) + " Tag(e) überfällig";
             }
         }
 
@@ -403,8 +382,8 @@ public class Bibliothek {
         // Wo liegt gesuchtes Medium in der medienListe?
         for (Medium medium : medienListe){
 
-            if(medium.titel.equals(zuAenderndesMedium)){
-                medium.standplatz = neuerStandplatz; // Ändert den Standplatz
+            if(medium.getTitel().equals(zuAenderndesMedium)){
+                medium.setStandplatz(neuerStandplatz); // Ändert den Standplatz
                 return "Standplatz erfolgreich geändert!";
             }
         }
@@ -431,7 +410,7 @@ public class Bibliothek {
 
         // Prüfung, ob Standplatz belegt ist
         for(Medium medium : medienListe){
-            if(medium.standplatz != null && medium.standplatz.equals(standplatz)){
+            if(medium.getStandplatz() != null && medium.getStandplatz().equals(standplatz)){
                 return true;
             }
         }

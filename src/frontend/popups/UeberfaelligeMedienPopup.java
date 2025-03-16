@@ -49,7 +49,12 @@ public class UeberfaelligeMedienPopup extends JDialog{
 
         List<Medium> medienListe = Bibliothek.ueberfaelligeMedien();
         for (Medium medium : medienListe) {
-            tableModel.addRow(new Object[]{medium.titel, medium.ausleiheDatum, medium.rueckgabeDatum, medium.rueckgabeDatum.until(LocalDate.now(), ChronoUnit.DAYS)});
+            tableModel.addRow(new Object[]{
+                    medium.getTitel(),
+                    medium.getAusleiheDatum(),
+                    medium.getRueckgabeDatum(),
+                    medium.getRueckgabeDatum().until(LocalDate.now(), ChronoUnit.DAYS)
+            });
         }
     }
 
