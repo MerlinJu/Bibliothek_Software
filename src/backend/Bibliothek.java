@@ -138,6 +138,7 @@ public class Bibliothek {
                 continue;
             }
 
+            // checkt ob das ausgewählte medium schon ausgeliehen ist
             if (!medium.getStatus().equals(Status.VORHANDEN)) {
                 return "Medium ist bereits ausgeliehen!";
             }
