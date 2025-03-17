@@ -2,26 +2,24 @@ package frontend.popups;
 
 import backend.Bibliothek;
 import backend.Medium;
+import backend.Status;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.AreaAveragingScaleFilter;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.List;
 
-public class MediumZurückgebenPopup extends JDialog {
+public class MediumZurueckgebenPopup extends JDialog {
     private JComboBox<String> ausgelieheneMedienDropdown;
-    private JLabel rückgabeDatumLabel;
     private JLabel mediumAuswahl;
-    private JButton zurückgebenButton, schließeButton;
+    private JButton zurueckgebenButton;
     private JLabel ueberfaelligLabel;
     private JLabel ueberfaelligIn;
 
 
-    public MediumZurückgebenPopup(JFrame parent) {
+    public MediumZurueckgebenPopup(JFrame parent) {
         super(parent, "Medium zurückgeben", true);
         initializeUI();
     }
@@ -38,8 +36,8 @@ public class MediumZurückgebenPopup extends JDialog {
         List<String> AusgelieheneMedienTitel = new ArrayList<>();
 
         for (Medium medium : AusgelieheneMedien) {
-            AusgelieheneMedienTitel.add(medium.titel);
-            mediumMap.put(medium.titel, medium);
+            AusgelieheneMedienTitel.add(medium.getTitel());
+            mediumMap.put(medium.getTitel(), medium);
         }
 
         ausgelieheneMedienDropdown = new JComboBox<>(new Vector<>(AusgelieheneMedienTitel));
@@ -54,19 +52,25 @@ public class MediumZurückgebenPopup extends JDialog {
         String initialTitel = (String) ausgelieheneMedienDropdown.getSelectedItem();
         Medium initialMedium = mediumMap.get(initialTitel);
         if (initialMedium != null) {
-            ueberfaelligIn.setText(Bibliothek.istMediumÜberfällig(initialMedium));
+            ueberfaelligIn.setText(Bibliothek.istMediumUeberfaellig(initialMedium));
         } else {
             ueberfaelligIn.setText("Nicht überfällig");
         }
 
+        JLabel neuerStandplatzLabel = new JLabel("Neuer Standplatz:");
+        mainPanel.add(neuerStandplatzLabel);
+
+        JTextField neuerStandplatz = new JTextField();
+        mainPanel.add(neuerStandplatz);
+
         ausgelieheneMedienDropdown.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String gewähltesMediumTitel = (String) ausgelieheneMedienDropdown.getSelectedItem();
-                Medium medium = mediumMap.get(gewähltesMediumTitel); // Medium abrufen von der Hash Map, mithilfe von dem Titel der an das Medium Objekt geknüpft ist
+                String gewaehltesMediumTitel = (String) ausgelieheneMedienDropdown.getSelectedItem();
+                Medium medium = mediumMap.get(gewaehltesMediumTitel); // Medium abrufen von der Hash Map, mithilfe von dem Titel der an das Medium Objekt geknüpft ist
 
                 if (medium != null) {
-                    ueberfaelligIn.setText(Bibliothek.istMediumÜberfällig(medium));
+                    ueberfaelligIn.setText(Bibliothek.istMediumUeberfaellig(medium));
                 } else {
                     ueberfaelligIn.setText("Nicht überfällig");
                 }
@@ -74,41 +78,36 @@ public class MediumZurückgebenPopup extends JDialog {
             }
         });
 
-
-
-        JLabel neuerStandplatzLabel = new JLabel("neuer Standplatz:");
-        mainPanel.add(neuerStandplatzLabel);
-
-        JTextField neuerStandplatz = new JTextField();
-        mainPanel.add(neuerStandplatz);
-
         // Buttons
 
-        JButton schließenButton = new JButton("Schließen");
-        schließenButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        schließenButton.addActionListener(new ActionListener() {
+        JButton schliessenButton = new JButton("Schließen");
+        schliessenButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        schliessenButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
             }
         });
-        mainPanel.add(schließenButton);
+        mainPanel.add(schliessenButton);
 
-        zurückgebenButton = new JButton("Zurückgeben");
-        zurückgebenButton.addActionListener(new ActionListener() {
+        zurueckgebenButton = new JButton("Zurückgeben");
+        zurueckgebenButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    String mediumTitel = (String) ausgelieheneMedienDropdown.getSelectedItem();
+                    String gewaehltesMediumTitel = (String) ausgelieheneMedienDropdown.getSelectedItem();
                     String standplatz = neuerStandplatz.getText().trim();
 
-                    if (standplatz.isEmpty()) {
-                        throw new IllegalArgumentException("Alle Felder müssen ausgefüllt sein!");
+                    // Überprüft, ob der Standplatz im gültigen Format ist (entfällt bei vorgemerkten Medien)
+                    if(mediumMap.get(gewaehltesMediumTitel).getStatus() != Status.AUSGELIEHEN_VORGEMERKT && Bibliothek.standplatzUngueltig(standplatz)) {
+                        JOptionPane.showMessageDialog(null, "Das Format des Standplatzes ist ungültig!", "Fehler", JOptionPane.ERROR_MESSAGE);
+                        return;
                     }
 
-                    String result = Bibliothek.mediumZurückgeben(mediumTitel, standplatz);
+                    String result = Bibliothek.mediumZurueckgeben(gewaehltesMediumTitel, standplatz);
 
                     JOptionPane.showMessageDialog(null, result, "Meldung", JOptionPane.INFORMATION_MESSAGE);
+                    dispose();
                 } catch (StringIndexOutOfBoundsException SIOOBe) {
                     // Beispiel für eine Ausnahme, die beim Überschreiten der maximalen Textlänge ausgelöst wird
                     JOptionPane.showMessageDialog(null, "Der eingegebene Text ist zu lang!", "Fehler", JOptionPane.ERROR_MESSAGE);
@@ -119,7 +118,7 @@ public class MediumZurückgebenPopup extends JDialog {
 
             }
         });
-        mainPanel.add(zurückgebenButton);
+        mainPanel.add(zurueckgebenButton);
 
 
         add(mainPanel);

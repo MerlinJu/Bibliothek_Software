@@ -1,7 +1,6 @@
 package frontend.popups;
 
 import backend.Bibliothek;
-import backend.Medientyp;
 import backend.Medium;
 
 import javax.swing.*;
@@ -11,11 +10,11 @@ import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.List;
 
-public class StandplatzÄndernPopup extends JDialog {
+public class StandplatzAendernPopup extends JDialog {
     private JComboBox<String> mediumDropdown;
 
 
-    public StandplatzÄndernPopup(JFrame parent) {
+    public StandplatzAendernPopup(JFrame parent) {
         super(parent, "Standplatz ändern", true);
         initializeUI();
     }
@@ -24,20 +23,18 @@ public class StandplatzÄndernPopup extends JDialog {
         JPanel mainPanel = new JPanel(new GridLayout(3, 2, 10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-
-        List<Medium> medienListe = Bibliothek.getMedienListe();
         List<String> medienListeTitel = new ArrayList<>();
-        for (Medium medium : medienListe) {
-            medienListeTitel.add(medium.titel);
+        for (Medium medium : Bibliothek.verfuegbareMedien(null)) {
+            medienListeTitel.add(medium.getTitel());
         }
         mediumDropdown = new JComboBox<>(new Vector<>(medienListeTitel));
 
         JTextField neuerStandplatzField = new JTextField();
 
-        mainPanel.add(new JLabel("Medium auswählen:"));
+        mainPanel.add(new JLabel("Medium:"));
         mainPanel.add(mediumDropdown);
 
-        mainPanel.add(new JLabel("Neuer Standplatz"));
+        mainPanel.add(new JLabel("Neuer Standplatz:"));
         mainPanel.add(neuerStandplatzField);
 
         // schließen Button
@@ -52,15 +49,15 @@ public class StandplatzÄndernPopup extends JDialog {
         aendernButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String ausgewähltesMediumTitel = (String) mediumDropdown.getSelectedItem();
+                String ausgewaehltesMediumTitel = (String) mediumDropdown.getSelectedItem();
                 String neuerStandplatz = neuerStandplatzField.getText().trim();
 
-                if (ausgewähltesMediumTitel == null || neuerStandplatz.isEmpty()) {
+                if (ausgewaehltesMediumTitel == null || neuerStandplatz.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Bitte alle Felder ausfüllen!", "Fehler", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
-                String message = Bibliothek.standplatzÄndern(ausgewähltesMediumTitel, neuerStandplatz);
+                String message = Bibliothek.standplatzAendern(ausgewaehltesMediumTitel, neuerStandplatz);
 
                 JOptionPane.showMessageDialog(null, message, "Information", JOptionPane.INFORMATION_MESSAGE);
                 dispose();

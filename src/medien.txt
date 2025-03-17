@@ -1,16 +1,18 @@
-Der König von Narnia;C.S. Lewis;2-c;BUCH
-Der kleine Prinz;A. de Saint-Exupery;2-e;BUCH
-E.T.;Universal Pictures;3-b;DIVERSE
-Große Freiheit;Unheilig;1-9;DATENTRÄGER
-Harry Potter und der Stein der Weisen;J.K. Rowling;2-h;BUCH
-Independence Day;20th Century Fox;1-8;DIVERSE
-Jurassic Park;Universal Pictures;DIVERSE;2025-02-15;2025-03-17
-Mensch;H. Grönemeyer;DATENTRÄGER;2025-04-13;2025-05-13
-Sakrileg;D. Brown;2-b;BUCH
-The Deal;Elle Kennedy;8-i;BUCH
-Thriller;M. Jackson;1-a;DATENTRÄGER
-Titanic;Paramount Pictures;DIVERSE;2025-02-15;2025-03-17
-Twilight;S. Meyer;2-g;BUCH
-test1234;autor1234;DATENTRÄGER;2025-03-03;2025-04-02
-tester;Merlin;1-3;BUCH
-testerr;Merlin;1-4;DIVERSE
+Back in Black;AC/DC;1-b;DATENTRAEGER;VORHANDEN
+Bat Out of Hell;Meat Loaf;1-c;DATENTRAEGER;VORHANDEN
+But Seriously;P. Collins;1-e;DATENTRAEGER;VORHANDEN
+Der Alchimist;P. Coelho;2-a;BUCH;VORHANDEN
+Der Herr der Ringe;J.R.R. Tolkien;2-f;BUCH;VORHANDEN
+Der König von Narnia;C.S. Lewis;2-c;BUCH;VORHANDEN
+Der kleine Prinz;A. de Saint-Exupery;2-e;BUCH;VORHANDEN
+E.T.;Universal Pictures;3-b;DIVERSE;VORHANDEN
+Große Freiheit;Unheilig;1-f;DATENTRAEGER;VORHANDEN
+Harry Potter und der Stein der Weisen;J.K. Rowling;2-h;BUCH;VORHANDEN
+Independence Day;20th Century Fox;3-d;DIVERSE;VORHANDEN
+Jurassic Park;Universal Pictures;3-c;DIVERSE;VORHANDEN
+Mensch;H. Grönemeyer;1-d;DATENTRAEGER;VORHANDEN
+Sakrileg;D. Brown;2-b;BUCH;VORHANDEN
+Thriller;M. Jackson;1-a;DATENTRAEGER;VORHANDEN
+Titanic;Paramount Pictures;3-a;DIVERSE;VORHANDEN
+Twilight;S. Meyer;2-g;BUCH;VORHANDEN
+Und dann gabs keines mehr;A. Christies;2-d;BUCH;VORHANDEN

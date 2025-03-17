@@ -3,8 +3,6 @@ package frontend.popups;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 import backend.Bibliothek;
@@ -17,7 +15,7 @@ public class AusgelieheneMedienPopup extends JDialog{
     private JComboBox<String> filterDropdown;
 
     public AusgelieheneMedienPopup(JFrame parent) {
-        super(parent, "Verfügbare Medien anzeigen", true);
+        super(parent, "Ausgeliehene Medien anzeigen", true);
         initializeUI();
     }
 
@@ -35,10 +33,10 @@ public class AusgelieheneMedienPopup extends JDialog{
         filterPanel.add(new JLabel("Filter:"));
         filterPanel.add(filterDropdown);
 
-        JButton schließenButton = new JButton("Schließen");
-        schließenButton.addActionListener(e -> dispose());
+        JButton schliessenButton = new JButton("Schließen");
+        schliessenButton.addActionListener(e -> dispose());
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        buttonPanel.add(schließenButton);
+        buttonPanel.add(schliessenButton);
 
         topPanel.add(filterPanel, BorderLayout.WEST);
         topPanel.add(buttonPanel, BorderLayout.EAST);
@@ -60,18 +58,16 @@ public class AusgelieheneMedienPopup extends JDialog{
         tableModel.setRowCount(0); // Tabelle clearen
 
         String selectedFilter = (String) filterDropdown.getSelectedItem();
-        Medientyp filterTyp = null;
-        if ("Buch".equals(selectedFilter)) {
-            filterTyp = Medientyp.BUCH;
-        } else if ("Datenträger".equals(selectedFilter)) {
-            filterTyp = Medientyp.DATENTRÄGER;
-        } else if ("Diverse".equals(selectedFilter)) {
-            filterTyp = Medientyp.DIVERSE;
-        }
+        Medientyp filterTyp = switch (selectedFilter) {
+            case "Buch" -> Medientyp.BUCH;
+            case "Datenträger" -> Medientyp.DATENTRAEGER;
+            case "Diverse" -> Medientyp.DIVERSE;
+            case null, default -> null;
+        };
 
         List<Medium> medienListe = Bibliothek.ausgelieheneMedien(filterTyp);
         for (Medium medium : medienListe) {
-            tableModel.addRow(new Object[]{medium.titel, medium.ausleihe_datum, medium.rueckgabe_datum});
+            tableModel.addRow(new Object[]{medium.getTitel(), medium.getAusleiheDatum(), medium.getRueckgabeDatum()});
         }
     }
 
@@ -80,7 +76,7 @@ public class AusgelieheneMedienPopup extends JDialog{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
 
-        VerfügbareMedienPopup popup = new VerfügbareMedienPopup(frame);
+        AusgelieheneMedienPopup popup = new AusgelieheneMedienPopup(frame);
         popup.setVisible(true);
     }
 

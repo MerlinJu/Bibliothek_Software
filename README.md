@@ -9,5 +9,3 @@ Gruppenprojekt für Programmieren, Design und Implementierung von Algorithmen im
 <u>Ideen für die Präsentation</u>
 
 <li>Als Ausblick für die Zukunft: Beim Ausleihen/Zurückgeben kann ein Barcode eingescannt werden, der dem Programm sagt, welches Medium es ist.</li>
-
-<li>standplatzValide() erklären</li>
