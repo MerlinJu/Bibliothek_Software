@@ -76,7 +76,6 @@ public class MainFrame extends JFrame {
                         finalLogoIcon
                 )
         );
-
         helpMenu.add(aboutMenuItem);
 
         menuBar.add(fileMenu);

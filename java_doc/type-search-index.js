@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"backend","l":"Bibliothek"},{"p":"backend","l":"Buch"},{"p":"backend","l":"Datentraeger"},{"p":"backend","l":"Diverse"},{"p":"backend","l":"Medientyp"},{"p":"backend","l":"Medium"},{"p":"backend","l":"Status"}];updateSearchResults();
