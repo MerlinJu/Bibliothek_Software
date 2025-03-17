@@ -5,6 +5,7 @@ Gruppenprojekt für Programmieren, Design und Implementierung von Algorithmen im
 <u>Ideen für zusätzliche Funktionen:</u>
 
 <li>"Einstellungen": Hier kann man zum Beispiel die Standarddauer von einer Ausleihe selbst festlegen.</li>
+<li>"Eigene Attribute der Medientypen": zb. eine ISBN Nummer für den Buch medientyp. ( Andere Klassenhirarchie notwendig)</li>
 
 <u>Ideen für die Präsentation</u>
 
