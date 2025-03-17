@@ -2,6 +2,10 @@ Bibliothek Software in Java
 
 Gruppenprojekt für Programmieren, Design und Implementierung von Algorithmen im 1. Semester an der BA Rhein-Main
 
+<u>Ausführung:</u>
+
+Das Programm wird im src/frontend/MainFrame.java ausgeführt
+
 <u>Ideen für zusätzliche Funktionen:</u>
 
 <li>"Einstellungen": Hier kann man zum Beispiel die Standarddauer von einer Ausleihe selbst festlegen.</li>
