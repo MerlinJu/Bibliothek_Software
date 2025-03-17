@@ -15,7 +15,11 @@ import java.util.List;
  */
 public class Bibliothek {
 
-    // Pfad zu der Mediendatei, welche den kompletten Medienbestand beinhaltet
+    /**
+     * Der Pfad zu der Mediendatei, die den gesamten Medienbestand enthält.
+     * Die Datei wird verwendet, um die Medieninformationen zu laden oder zu speichern.
+     * Der Standardpfad verweist auf die Datei "medien.txt" im "src"-Verzeichnis.
+     */
     private final static String dateipfad = "src/medien.txt";
 
     /**
@@ -35,7 +39,11 @@ public class Bibliothek {
         return medienListe;
     }
 
-    private static int ausleihdauer = 30;   // Dauer einer Ausleihperiode
+    /**
+     * Die Anzahl der Tage, für die ein Medium ausgeliehen werden kann.
+     * Der Standardwert beträgt 30 Tage.
+     */
+    private static int ausleihdauer = 30;
 
 
     /**
@@ -77,7 +85,6 @@ public class Bibliothek {
                     Medium medium = new Medium(titel, autor, typ, ausleiheDatum, rueckgabeDatum, status); // Objekt wird erstellt
                     medienListe.add(medium); // Objekt wird der ArrayList hinzugefügt
                 }
-
             }
 
             // Fängt einen möglichen Fehler (verpflichtend bei Nutzung von BufferedReader)
@@ -120,10 +127,10 @@ public class Bibliothek {
      * <p>Leiht ein vorhandenes Medium aus, indem es einem Medium ein Ausleih- sowie Rückgabedatum zuweist und den
      * Standplatz entfernt.</p>
      * @param mediumTitel Titel des Mediums, das ausgeliehen werden soll
-     * @param ausleihDatum Datum der Ausleihe
+     * @param ausleiheDatum Datum der Ausleihe
      * @return Meldung über Rückgabedatum oder fehlgeschlagene Ausleihe
      */
-    public static String mediumAusleihen(String mediumTitel, LocalDate ausleihDatum) {
+    public static String mediumAusleihen(String mediumTitel, LocalDate ausleiheDatum) {
 
         for (Medium medium : medienListe) {
             // Überspringt nicht zutreffende Medien, um unnötige Iterationen zu vermeiden
@@ -136,8 +143,8 @@ public class Bibliothek {
             }
 
             medium.setStandplatz(null);
-            medium.setAusleiheDatum(ausleihDatum);
-            medium.setRueckgabeDatum(ausleihDatum.plusDays(ausleihdauer));
+            medium.setAusleiheDatum(ausleiheDatum);
+            medium.setRueckgabeDatum(ausleiheDatum.plusDays(ausleihdauer));
             medium.setStatus(Status.AUSGELIEHEN);
 
             return "Rückgabedatum: " + medium.getRueckgabeDatum();
@@ -158,7 +165,7 @@ public class Bibliothek {
      * @return Meldung über (nicht) erfolgte Rückgabe
      */
     public static String mediumZurueckgeben(String mediumZurueckTitel, String neuerStandplatz){
-        String message;
+        String nachricht;
 
         for (Medium medium : medienListe) {
             // Überspringt nicht zutreffende Medien, um unnötige Iterationen zu vermeiden
@@ -168,22 +175,22 @@ public class Bibliothek {
 
             // Überprüfung auf Überfälligkeit
             if (medium.getRueckgabeDatum().isBefore(LocalDate.now())) {
-                message = "Medium zu spät zurückgegeben";
+                nachricht = "Medium zu spät zurückgegeben";
             } else {
-                message = "Medium erfolgreich zurückgegeben";
+                nachricht = "Medium erfolgreich zurückgegeben";
             }
 
             // Ist das Medium zum Ausmustern vorgemerkt?
             if (medium.getStatus() == Status.AUSGELIEHEN_VORGEMERKT) {
                 medienListe.remove(medium);
-                message += " und ausgemustert";
+                nachricht += " und ausgemustert";
             } else {
                 medium.setStandplatz(neuerStandplatz);
                 medium.setAusleiheDatum(null);
                 medium.setRueckgabeDatum(null);
                 medium.setStatus(Status.VORHANDEN);
             }
-            return message;
+            return nachricht;
         }
         // Fehlermeldung, falls gesuchtes Medium nicht gefunden wird
         return "Medium nicht gefunden";
@@ -268,7 +275,7 @@ public class Bibliothek {
     public static List<Medium> verfuegbareMedien(Medientyp filterTyp){
 
         // Temporäre Liste für alle Medien, die zum Filter passen
-        List<Medium> sortedList = new ArrayList<>();
+        List<Medium> sortierteListe = new ArrayList<>();
 
         for (Medium medium : medienListe){
 
@@ -279,13 +286,13 @@ public class Bibliothek {
 
             // Je nach Parameter werden entweder alle oder nur ein bestimmter Medientyp übernommen
             if(filterTyp == null || filterTyp == medium.getMedientyp()) {
-                sortedList.add(medium);
+                sortierteListe.add(medium);
             }
         }
 
         // Nach Alphabet sortieren
-        sortedList.sort(Comparator.comparing(Medium::getTitel));
-        return sortedList;
+        sortierteListe.sort(Comparator.comparing(Medium::getTitel));
+        return sortierteListe;
     }
 
 
@@ -297,7 +304,7 @@ public class Bibliothek {
     public static List<Medium> ausgelieheneMedien(Medientyp filterTyp){
 
         // Temporäre Liste für alle Medien, die zum Filter passen
-        List<Medium> sortedList = new ArrayList<>();
+        List<Medium> sortierteListe = new ArrayList<>();
 
         for (Medium medium : medienListe){
 
@@ -308,13 +315,13 @@ public class Bibliothek {
 
             // Je nach Parameter werden entweder alle oder nur ein bestimmter Medientyp übernommen
             if(filterTyp == null || filterTyp == medium.getMedientyp()) {
-                sortedList.add(medium);
+                sortierteListe.add(medium);
             }
         }
 
         // Nach Alphabet sortieren
-        sortedList.sort(Comparator.comparing(Medium::getTitel));
-        return sortedList;
+        sortierteListe.sort(Comparator.comparing(Medium::getTitel));
+        return sortierteListe;
     }
 
 
@@ -325,7 +332,7 @@ public class Bibliothek {
     public static List<Medium> ueberfaelligeMedien(){
 
         // Temporäre Liste für alle Medien, die zum Filter passen
-        List<Medium> sortedList = new ArrayList<>();
+        List<Medium> sortierteListe = new ArrayList<>();
 
         for (Medium medium : medienListe){
 
@@ -336,13 +343,13 @@ public class Bibliothek {
 
             // Medien, deren Rückgabedatum vor dem heutigen sind
             if(medium.getRueckgabeDatum().isBefore(LocalDate.now())){
-                sortedList.add(medium);
+                sortierteListe.add(medium);
             }
         }
 
         // Nach Alphabet sortieren
-        sortedList.sort(Comparator.comparing(Medium::getRueckgabeDatum));
-        return sortedList;
+        sortierteListe.sort(Comparator.comparing(Medium::getRueckgabeDatum));
+        return sortierteListe;
     }
 
 
@@ -356,7 +363,6 @@ public class Bibliothek {
 
         // Vergleicht das Medium mit allen überfälligen Medien
         for (Medium m : ueberfaelligeMedien()) {
-
             if (medium.equals(m)) {
                 return medium.getRueckgabeDatum().until(LocalDate.now(), ChronoUnit.DAYS) + " Tag(e) überfällig";
             }
@@ -381,7 +387,6 @@ public class Bibliothek {
 
         // Wo liegt gesuchtes Medium in der medienListe?
         for (Medium medium : medienListe){
-
             if(medium.getTitel().equals(zuAenderndesMedium)){
                 medium.setStandplatz(neuerStandplatz); // Ändert den Standplatz
                 return "Standplatz erfolgreich geändert!";
@@ -418,5 +423,4 @@ public class Bibliothek {
         // Wenn das Format korrekt ist und der Standplatz nicht belegt ist, wird diese Stelle im Code erreicht
         return false;
     }
-
 }
