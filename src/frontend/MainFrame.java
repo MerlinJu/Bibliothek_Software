@@ -3,10 +3,12 @@ package frontend;
 import backend.Bibliothek;
 import frontend.popups.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 public class MainFrame extends JFrame {
 
@@ -53,7 +55,28 @@ public class MainFrame extends JFrame {
         helpMenu.setFont(new Font("SansSerif", Font.PLAIN, 14)); // Schriftart anpassen
         JMenuItem aboutMenuItem = new JMenuItem("Über");
         aboutMenuItem.setFont(new Font("SansSerif", Font.PLAIN, 14)); // Schriftart anpassen
-        aboutMenuItem.addActionListener(e -> JOptionPane.showMessageDialog(this, "Bibliotheksverwaltung v1.0"));
+
+        ImageIcon logoIcon = null;
+        try {
+            File file = new File("src/media/logo.jpeg");
+            Image image = ImageIO.read(file);
+            Image scaledImage = image.getScaledInstance(140, 100, Image.SCALE_SMOOTH);
+            logoIcon = new ImageIcon(scaledImage);
+        } catch (Exception e) {
+            System.out.println("Bild konnte nicht geladen werden: " + e.getMessage());
+        }
+        final ImageIcon finalLogoIcon = logoIcon;
+
+        aboutMenuItem.addActionListener(e ->
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Bibliotheksverwaltung v1.0",
+                        "Über",
+                        JOptionPane.INFORMATION_MESSAGE,
+                        finalLogoIcon
+                )
+        );
+
         helpMenu.add(aboutMenuItem);
 
         menuBar.add(fileMenu);
