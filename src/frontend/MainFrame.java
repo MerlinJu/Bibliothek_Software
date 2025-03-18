@@ -184,6 +184,11 @@ public class MainFrame extends JFrame {
     }
 
 
+    /**
+     * Startet die Anwendung.
+     *
+     * @param args Kommandozeilenargumente
+     */
     public static void main(String[] args) {
         Bibliothek.ladeMedienAusDatei();
 
