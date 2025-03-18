@@ -41,7 +41,7 @@ public class UeberfaelligeMedienPopup extends JDialog{
 
         setSize(450, 300);
         setLocationRelativeTo(getParent()); // Zentriert das Popup relativ zum Hauptfenster
-        setResizable(false);
+        setResizable(true);
     }
 
     private void updateTableData() {
